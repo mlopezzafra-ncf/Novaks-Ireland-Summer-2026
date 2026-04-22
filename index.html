@@ -1,0 +1,1852 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Novaks Go To Ireland</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Crimson+Text:ital@0;1&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; }
+
+        html, body {
+            margin: 0;
+            padding: 0;
+            min-height: 100%;
+        }
+
+        body {
+            font-family: 'Crimson Text', Georgia, serif;
+            color: #1a0f0a;
+            background-color: #2d1810;
+            position: relative;
+        }
+
+        /* Ireland Map as faded background for the entire website */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url('Ireland Map.png');
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-size: contain;
+            background-attachment: fixed;
+            opacity: 0.22;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background:
+                repeating-linear-gradient(0deg, rgba(139,69,19,0.03) 0px, transparent 1px, transparent 2px, rgba(139,69,19,0.015) 3px),
+                repeating-linear-gradient(90deg, rgba(139,69,19,0.03) 0px, transparent 1px, transparent 2px, rgba(139,69,19,0.015) 3px),
+                linear-gradient(135deg, rgba(249,243,234,0.78) 0%, rgba(240,232,220,0.72) 25%, rgba(235,229,217,0.68) 50%, rgba(240,232,220,0.72) 75%, rgba(249,243,234,0.78) 100%);
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .manuscript-bg { position: relative; min-height: 100vh; }
+        .content-wrapper { position: relative; z-index: 2; }
+
+        .manuscript-header {
+            text-align: center;
+            padding: 70px 40px;
+            position: relative;
+            background:
+                linear-gradient(135deg, rgba(26,15,10,0.55) 0%, rgba(45,24,16,0.45) 50%, rgba(26,15,10,0.55) 100%),
+                url('Header.png') center center / cover no-repeat;
+            border: 4px double #8b4513;
+            border-radius: 2px;
+            margin-bottom: 40px;
+            box-shadow:
+                0 10px 30px rgba(0,0,0,0.4),
+                inset 0 1px 0 rgba(255,255,255,0.5),
+                inset 0 -1px 0 rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+        .manuscript-header::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(139,69,19,0.05) 2px, rgba(139,69,19,0.05) 4px);
+            pointer-events: none;
+        }
+        .manuscript-header h1 {
+            color: #ffd700;
+            text-shadow: 3px 3px 10px rgba(0,0,0,0.9), 0 0 20px rgba(0,0,0,0.6);
+        }
+        .manuscript-header .gold-text,
+        .manuscript-header p {
+            color: #faf6f0;
+            text-shadow: 2px 2px 6px rgba(0,0,0,0.85);
+        }
+        .manuscript-header .celtic-corner {
+            color: #ffd700;
+            border-color: #ffd700;
+            background: radial-gradient(circle, rgba(0,0,0,0.5) 0%, transparent 70%);
+        }
+        .manuscript-header .ornament-line {
+            background: linear-gradient(90deg, transparent, #ffd700, transparent);
+        }
+        .manuscript-header .ornamental-divider {
+            color: #ffd700;
+            text-shadow: 2px 2px 6px rgba(0,0,0,0.8);
+        }
+        .header-content { position: relative; z-index: 2; }
+
+        .celtic-corner {
+            width: 80px; height: 80px;
+            margin: 20px auto;
+            border: 3px solid #8b4513;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 48px; color: #8b4513;
+            background: radial-gradient(circle, rgba(212,165,116,0.4) 0%, transparent 70%);
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.2), 0 4px 8px rgba(0,0,0,0.15);
+        }
+
+        .ornament-line {
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #8b4513, transparent);
+            margin: 15px auto;
+            width: 60%; max-width: 300px;
+        }
+
+        /* Day card */
+        .day-card {
+            background: linear-gradient(135deg, rgba(250,246,240,0.95) 0%, rgba(245,240,232,0.93) 50%, rgba(250,246,240,0.95) 100%);
+            backdrop-filter: blur(3px);
+            border: 3px solid #8b4513;
+            border-radius: 2px;
+            box-shadow: 0 12px 25px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.6), inset 0 -2px 5px rgba(0,0,0,0.05);
+            position: relative;
+            overflow: hidden;
+            padding: 0;
+            margin-bottom: 30px;
+            background-size: cover;
+            background-position: center center;
+            background-repeat: no-repeat;
+        }
+
+        .day-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, #8b4513 0%, #d4a574 25%, #8b4513 50%, #d4a574 75%, #8b4513 100%);
+            z-index: 2;
+        }
+
+        .day-card::after {
+            content: '';
+            position: absolute;
+            top: 0; right: 0;
+            width: 40px; height: 40px;
+            background: radial-gradient(circle, #d4a574 0%, transparent 70%);
+            opacity: 0.3;
+            z-index: 2;
+        }
+
+        .day-card.expanded {
+            background: linear-gradient(135deg, rgba(250,246,240,0.88) 0%, rgba(245,240,232,0.84) 50%, rgba(250,246,240,0.88) 100%);
+        }
+
+        .day-card-corner-decoration {
+            position: absolute;
+            top: 10px; right: 15px;
+            font-size: 24px;
+            color: #8b4513;
+            opacity: 0.3;
+            z-index: 10;
+        }
+
+        .day-card-content {
+            padding: 30px;
+            position: relative;
+            z-index: 1;
+            background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(139,69,19,0.02) 2px, rgba(139,69,19,0.02) 4px);
+        }
+
+        /* When a day is expanded, add a parchment overlay over its image so text is legible */
+        .day-card.expanded .day-card-content {
+            background:
+                repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(139,69,19,0.02) 2px, rgba(139,69,19,0.02) 4px),
+                linear-gradient(135deg, rgba(250,246,240,0.86) 0%, rgba(245,240,232,0.82) 50%, rgba(250,246,240,0.86) 100%);
+        }
+
+        .day-header {
+            text-align: center;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #8b4513;
+            margin-bottom: 20px;
+            position: relative;
+        }
+        .day-header > div:first-child { display: inline-block; }
+        .day-header .day-highlight {
+            display: inline-block;
+            border-left: none;
+            padding-left: 0;
+            border-top: 2px dotted #d4a574;
+            padding-top: 6px;
+            margin-top: 6px;
+        }
+        .day-header .toggle-btn {
+            position: absolute;
+            top: 0;
+            right: 0;
+        }
+        .day-header::after {
+            content: '\25C6 \25C6 \25C6';
+            position: absolute;
+            bottom: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 12px;
+            color: #8b4513;
+            letter-spacing: 8px;
+            opacity: 0.5;
+        }
+        .day-date { font-family: 'Cinzel', serif; font-size: 32px; font-weight: bold; color: #8b4513; text-shadow: 2px 2px 2px rgba(212,165,116,0.6); }
+        .day-location { font-family: 'Cinzel', serif; font-size: 24px; color: #1a0f0a; margin: 8px 0; text-shadow: 1px 1px 1px rgba(255,255,255,0.3); }
+        .day-highlight { font-size: 16px; font-style: italic; color: #8b4513; border-left: 3px solid #d4a574; padding-left: 10px; }
+
+        .toggle-btn {
+            font-size: 32px;
+            color: #8b4513;
+            cursor: pointer;
+            user-select: none;
+            transition: all 0.3s;
+            filter: drop-shadow(1px 1px 1px rgba(0,0,0,0.2));
+        }
+        .toggle-btn:hover { transform: scale(1.25); color: #d4a574; }
+
+        .day-brief {
+            background: linear-gradient(135deg, rgba(212,165,116,0.2) 0%, rgba(139,69,19,0.1) 100%);
+            padding: 18px;
+            border-left: 5px solid #8b4513;
+            border-top: 2px dashed #d4a574;
+            border-bottom: 2px dashed #d4a574;
+            margin: 20px 0;
+            font-size: 16px;
+            line-height: 1.7;
+            color: #1a0f0a;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .expanded-content {
+            border-top: 3px solid #8b4513;
+            padding-top: 25px;
+            margin-top: 25px;
+        }
+
+        .section-title {
+            font-family: 'Cinzel', serif;
+            font-size: 20px;
+            color: #8b4513;
+            font-weight: bold;
+            margin: 25px 0 15px 0;
+            padding-bottom: 10px;
+            border-bottom: 2px dotted #d4a574;
+            text-shadow: 1px 1px 1px rgba(212,165,116,0.4);
+            text-align: center;
+        }
+
+        .map-container {
+            border: 4px solid #8b4513;
+            border-radius: 2px;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.3);
+            margin: 20px 0;
+            background: linear-gradient(135deg, #e8f4f8 0%, #d0e8f0 100%);
+            position: relative;
+        }
+        .map-container > div { width: 100%; height: 350px; }
+
+        .map-container-vertical { max-width: 520px; margin: 0 auto; }
+        .map-container-vertical > div { width: 100%; height: 720px; }
+
+        .hotel-info {
+            background: linear-gradient(135deg, rgba(139,69,19,0.15) 0%, rgba(212,165,116,0.1) 100%);
+            padding: 15px;
+            border-left: 5px solid #8b4513;
+            border-top: 2px dotted #d4a574;
+            margin: 12px 0;
+            border-radius: 2px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .hotel-name { font-weight: bold; color: #8b4513; font-size: 18px; text-shadow: 1px 1px 1px rgba(212,165,116,0.4); }
+        .hotel-details { font-size: 14px; color: #555; margin-top: 6px; font-style: italic; }
+
+        /* Guide cards (Things to Do / Visit / Eat) */
+        .guide-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+            margin: 12px 0;
+        }
+
+        .guide-card {
+            background: linear-gradient(135deg, rgba(250,246,240,0.92) 0%, rgba(245,240,232,0.88) 100%);
+            border: 2px solid #d4a574;
+            border-left: 5px solid #8b4513;
+            padding: 14px 16px;
+            border-radius: 2px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+        }
+
+        .guide-head {
+            display: flex;
+            align-items: baseline;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 6px;
+        }
+
+        .guide-name {
+            font-family: 'Cinzel', serif;
+            font-size: 17px;
+            font-weight: bold;
+            color: #8b4513;
+        }
+
+        .guide-type {
+            font-size: 11px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 3px 9px;
+            border-radius: 12px;
+            background: #8b4513;
+            color: #ffd700;
+        }
+
+        .guide-type.restaurant { background: #7c3e15; }
+        .guide-type.pub { background: #3f2417; }
+        .guide-type.museum { background: #4f6b2a; }
+        .guide-type.viewpoint { background: #2563eb; }
+        .guide-type.walk { background: #15803d; }
+        .guide-type.ancient { background: #6b4a1d; }
+        .guide-type.quirky { background: #9a3412; }
+        .guide-type.shop { background: #9d4edd; }
+        .guide-type.cafe { background: #d97706; }
+        .guide-type.site { background: #6b3410; }
+
+        .guide-desc { color: #1a0f0a; font-size: 14px; line-height: 1.5; margin-bottom: 6px; }
+        .guide-tip {
+            font-size: 13px;
+            color: #555;
+            font-style: italic;
+            border-top: 1px dashed rgba(139,69,19,0.25);
+            padding-top: 6px;
+        }
+        .guide-tip strong { color: #8b4513; font-style: normal; }
+
+        .fun-fact {
+            background: linear-gradient(135deg, rgba(255,215,0,0.25) 0%, rgba(212,165,116,0.15) 100%);
+            border: 2px solid #8b4513;
+            border-radius: 2px;
+            padding: 16px 18px;
+            margin: 12px 0;
+            font-size: 15px;
+            line-height: 1.6;
+            color: #1a0f0a;
+            position: relative;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        .fun-fact::before {
+            content: '\2728';
+            position: absolute;
+            top: -12px; left: 18px;
+            background: #faf6f0;
+            padding: 2px 8px;
+            border: 2px solid #8b4513;
+            border-radius: 12px;
+            font-size: 14px;
+        }
+
+        .historical-note {
+            background: linear-gradient(135deg, rgba(139,69,19,0.22) 0%, rgba(212,165,116,0.15) 100%);
+            padding: 18px;
+            border-left: 5px solid #8b4513;
+            margin: 15px 0;
+            border-radius: 2px;
+            font-size: 14px;
+            line-height: 1.7;
+            color: #333;
+            font-style: italic;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        /* Articles list */
+        .articles-list {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+        }
+
+        .article-card {
+            background: linear-gradient(135deg, rgba(250,246,240,0.92) 0%, rgba(245,240,232,0.88) 100%);
+            border: 2px solid #d4a574;
+            padding: 12px 14px;
+            border-radius: 2px;
+            transition: all 0.2s;
+        }
+        .article-card:hover {
+            border-color: #8b4513;
+            transform: translateX(3px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.12);
+        }
+
+        .article-card a {
+            color: #8b4513;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 15px;
+            font-family: 'Cinzel', serif;
+        }
+        .article-card a:hover { color: #6b3410; text-decoration: underline; }
+
+        .article-source {
+            display: inline-block;
+            font-size: 11px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #ffd700;
+            background: #8b4513;
+            padding: 2px 8px;
+            border-radius: 10px;
+            margin-left: 8px;
+            vertical-align: middle;
+        }
+
+        .article-desc {
+            color: #555;
+            font-size: 13px;
+            font-style: italic;
+            margin-top: 4px;
+        }
+
+        /* Calendar card with Ireland postcard as background */
+        .calendar-day-card {
+            background:
+                linear-gradient(135deg, rgba(250,246,240,0.82) 0%, rgba(245,240,232,0.78) 100%),
+                url('Ireland postcard.png') center center / cover no-repeat;
+            backdrop-filter: blur(2px);
+            border: 3px solid #8b4513;
+            border-radius: 2px;
+            box-shadow: 0 12px 25px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.6);
+            position: relative;
+            overflow: visible;
+            margin-bottom: 30px;
+        }
+        .calendar-day-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, #8b4513 0%, #d4a574 25%, #8b4513 50%, #d4a574 75%, #8b4513 100%);
+        }
+
+        /* Route map card with Ireland Map as background */
+        .route-day-card {
+            background:
+                linear-gradient(135deg, rgba(250,246,240,0.78) 0%, rgba(245,240,232,0.74) 100%),
+                url('Ireland Map.png') center center / contain no-repeat,
+                linear-gradient(135deg, rgba(250,246,240,0.95) 0%, rgba(245,240,232,0.93) 100%);
+            backdrop-filter: blur(2px);
+        }
+        .route-day-card .day-card-content {
+            background:
+                repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(139,69,19,0.02) 2px, rgba(139,69,19,0.02) 4px),
+                linear-gradient(135deg, rgba(250,246,240,0.55) 0%, rgba(245,240,232,0.5) 50%, rgba(250,246,240,0.55) 100%);
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 8px;
+            padding: 25px;
+        }
+
+        .calendar-header {
+            font-family: 'Cinzel', serif;
+            font-weight: bold;
+            text-align: center;
+            padding: 12px 5px;
+            color: #8b4513;
+            font-size: 14px;
+            background: linear-gradient(135deg, rgba(250,246,240,0.92) 0%, rgba(240,232,220,0.85) 100%);
+            border: 2px solid #d4a574;
+            border-radius: 2px;
+            text-shadow: 1px 1px 1px rgba(212,165,116,0.5);
+        }
+
+        .calendar-cell {
+            aspect-ratio: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding-top: 6px;
+            border: 2px solid #d4a574;
+            background: linear-gradient(135deg, rgba(250,246,240,0.9) 0%, rgba(245,240,232,0.85) 100%);
+            border-radius: 2px;
+            font-size: 16px;
+            font-weight: bold;
+            color: #1a0f0a;
+            position: relative;
+            transition: all 0.3s;
+            cursor: default;
+            box-shadow: inset 0 1px 2px rgba(255,255,255,0.3);
+            overflow: hidden;
+        }
+        .calendar-cell:hover {
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15), inset 0 1px 2px rgba(255,255,255,0.3);
+            transform: translateY(-2px);
+        }
+        .calendar-cell .cell-num { font-size: 18px; line-height: 1; }
+        .calendar-cell .cell-loc {
+            font-family: 'Cinzel', serif;
+            font-size: 9px;
+            font-weight: bold;
+            color: #8b4513;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 4px;
+            text-align: center;
+            line-height: 1.1;
+            padding: 0 2px;
+        }
+        .calendar-cell.trip-day {
+            border: 3px solid #8b4513;
+            box-shadow: 0 8px 16px rgba(139,69,19,0.4), inset 0 1px 0 rgba(255,255,255,0.7);
+            font-weight: bold;
+        }
+        .calendar-cell.trip-day::before {
+            content: '\2605';
+            position: absolute;
+            top: -2px; right: 4px;
+            font-size: 12px;
+            color: #ffd700;
+            text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
+        }
+        .calendar-cell.empty { background: transparent; border: none; cursor: default; box-shadow: none; }
+
+        .calendar-month-label {
+            font-family: 'Cinzel', serif;
+            font-size: 22px;
+            color: #8b4513;
+            text-align: center;
+            font-weight: bold;
+            padding: 20px 0 10px 0;
+            text-shadow: 1px 1px 2px rgba(255,255,255,0.5);
+        }
+
+        .nav-button {
+            font-family: 'Cinzel', serif;
+            font-weight: bold;
+            padding: 14px 28px;
+            border: 3px solid #8b4513;
+            background: linear-gradient(135deg, #d4a574 0%, #c89860 100%);
+            color: white;
+            cursor: pointer;
+            border-radius: 2px;
+            transition: all 0.3s;
+            font-size: 16px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+        .nav-button:hover {
+            background: linear-gradient(135deg, #c89860 0%, #b8884a 100%);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+        }
+        .nav-button.active {
+            background: linear-gradient(135deg, #8b4513 0%, #6b3410 100%);
+            color: #ffd700;
+            box-shadow: 0 8px 20px rgba(139,69,19,0.5), inset 0 2px 5px rgba(0,0,0,0.3);
+        }
+
+        .ornamental-divider {
+            text-align: center;
+            font-size: 22px;
+            color: #8b4513;
+            margin: 25px 0;
+            letter-spacing: 15px;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px rgba(212,165,116,0.5);
+        }
+
+        h1 {
+            font-family: 'Cinzel', serif;
+            color: #8b4513;
+            text-shadow: 3px 3px 6px rgba(212,165,116,0.6);
+            letter-spacing: 2px;
+        }
+        .gold-text { color: #8b4513; text-shadow: 1px 1px 2px rgba(212,165,116,0.6); }
+
+        .footer {
+            text-align: center;
+            padding: 40px;
+            border-top: 4px double #8b4513;
+            margin-top: 50px;
+            font-style: italic;
+            color: #8b4513;
+            background: linear-gradient(135deg, rgba(212,165,116,0.3) 0%, rgba(139,69,19,0.18) 100%);
+        }
+
+        .tab-nav { display: flex; gap: 15px; flex-wrap: wrap; justify-content: center; margin-bottom: 40px; }
+
+        .route-summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
+            margin: 25px 0;
+        }
+        .route-card {
+            background: linear-gradient(135deg, rgba(212,165,116,0.3) 0%, rgba(139,69,19,0.18) 100%);
+            border: 3px solid #8b4513;
+            padding: 20px;
+            border-radius: 2px;
+            text-align: center;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+            transition: all 0.3s;
+        }
+        .route-card:hover { transform: translateY(-5px); box-shadow: 0 12px 25px rgba(0,0,0,0.25); }
+        .route-card-location { font-family: 'Cinzel', serif; font-size: 22px; font-weight: bold; color: #8b4513; margin-bottom: 8px; text-shadow: 1px 1px 2px rgba(212,165,116,0.4); }
+        .route-card-days { font-size: 14px; color: #666; margin-bottom: 8px; font-weight: bold; }
+        .route-card-desc { font-size: 14px; color: #1a0f0a; line-height: 1.5; }
+
+        .leaflet-container { background: linear-gradient(135deg, #e8f4f8 0%, #d0e8f0 100%) !important; }
+        .leaflet-popup-content-wrapper { background: linear-gradient(135deg, #f9f3ea 0%, #f0e8dc 100%); border: 2px solid #8b4513; }
+        .leaflet-popup-tip { background: #f0e8dc; }
+
+        .route-marker { background: transparent !important; border: none !important; }
+        .route-marker-inner {
+            width: 40px; height: 40px;
+            border-radius: 50%;
+            border: 3px solid #ffffff;
+            display: flex; align-items: center; justify-content: center;
+            font-family: 'Cinzel', serif; font-weight: bold; color: #ffffff; font-size: 13px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+
+        .route-legend {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 12px;
+            margin-top: 20px;
+            padding: 20px;
+            background: linear-gradient(135deg, rgba(250,246,240,0.9) 0%, rgba(245,240,232,0.85) 100%);
+            border: 2px solid #8b4513;
+            border-radius: 2px;
+        }
+        .legend-item { display: flex; align-items: center; gap: 10px; font-size: 14px; color: #1a0f0a; }
+        .legend-swatch { width: 24px; height: 24px; border-radius: 50%; border: 2px solid #ffffff; box-shadow: 0 2px 4px rgba(0,0,0,0.3); flex-shrink: 0; }
+        .legend-label { font-family: 'Cinzel', serif; font-weight: bold; color: #8b4513; }
+        .legend-days { color: #666; font-size: 12px; font-style: italic; }
+
+        /* Quote cards */
+        .quotes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            padding: 20px 0;
+        }
+        .quote-card {
+            background: linear-gradient(135deg, rgba(250,246,240,0.95) 0%, rgba(245,240,232,0.92) 100%);
+            border: 3px solid #8b4513;
+            border-radius: 2px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+            position: relative;
+            transition: all 0.3s;
+        }
+        .quote-card:hover { transform: translateY(-5px); box-shadow: 0 14px 30px rgba(0,0,0,0.35); }
+        .quote-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #8b4513 0%, #d4a574 50%, #8b4513 100%);
+        }
+        .quote-portrait {
+            width: 140px; height: 140px;
+            border-radius: 50%;
+            margin: 0 auto 18px auto;
+            border: 4px solid #8b4513;
+            box-shadow: 0 6px 14px rgba(0,0,0,0.3);
+            overflow: hidden;
+            background: #f0e8dc;
+        }
+        .quote-portrait img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .quote-text {
+            font-family: 'Crimson Text', serif;
+            font-size: 16px;
+            font-style: italic;
+            color: #1a0f0a;
+            line-height: 1.6;
+            margin-bottom: 18px;
+            position: relative;
+            padding: 0 10px;
+        }
+        .quote-text::before {
+            content: '\201C';
+            font-size: 50px;
+            color: #d4a574;
+            position: absolute;
+            top: -15px; left: -5px;
+            line-height: 1;
+            font-family: Georgia, serif;
+        }
+        .quote-author { font-family: 'Cinzel', serif; font-weight: bold; color: #8b4513; font-size: 17px; letter-spacing: 1px; text-shadow: 1px 1px 2px rgba(212,165,116,0.4); }
+        .quote-years { font-size: 12px; color: #888; font-style: italic; margin-top: 4px; }
+
+        /* Culture tab: music, books, media */
+        .culture-subtitle {
+            font-family: 'Cinzel', serif;
+            font-size: 16px;
+            color: #8b4513;
+            margin: 12px 0 8px 0;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        .album-grid, .artist-grid, .book-grid, .media-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 220px));
+            gap: 14px;
+            margin: 12px auto 28px auto;
+            justify-content: center;
+        }
+
+        .album-card, .artist-card, .book-card, .media-card {
+            background: linear-gradient(135deg, rgba(250,246,240,0.92) 0%, rgba(245,240,232,0.88) 100%);
+            border: 2px solid #d4a574;
+            border-left: 5px solid #8b4513;
+            padding: 14px 16px;
+            border-radius: 2px;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+            background-size: cover;
+            background-position: center center;
+            background-repeat: no-repeat;
+            min-height: 190px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            position: relative;
+            text-align: center;
+        }
+
+        .album-card .album-year,
+        .artist-card .artist-genre,
+        .book-card .book-when {
+            align-self: center;
+        }
+
+        /* Text inside image-backed cards stays legible via stronger shadow */
+        .album-card.has-image, .artist-card.has-image {
+            color: #1a0f0a;
+        }
+        .album-card.has-image .album-title,
+        .artist-card.has-image .artist-name {
+            text-shadow: 0 1px 2px rgba(255,255,255,0.8), 0 2px 6px rgba(255,255,255,0.6);
+        }
+
+        .album-title, .artist-name, .book-title, .media-name {
+            font-family: 'Cinzel', serif;
+            font-weight: bold;
+            color: #8b4513;
+            font-size: 16px;
+            margin-bottom: 4px;
+        }
+        .album-artist, .artist-origin, .book-author, .media-desc {
+            font-size: 13px;
+            color: #666;
+            font-style: italic;
+            margin-bottom: 6px;
+        }
+        .album-year, .artist-genre, .book-when {
+            display: inline-block;
+            font-size: 11px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 2px 8px;
+            background: #8b4513;
+            color: #ffd700;
+            border-radius: 10px;
+            margin-right: 6px;
+        }
+        .book-when.before { background: #2563eb; }
+        .book-when.during { background: #15803d; }
+        .book-when.after { background: #7c3aed; }
+
+        .album-note, .artist-note, .book-note {
+            font-size: 14px;
+            color: #1a0f0a;
+            line-height: 1.5;
+            margin-top: 6px;
+        }
+        .artist-best {
+            font-size: 13px;
+            color: #8b4513;
+            margin-top: 6px;
+            font-weight: bold;
+        }
+        .artist-best strong { color: #1a0f0a; }
+
+        .media-card a {
+            color: #8b4513;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .media-card a:hover { text-decoration: underline; }
+
+        .instrument-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 10px;
+            margin: 10px 0;
+        }
+        .instrument-pill {
+            background: linear-gradient(135deg, rgba(139,69,19,0.15) 0%, rgba(212,165,116,0.08) 100%);
+            border: 2px solid #d4a574;
+            padding: 10px 14px;
+            border-radius: 2px;
+        }
+        .instrument-pill strong { color: #8b4513; font-family: 'Cinzel', serif; }
+        .instrument-pill span { font-size: 12px; color: #555; font-style: italic; display: block; margin-top: 3px; }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        const IrelandDashboard = () => {
+            const [activeTab, setActiveTab] = useState('home');
+            const [expandedDay, setExpandedDay] = useState(null);
+            const [checkedItems, setCheckedItems] = useState({});
+            const [mapsInitialized, setMapsInitialized] = useState({});
+
+            const tripDaysList = [
+                {
+                    date: 'May 30',
+                    location: 'Dublin',
+                    highlight: 'Arrival Day',
+                    backgroundImage: 'Dublin.png',
+                    briefing: 'Arrive in Dublin and settle into your hotel in the literary heart of Ireland. Rest from travel, stroll the neighborhood, and ease into the rhythm of the city with a quiet evening meal.',
+                    coordinates: { lat: 53.3438, lng: -6.2546 },
+                    hotel: 'The Samuel Hotel',
+                    hotelDetails: '4-star, central location, accessible rooms with grab bars. €150–220/night.',
+                    guide: [
+                        { name: 'The Winding Stair', type: 'restaurant', desc: 'Much-loved bookshop-restaurant on the north quays. Modern Irish cooking with River Liffey views.', tip: 'Book a window table; the sunset light on the Ha\'penny Bridge is lovely.' },
+                        { name: "Ha\'penny Bridge", type: 'walk', desc: 'Dublin\'s iconic 1816 cast-iron pedestrian bridge across the Liffey — a 3-minute walk from the hotel.', tip: 'Best at dusk when the lamps flicker on.' },
+                        { name: 'Temple Bar (neighborhood)', type: 'walk', desc: 'Cobbled lanes, pubs, galleries, and buskers — the beating heart of touristy-but-fun Dublin.', tip: 'Skip the Temple Bar Pub itself (overpriced); wander into The Palace Bar or The Stag\'s Head instead.' },
+                        { name: 'The Cobblestone', type: 'pub', desc: 'In Smithfield — a working musicians\' pub with traditional sessions every night. No-nonsense and beloved.', tip: 'Arrive by 7pm for seats; sessions start ~9pm. Silence when the music plays.' },
+                        { name: 'Bewley\'s Café (Grafton St)', type: 'cafe', desc: 'Historic 1927 café with stained glass by Harry Clarke — Joyce and Beckett drank here.', tip: 'Great for a late snack or coffee before bed.' }
+                    ],
+                    funFact: 'Dublin has been a UNESCO City of Literature since 2010 — only the fourth city in the world to earn the title. Four Dublin-connected writers have won the Nobel Prize in Literature: Yeats, Shaw, Beckett, and Heaney.',
+                    historical: 'Dublin was founded by Vikings around 841 AD as a slave-trading settlement along the Liffey. The name comes from "Dubh Linn" ("black pool"). For eight centuries it was the second city of the British Empire; in 1922 it became the capital of the Irish Free State.',
+                    articles: [
+                        { title: 'Best Pubs in Dublin', source: 'Time Out', url: 'https://www.timeout.com/dublin/bars-and-pubs/best-pubs-in-dublin', desc: 'Time Out Dublin\'s curated list of the city\'s best pubs — perfect for an arrival-night pint.' },
+                        { title: '18 Fabulous Free Things to Do in Dublin', source: 'Lonely Planet', url: 'https://www.lonelyplanet.com/articles/top-free-things-to-do-in-dublin', desc: 'Museums, parks, and walks that don\'t cost a penny.' },
+                        { title: "If You Were My Friend, I\'d Take You to These Local Spots in Dublin", source: 'Lonely Planet', url: 'https://getlostwithlonelyplanet.substack.com/p/if-you-were-my-friend-id-take-you-4dd', desc: "Sasha Brady\'s real Dubliner weekend list — off the tourist trail." },
+                        { title: 'Totally Dublin', source: 'Totally Dublin', url: 'https://www.totallydublin.ie/', desc: "Dublin listings and culture — what\'s on this week." }
+                    ]
+                },
+                {
+                    date: 'May 31',
+                    location: 'Dublin',
+                    highlight: 'Literary Dublin & Trinity',
+                    backgroundImage: 'Dublin 2.png',
+                    briefing: 'Step into the world of Joyce, Wilde, and Yeats. Tour Trinity College, see the Book of Kells, wander through the Long Room, and end the day atop the Guinness Storehouse with 360° views of Dublin.',
+                    coordinates: { lat: 53.3438, lng: -6.2546 },
+                    hotel: 'The Samuel Hotel',
+                    hotelDetails: '4-star, central location, accessible rooms. Continue stay.',
+                    guide: [
+                        { name: 'Trinity College & Book of Kells', type: 'museum', desc: 'Ireland\'s oldest university (1592) houses the 9th-century illuminated Gospel manuscript and the staggering Long Room library.', tip: 'Book timed-entry tickets online in advance — €18.50 for Fast Track. Go first thing (8:30am) to beat coach tours.' },
+                        { name: 'National Museum of Ireland — Archaeology', type: 'museum', desc: 'Bog bodies, the Ardagh Chalice, Viking Dublin hoards. One of Europe\'s great archaeological collections — and free.', tip: 'Free entry, closed Mondays. Allow 2 hours.' },
+                        { name: 'National Gallery of Ireland', type: 'museum', desc: 'Caravaggio\'s "The Taking of Christ," Vermeer, and the largest Jack B. Yeats collection in the world.', tip: 'Free entry. The Vermeer ("Woman Writing a Letter") is tucked in the Dutch room.' },
+                        { name: 'Guinness Storehouse', type: 'site', desc: '7-floor tour inside a 1904 fermentation plant. Ends with a pint in the Gravity Bar under a 360° glass dome.', tip: 'Book online for a time slot; weekends sell out. The Connoisseur Bar upstairs is worth the upgrade.' },
+                        { name: 'Chapter One', type: 'restaurant', desc: 'Two-Michelin-star refined Irish cooking in the basement of the Dublin Writers Museum. A pilgrimage-level dinner.', tip: 'Book 6+ weeks ahead. The tasting menu is the move.' },
+                        { name: 'Bewley\'s Café (Grafton St)', type: 'cafe', desc: 'Historic 1927 café with Harry Clarke stained glass. Sit upstairs for the best light.', tip: 'Good for a long lunch; their cherry bun is the classic order.' },
+                        { name: 'The Palace Bar', type: 'pub', desc: 'Victorian literary pub once frequented by Patrick Kavanagh and Brendan Behan. Still feels like 1890.', tip: 'The upstairs Whiskey Palace has 200+ Irish whiskeys and far fewer tourists.' },
+                        { name: 'Marsh\'s Library', type: 'quirky', desc: 'Ireland\'s first public library (1707) — wooden cages where readers were locked in with rare books. Jonathan Swift was a regular.', tip: 'Only a 10-minute walk from St Patrick\'s Cathedral. €5 entry.' }
+                    ],
+                    funFact: 'The Book of Kells was stolen in 1007 from the monastery at Kells and found three months later in a sod, buried under turf — its gold cover ripped off. It\'s been safe at Trinity since 1661.',
+                    historical: 'Trinity College was founded by Elizabeth I in 1592 as a Protestant bulwark in Catholic Ireland. For 200+ years Catholics were barred from admission. The Book of Kells was created c. 800 AD by Columban monks, probably on the Scottish island of Iona, and moved to Kells after Viking raids.',
+                    articles: [
+                        { title: 'Uncovering the Mysteries of the Book of Kells', source: 'Trinity College Dublin', url: 'https://www.tcd.ie/news_events/articles/2024/uncovering-the-mysteries-of-the-book-of-kells/', desc: 'Toxic pigments, hidden symmetries — a single 80mm panel holds 3 lions, 4 humans, 4 snakes, 13 birds.' },
+                        { title: "Behind the Scenes of Trinity College\'s Old Library Redevelopment", source: 'Smithsonian Magazine', url: 'https://www.smithsonianmag.com/history/go-behind-the-scenes-at-an-iconic-irish-library-as-staff-move-700000-historical-treasures-into-storage-180987743/', desc: 'What happens when you have to move 700,000 historical objects into storage.' },
+                        { title: 'Book of Kells — Exploring Pictish Origins', source: 'Trinity College Dublin', url: 'https://www.tcd.ie/news_events/articles/2025/book-of-kells-exploring-the-evidence-that-points-to-pictish-origins-/', desc: "Joyce called it \u201cthe most purely Irish thing we have\u201d — but its origins may be Scottish." },
+                        { title: 'Book of Kells Experience', source: 'History Ireland', url: 'https://historyireland.com/book-of-kells-experiencetrinity-college-dublin/', desc: "Specialist Irish history magazine on what the new experience means for the manuscript\'s future." },
+                        { title: 'Book of Kells Digital Collection', source: 'Trinity College', url: 'https://digitalcollections.tcd.ie/collections/ks65hc20t', desc: 'Browse the actual manuscript pages online — extraordinary.' }
+                    ]
+                },
+                {
+                    date: 'June 1',
+                    location: 'Dublin \u2192 Kenmare, County Kerry',
+                    highlight: 'Pam Arrives \u2014 Drive to Kerry',
+                    backgroundImage: 'Killarney.png',
+                    briefing: 'Pam joins the group today. Collect the rental car and drive south through the midlands into Kerry — a 4.5-hour journey ending in Kenmare, a heritage town nestled between mountains and the sea. Overnight at the beloved Brook Lane Hotel.',
+                    coordinates: { lat: 51.8789, lng: -9.5830 },
+                    hotel: 'Brook Lane Hotel — The Studio',
+                    hotelDetails: 'Kenmare, County Kerry. Charming boutique hotel on the edge of town with a warm bar and excellent breakfast. Overnight in The Studio suite.',
+                    guide: [
+                        { name: 'Cahir Castle (en route)', type: 'ancient', desc: 'One of Ireland\'s largest and best-preserved castles (13th c.), on an island in the River Suir. Worth a 45-min stop just off the M8.', tip: '€5 entry; Barry Lyndon was filmed here.' },
+                        { name: 'Kenmare Stone Circle', type: 'ancient', desc: 'Bronze Age (2200–500 BC) circle of 15 stones — one of the largest in southwest Ireland, 5 min from the town square.', tip: 'Free; enter through the small gate off Market Street.' },
+                        { name: 'Kenmare Heritage Centre', type: 'museum', desc: 'Tiny museum covering the town\'s planned 17th-century origins and its 19th-century lace-making tradition.', tip: 'Free; 30 minutes is plenty.' },
+                        { name: 'Mulcahy\'s', type: 'restaurant', desc: 'Kenmare\'s hidden fine-dining gem — Bruce Mulcahy\'s creative Irish-Asian cooking has a loyal cult following.', tip: 'Book ahead. Ask for the tasting menu.' },
+                        { name: 'Packie\'s', type: 'restaurant', desc: 'Cozy, rustic bistro on Henry Street — seafood chowder, lamb, proper comfort food in a candlelit room.', tip: 'Go early (6:30pm) to snag a table without reservation.' },
+                        { name: 'Crowley\'s Bar', type: 'pub', desc: 'A proper local on Henry Street — traditional music sessions several nights a week, very little tourist polish.', tip: 'Ask the bartender what nights the session is on.' },
+                        { name: 'The Purple Heather', type: 'cafe', desc: 'Charming daytime café-bistro on Henry Street — excellent smoked salmon on brown bread.', tip: 'Perfect for a light lunch.' }
+                    ],
+                    funFact: 'Kenmare was one of Ireland\'s first planned towns, laid out in a unique X-shape by the Marquess of Lansdowne in the 1770s so three main streets would radiate from a central triangle. You can still walk the exact pattern today.',
+                    historical: 'Kenmare (An Neidín, "the little nest") was founded in 1670 by Sir William Petty — the same economist who conducted the Down Survey of Ireland. The town prospered on iron smelting and later on lace-making, a craft introduced by the Poor Clare nuns in 1861 to help tenants after the Famine.',
+                    articles: [
+                        { title: 'Kenmare, County Kerry', source: 'Lonely Planet', url: 'https://www.lonelyplanet.com/ireland/county-kerry/kenmare', desc: 'Editor\u2019s destination guide to the town and its setting.' },
+                        { title: 'The Wild Atlantic Way: A Complete Road Trip Guide', source: 'The Guardian', url: 'https://www.theguardian.com/travel/2015/may/02/wild-atlantic-way-ireland-road-trip', desc: 'The Guardian\u2019s long-form guide to the coastal route Kenmare sits on.' },
+                        { title: 'Irish Examiner', source: 'Irish Examiner', url: 'https://www.irishexaminer.com/', desc: 'Cork-based daily with the best local coverage of Kerry and the southwest.' }
+                    ]
+                },
+                {
+                    date: 'June 2',
+                    location: 'Ring of Kerry \u2192 Dingle',
+                    highlight: 'Wild Atlantic Way & Skellig Ring',
+                    backgroundImage: 'Ring of Kerry.png',
+                    briefing: 'Drive the iconic Ring of Kerry — one of the world\'s great coastal routes. Detour onto the wilder Skellig Ring with its views across to Skellig Michael, stop at Skelligs Chocolate Factory, and end the day in Dingle town with a pub music session.',
+                    coordinates: { lat: 52.1408, lng: -10.2677 },
+                    hotel: 'Dingle Skellig Hotel',
+                    hotelDetails: 'Dingle town. Beautifully situated on Dingle Bay, spa and pool. Stunning views.',
+                    guide: [
+                        { name: 'Moll\'s Gap & Ladies\' View', type: 'viewpoint', desc: 'Two of Kerry\'s most photographed viewpoints — mountain passes looking back over the Killarney lakes.', tip: 'Avoid Avoca café crowd by arriving before 10am or after 3pm.' },
+                        { name: 'Staigue Stone Fort', type: 'ancient', desc: 'One of the finest stone ringforts in Ireland, c. 300-400 AD, in a dramatic mountain amphitheater above Sneem.', tip: 'Free; €1 honesty-box for the farm access road.' },
+                        { name: 'Skellig Ring (detour)', type: 'walk', desc: 'A 17 km spur off the main Ring of Kerry — narrow, spectacular, much less trafficked. Views to Skellig Michael and Little Skellig.', tip: 'Drive it anti-clockwise (Waterville → Portmagee) for the best ocean-facing views.' },
+                        { name: 'Skelligs Chocolate Factory', type: 'cafe', desc: 'Artisan chocolatier on the Skellig Ring with a café and free viewing windows into the kitchen.', tip: 'Try the sea-salted caramels. Good coffee.' },
+                        { name: 'Kerry Cliffs', type: 'viewpoint', desc: '300-metre Atlantic cliffs near Portmagee — genuinely as dramatic as Moher, with a tenth of the crowds.', tip: '€5 parking; stay for sunset if you can.' },
+                        { name: 'Murphy\'s Ice Cream (Dingle)', type: 'quirky', desc: 'Famous Dingle ice cream made with milk from Kerry cows — flavors like sea salt, Dingle gin, brown bread.', tip: 'The Dingle sea salt is the one.' },
+                        { name: 'Out of the Blue (Dingle)', type: 'restaurant', desc: 'Tiny blue shack on the harbour — no menu, only whatever the boats landed that morning. Book-in-person only.', tip: 'Call same-day; they don\'t take online bookings. Closes if no fish arrives.' },
+                        { name: 'Dick Mack\'s (Dingle)', type: 'pub', desc: 'Legendary half-pub, half-cobbler-shop on Green Street. Now has its own whiskey distillery out back.', tip: 'Ask for the whiskey flight. Celebrities who\'ve drunk here are literally named on floor tiles outside.' }
+                    ],
+                    funFact: 'Skellig Michael, visible from the Skellig Ring, played Luke Skywalker\'s planet Ahch-To in The Force Awakens and The Last Jedi. The monks who climbed its 618 stone steps 1,400 years ago would be astonished.',
+                    historical: 'The Ring of Kerry follows ancient pilgrimage routes to Skellig Michael, a UNESCO World Heritage Site where monks lived in stone beehive huts from the 6th to the 12th centuries. So remote its isolation preserved it. Queen Victoria visited Ladies\' View in 1861; her ladies-in-waiting were so enraptured the viewpoint took their name.',
+                    articles: [
+                        { title: 'Driving the Ring of Kerry', source: 'Lonely Planet', url: 'https://www.lonelyplanet.com/articles/ring-of-kerry-road-trip', desc: 'Lonely Planet\u2019s road-trip guide to the full 179 km loop.' },
+                        { title: "Skellig Michael: Ireland\u2019s Extraordinary Island Monastery", source: 'The Guardian', url: 'https://www.theguardian.com/travel/2019/apr/07/skellig-michael-ireland-monastery-star-wars', desc: 'Star Wars + 6th-century monks + how to actually visit the island.' },
+                        { title: 'The Best Seafood Restaurants in Ireland', source: 'Time Out', url: 'https://www.timeout.com/ireland/restaurants/best-seafood-restaurants-ireland', desc: 'Dingle harbour is one of the best seafood stops in the country.' }
+                    ]
+                },
+                {
+                    date: 'June 3',
+                    location: 'Slea Head Drive \u2192 Ballyferriter',
+                    highlight: 'Dingle Peninsula & Blasket Islands',
+                    backgroundImage: 'Dingle.png',
+                    briefing: 'Drive leisurely along Slea Head Drive — one of the most stunning stretches of the Wild Atlantic Way. Visit the Blasket Centre, see Iron Age beehive huts, gaze out to the evacuated islands, and overnight in Ballyferriter, deep in Irish-speaking country.',
+                    coordinates: { lat: 52.1748, lng: -10.3886 },
+                    hotel: 'Ceann Sibéal Hotel',
+                    hotelDetails: 'Ballyferriter (Baile an Fheirtéaraigh), Dingle Peninsula. Located in the heart of the Irish-speaking Gaeltacht.',
+                    guide: [
+                        { name: 'Gallarus Oratory', type: 'ancient', desc: 'A perfectly preserved 6th–9th century dry-stone Christian oratory — not a drop of water has got in in 1,200 years.', tip: '€3 through the visitor centre, or wander around the outside for free.' },
+                        { name: 'Beehive Huts (Fahan)', type: 'ancient', desc: 'Cluster of Iron Age / early medieval clocháns — drystone domed houses right on Slea Head Drive.', tip: '€3 honesty box at the farm gate. Most atmospheric of the several groups.' },
+                        { name: 'Blasket Centre (Ionad an Bhlascaoid)', type: 'museum', desc: 'Extraordinary museum in Dún Chaoin about the evacuated Blasket islanders and their literary legacy.', tip: '€5. Allow 90 minutes. The film at the start is worth staying for.' },
+                        { name: 'Dunquin Pier (Céibh Dhún Chaoin)', type: 'viewpoint', desc: 'The zigzag concrete path down to the pier is one of Ireland\'s most-photographed views — straight out to the Blaskets.', tip: 'Park at the car park and walk down; don\'t try to drive it.' },
+                        { name: 'Cupán Séar (Dunquin)', type: 'cafe', desc: 'Wonderful little café at Dunquin Pier. Home-made brownies, hot soup, sea views.', tip: 'Brownies are the order. Often busy at midday.' },
+                        { name: 'Tigh Uí Chatháin (Ballyferriter)', type: 'pub', desc: 'Thatched pub in the village — Irish is the first language here. Low-key music and local conversation.', tip: 'Listen more than speak; a "Dia duit" and a smile go a long way.' },
+                        { name: 'Dunbeg Fort', type: 'ancient', desc: 'Promontory fort perched on a cliff, dating from the Iron Age. Spectacular setting, small interpretive centre.', tip: 'Currently partially closed after a cliff collapse — check status at the centre before walking out.' },
+                        { name: 'Riasc Monastic Site', type: 'ancient', desc: 'Ruined early-Christian monastery with a decorated pillar stone — a quiet alternative to busier sites.', tip: 'Free. 5 minutes from the main road; well signed.' }
+                    ],
+                    funFact: 'The Blasket Islanders produced, proportional to their population (never more than 175 souls), more great books than anywhere on earth. Peig Sayers dictated her autobiography because she couldn\'t write — it became required Irish-school reading and a national meme.',
+                    historical: 'The Blasket Islands were evacuated on November 17, 1953 after decades of population decline — the government could no longer guarantee winter supplies. Their hardship gave rise to a literary tradition (An tOileánach, Fiche Blian ag Fás, Peig) now celebrated worldwide. The surrounding Gaeltacht is one of the last strongholds of Irish as a daily living language.',
+                    articles: [
+                        { title: "The Last of the Blasket Evacuees: \u2018We Weren\u2019t Great Mixers on the Mainland\u2019", source: 'Irish Times', url: 'https://www.irishtimes.com/life-and-style/people/the-last-of-the-blasket-evacuees-we-weren-t-great-mixers-on-the-mainland-1.1831611', desc: 'Personal memoir from the last surviving member of the 1953 evacuation.' },
+                        { title: 'A Gathering on the Blaskets: An Islandman Returns', source: 'Irish Times', url: 'https://www.irishtimes.com/life-and-style/people/a-gathering-on-the-blaskets-an-islandman-returns-1.1400161', desc: '93-year-old islander recalls the evacuation and what was lost.' },
+                        { title: 'Lost in the Mists of Time', source: 'Irish Times', url: 'https://www.irishtimes.com/life-and-style/lost-in-the-mists-of-time-1.1151618', desc: 'Atmospheric travel essay walking the Great Blasket through cloud and rain.' },
+                        { title: 'The Great Blasket Island (archival video)', source: 'RTÉ Archives', url: 'https://www.rte.ie/archives/2018/1117/1010914-the-great-blasket-island/', desc: 'Ireland\u2019s national broadcaster archival documentary footage.' },
+                        { title: 'Slea Head Drive', source: 'Lonely Planet', url: 'https://www.lonelyplanet.com/articles/slea-head-drive', desc: 'The definitive guide to the most dramatic drive on the peninsula.' },
+                        { title: 'Where Irish Is Still Spoken: A Journey to the Gaeltacht', source: 'The Guardian', url: 'https://www.theguardian.com/travel/2017/nov/04/ireland-gaeltacht-irish-speaking-regions', desc: 'On the living Irish language in the western Gaeltacht regions.' }
+                    ]
+                },
+                {
+                    date: 'June 4',
+                    location: 'Ballyferriter \u2192 Doolin, County Clare',
+                    highlight: 'Cliffs of Moher at Sunset',
+                    backgroundImage: 'Doolin.png',
+                    briefing: 'Drive north from Kerry to Doolin, County Clare (about 4 hours with the Tarbert ferry). Visit the Cliffs of Moher in the evening — the sun doesn\'t set until 10:15 PM in June — and settle into Doolin, Ireland\'s unofficial capital of traditional music.',
+                    coordinates: { lat: 52.9904, lng: -9.3868 },
+                    hotel: "Hotel Doolin \u2014 Piper\'s Chair Self-Catering House",
+                    hotelDetails: "Doolin, County Clare. Fitz\'s Pub on site with nightly music sessions. McGann\'s (6 min walk) & McDermott\'s (7 min walk) also have nightly traditional music.",
+                    guide: [
+                        { name: 'Tarbert – Killimer Ferry', type: 'quirky', desc: 'Shannon estuary car ferry — cuts 137 km off the drive and is half the fun. 20-minute crossing.', tip: '€25 one-way. Sailings every 30 min, no reservation needed.' },
+                        { name: 'Cliffs of Moher (evening)', type: 'viewpoint', desc: '214 m sheer Atlantic cliffs stretching 14 km. Go at 7–9pm — crowds gone, golden light, puffins nesting May–July.', tip: 'Visitor centre closes at 9pm but cliffs are open after — bring a torch for the walk back. Parking €8.' },
+                        { name: 'The Burren', type: 'walk', desc: 'Moonscape of limestone pavement — 350 million years old. Orchids and Arctic plants grow side by side.', tip: 'Drive through R480 between Ballyvaughan and Killfenora. Caherconnell Stone Fort sits in the middle.' },
+                        { name: 'Poulnabrone Dolmen', type: 'ancient', desc: 'Iconic portal tomb in the Burren — 5,800 years old, older than the pyramids.', tip: 'Free, right off the R480. 10-minute stop.' },
+                        { name: 'Aillwee Cave', type: 'quirky', desc: 'Prehistoric cave system with underground river. The onsite Burren Birds of Prey Centre is a quirky add-on.', tip: '€18 for cave + birds combo. Book online.' },
+                        { name: "Fitz\'s Pub (Hotel Doolin)", type: 'pub', desc: 'On-site pub at the hotel. Traditional sessions nightly — easy walk-in from the rooms.', tip: 'Sessions usually 9pm; arrive by 8:30pm for a seat.' },
+                        { name: "McGann\'s Pub", type: 'pub', desc: 'One of Doolin\'s three famous session pubs. Small, lively, family-run since 1936.', tip: '6-minute walk from the hotel. Best pints around.' },
+                        { name: "Gus O\'Connor\'s Pub", type: 'pub', desc: 'The oldest of the Doolin three (1832). Home of the town\'s traditional music revival in the 1970s.', tip: 'Good food all day. Sessions start 9:30pm.' }
+                    ],
+                    funFact: 'The Cliffs of Moher appear as the "Cliffs of Insanity" in The Princess Bride and as a Horcrux location in Harry Potter and the Half-Blood Prince. Those puffins you\'re spotting nest in burrows up to a metre deep in the cliff-top turf.',
+                    historical: 'The Cliffs of Moher were formed about 320 million years ago from shale and sandstone at the mouth of an ancient river delta. O\'Brien\'s Tower at the midpoint was built in 1835 by Cornelius O\'Brien, a local landlord, mostly to impress female tourists. Doolin became a global pilgrimage site for Irish music in the 1970s when flutist Micho Russell was discovered by American folk fans.',
+                    articles: [
+                        { title: 'Cliffs of Moher — Official Site', source: 'cliffsofmoher.ie', url: 'https://www.cliffsofmoher.ie', desc: 'Best times to visit, webcam, and trail maps.' },
+                        { title: 'Doolin: The Home of Irish Traditional Music', source: 'Lonely Planet', url: 'https://www.lonelyplanet.com/ireland/county-clare/doolin', desc: 'Editor\u2019s guide to Doolin\u2019s music pubs, cliffs, and ferries.' },
+                        { title: "The Burren: Ireland\u2019s Lunar Landscape", source: 'Irish Times', url: 'https://www.irishtimes.com/life-and-style/travel/the-burren-ireland-s-lunar-landscape/', desc: 'Travel essay on the limestone pavement and its hidden plant life.' }
+                    ]
+                },
+                {
+                    date: 'June 5',
+                    location: 'Aran Islands Day Trip',
+                    highlight: 'Inisheer by Pony Cart',
+                    backgroundImage: 'Aran Islands.png',
+                    briefing: 'Ferry from Doolin to Inisheer, the smallest and most easterly of the Aran Islands — a 20-minute crossing. Explore by pony trap or bike, see the Plassey shipwreck, wander an ancient castle, and return for another evening of traditional music in Doolin.',
+                    coordinates: { lat: 53.06, lng: -9.51 },
+                    hotel: "Hotel Doolin \u2014 Piper\'s Chair Self-Catering House",
+                    hotelDetails: "Continue stay. Fitz\'s Pub on site, McGann\'s (6 min) & McDermott\'s (7 min) all have nightly sessions.",
+                    guide: [
+                        { name: 'Doolin Ferry to Inisheer', type: 'quirky', desc: 'Doolin Ferry Co. runs 20-minute crossings to Inisheer. Book same-day if the sea is flat; check the forecast.', tip: '€35 return. Crossings can be rough — sit at the back outside.' },
+                        { name: "O\'Brien\'s Castle (Caisleán Uí Bhriain)", type: 'ancient', desc: '14th-century tower-house high on the hill above the harbour — 360° views across the island and over to the Cliffs of Moher.', tip: 'Free. 20-minute walk up from the pier. Ruin open to the sky.' },
+                        { name: 'Plassey Shipwreck', type: 'quirky', desc: 'Rusting hull of the MV Plassey, beached during a 1960 storm. Featured in the opening credits of Father Ted.', tip: 'On the east side of the island, walkable or by pony trap.' },
+                        { name: 'Pony & Trap Tour', type: 'quirky', desc: 'Traditional jaunting car tour from the harbour — drivers narrate in English and Irish. About 1 hour.', tip: '€20 per head. Ask for Tomás or any of the regulars at the pier.' },
+                        { name: 'Cill Gobnait', type: 'ancient', desc: 'Ruined 10th-century church and holy well dedicated to St. Gobnait, patron saint of bees and healing.', tip: 'Quiet, atmospheric, free. Take the path from behind the island\'s pub.' },
+                        { name: 'Teach an Tae (Café)', type: 'cafe', desc: 'Tea house on the sand dunes — home-made scones, soup, smoked salmon. Thatched roof.', tip: 'Great lunch stop. Cash preferred.' },
+                        { name: 'Tigh Ned', type: 'pub', desc: 'The island\'s pub — you\'ll end up here. Often a spontaneous session goes on in the afternoon.', tip: 'If you miss the last ferry (unlikely but), Tigh Ned has rooms.' }
+                    ],
+                    funFact: 'The Aran Islands have been one of Ireland\'s oldest Gaeltacht strongholds for over a thousand years. The distinctive cabled Aran sweater — once thought to carry family patterns used to identify drowned fishermen — is actually a 20th-century tourist-marketing invention. They\'re still beautiful sweaters.',
+                    historical: 'The Aran Islands are where J. M. Synge came in 1898 on Yeats\'s advice to "go to the Aran Islands and find a life that has never been expressed in literature." His time there produced Riders to the Sea and The Playboy of the Western World. The islands remained almost entirely isolated until regular ferries began in the 1970s — which is why Gaeilge and traditional life endured so strongly here.',
+                    articles: [
+                        { title: 'The Aran Islands', source: 'Lonely Planet', url: 'https://www.lonelyplanet.com/ireland/the-aran-islands', desc: 'Editor-picked highlights across all three islands.' },
+                        { title: 'J.M. Synge and the Aran Islands', source: 'History Ireland', url: 'https://historyireland.com/synge-and-the-aran-islands/', desc: 'How Yeats sent Synge to the islands and it changed Irish literature forever.' },
+                        { title: 'Aran Islands', source: 'Atlas Obscura', url: 'https://www.atlasobscura.com/places/aran-islands', desc: 'Atlas Obscura on the islands\u2019 distinctive culture, stone walls, and forts.' }
+                    ]
+                },
+                {
+                    date: 'June 6',
+                    location: "Northern Ireland \u2014 Giant\'s Causeway",
+                    highlight: "Giant\'s Causeway & Bushmills",
+                    backgroundImage: 'Belfast.png',
+                    briefing: "Drive from Doolin up through the midlands and into Northern Ireland (about 5.5 hours). Explore UNESCO-listed Giant\'s Causeway — 60-million-year-old hexagonal basalt columns — and visit Bushmills Distillery, licensed to distill since 1608.",
+                    coordinates: { lat: 55.2413, lng: -6.3969 },
+                    hotel: 'Portrush Adelphi',
+                    hotelDetails: '4-star, coastal, panoramic ocean views over the Atlantic and the Skerries. €180–240/night.',
+                    guide: [
+                        { name: "Giant\'s Causeway", type: 'site', desc: '40,000 interlocking basalt columns formed by a Paleogene volcanic eruption. UNESCO since 1986.', tip: 'Visitor centre £15 (with audio); but the stones themselves are free — park and walk down.' },
+                        { name: 'Causeway Coastal Walk', type: 'walk', desc: 'Cliff-top path from the Causeway towards Port na Spaniagh — some of Ireland\'s most dramatic coastline.', tip: 'The Shepherd\'s Steps route (red trail) is the classic 2 km loop. Windproof layers essential.' },
+                        { name: "Carrick-a-Rede Rope Bridge", type: 'walk', desc: 'Swaying rope bridge 30 m above the sea, linking the mainland to a tiny fisherman\'s island.', tip: 'Book timed tickets online (£15) — sells out. Not suitable for vertigo.' },
+                        { name: 'Old Bushmills Distillery', type: 'site', desc: 'Licensed since 1608 — the oldest licensed whiskey distillery in the world. Tours end with a tasting.', tip: 'Book tours in advance (£15). The Distillery Reserve, only sold on-site, is the one to buy.' },
+                        { name: 'Dunluce Castle', type: 'ancient', desc: 'Dramatic cliff-top ruin that inspired C. S. Lewis\'s Cair Paravel. The kitchen literally fell into the sea in 1639.', tip: '£6. A quick stop; 30 minutes is plenty.' },
+                        { name: 'Dark Hedges (Bregagh Road)', type: 'quirky', desc: 'Beech-tree tunnel planted in the 18th century; Game of Thrones\' Kingsroad.', tip: 'Free. Go at dawn or dusk; midday is busy and underwhelming.' },
+                        { name: 'Bushmills Inn', type: 'restaurant', desc: '17th-century coaching inn with turf fires, stone floors, and one of the region\'s best dining rooms.', tip: 'Book dinner. The seafood chowder is legendary.' },
+                        { name: 'Babushka Kitchen Café (Portrush)', type: 'cafe', desc: 'Surf-shack café on the East Strand — great coffee, brunch, and a view of the Atlantic rollers.', tip: 'Brunch weekends gets busy by 11am.' }
+                    ],
+                    funFact: "Irish legend says the giant Fionn mac Cumhaill (Finn McCool) built the Causeway as a bridge to Scotland to fight the giant Benandonner. When Fionn saw how huge Benandonner was, his wife Oonagh disguised Fionn as a baby — Benandonner fled back to Scotland and ripped up the bridge behind him. Remarkably, there\'s a matching set of basalt columns at Fingal\'s Cave in Scotland.",
+                    historical: "The Causeway formed 50–60 million years ago when an intense volcanic eruption sent lava through a chalk bed; rapid cooling produced the hexagonal cracking pattern. It\'s been a tourist attraction since 1693 when Dublin academic Sir Richard Bulkeley wrote the first scientific paper on it. Bushmills Distillery received its royal license from King James I in 1608 — making every other whiskey distillery in the world younger.",
+                    articles: [
+                        { title: "How Giant\u2019s Causeway Formed Its Spectacular Array of Columns", source: 'Smithsonian Magazine', url: 'https://www.smithsonianmag.com/smart-news/researchers-reveal-how-giants-causeway-was-formed-180968806/', desc: 'Scientists recreated the formation in a lab — cooling between 1,544 and 1,634\u00B0F.' },
+                        { title: "My Favorite Place in Northern Ireland: Giant\u2019s Causeway", source: 'National Geographic', url: 'https://www.nationalgeographic.com/travel/article/my-favorite-place-in-ireland-giants-causeway', desc: "A personal essay \u2014 \u201cthe pictures don\u2019t prepare you.\u201d" },
+                        { title: "Giant\u2019s Causeway", source: 'Atlas Obscura', url: 'https://www.atlasobscura.com/places/giants-causeway', desc: 'Finn McCool legend plus practical visitor info.' },
+                        { title: "Tourists Are Stuffing Coins Into the Cracks of the Giant\u2019s Causeway", source: 'Smithsonian Magazine', url: 'https://www.smithsonianmag.com/smart-news/tourists-are-stuffing-coins-into-the-cracks-of-the-giants-causeway-damaging-the-iconic-site-in-northern-ireland-180986745/', desc: "Surprising and shareable \u2014 why it\u2019s causing real damage to the stones." },
+                        { title: 'Bushmills Distillery', source: 'bushmills.com', url: 'https://www.bushmills.com', desc: "The world\u2019s oldest licensed whiskey distillery \u2014 tour bookings and history." }
+                    ]
+                },
+                {
+                    date: 'June 7',
+                    location: 'Belfast',
+                    highlight: 'The Troubles & Titanic',
+                    backgroundImage: 'Belfast.png',
+                    briefing: 'A Black Taxi tour with guides who lived through the Troubles (1969–1998) — Falls Road, Shankill Road, peace walls, and the murals that tell both sides of the story. Afternoon at Titanic Belfast, one of the world\'s great museums. End with dinner at The Merchant.',
+                    coordinates: { lat: 54.5973, lng: -5.9301 },
+                    hotel: 'The Merchant Hotel',
+                    hotelDetails: '5-star Victorian Grade A listed building in the Cathedral Quarter. Rooftop jacuzzi, Great Room restaurant. €250–350/night.',
+                    guide: [
+                        { name: 'Black Taxi Tour', type: 'site', desc: 'The definitive Belfast experience — 90 minutes with drivers who lived through the conflict. Falls Rd, Shankill Rd, peace walls.', tip: 'Book in advance (£40–50 per head). Paddy Campbell\'s Belfast Famous Black Cab Tours is the most recommended.' },
+                        { name: 'Titanic Belfast', source: 'museum', type: 'museum', desc: 'A six-storey museum on the exact slipway where RMS Titanic was built. Atmospheric, emotionally-weighted, superb.', tip: 'Book timed tickets (£25). Allow 3 hours. SS Nomadic ticket next door is included.' },
+                        { name: 'Ulster Museum', type: 'museum', desc: 'Ireland\'s best archaeology/art museum for its size — Egyptology, Irish art, dinosaur bones, Troubles history — all free.', tip: 'Free entry. The Troubles gallery on the top floor is essential.' },
+                        { name: 'Crumlin Road Gaol', type: 'site', desc: 'Victorian prison used until 1996 — held Republican and Loyalist prisoners during the Troubles. Evocative guided tour.', tip: '£13. Tour lasts 75 minutes.' },
+                        { name: 'St George\'s Market', type: 'site', desc: 'Friday–Sunday Victorian covered market — food stalls, live music, local crafts. Awarded best large market in the UK.', tip: 'Saturday is biggest. Go for breakfast belly (11am).' },
+                        { name: 'The Duke of York', type: 'pub', desc: 'Cathedral Quarter institution — sawdust floors, walls hung with old posters. Traditional music on certain nights.', tip: 'Check the board for session nights. 2 min walk from the hotel.' },
+                        { name: 'The Great Room (hotel restaurant)', type: 'restaurant', desc: 'Stunning former banking hall in the hotel — fine dining under a Victorian domed ceiling.', tip: 'Book ahead. The Sunday roast is a local ritual.' },
+                        { name: "Kelly\'s Cellars", type: 'pub', desc: 'Oldest pub in Belfast (1720) — Wolfe Tone plotted the 1798 rebellion in the back room. Traditional music often in the afternoons.', tip: 'Go for the atmosphere; stay for the Guinness.' }
+                    ],
+                    funFact: 'Belfast\'s peace walls — concrete and steel barriers up to 7.5 m tall — separate Catholic and Protestant neighborhoods. Most were built after the 1998 Good Friday Agreement, not during the Troubles. The current plan is to remove them all by 2023. That deadline has now been moved to 2030.',
+                    historical: 'The Troubles (1969–1998) killed 3,500+ people and injured over 47,000 in a conflict between Irish Republican and Ulster Loyalist paramilitaries, British security forces, and civilians. The Good Friday Agreement of 1998 established power-sharing government and the principle of consent — Northern Ireland\'s future will be decided by its people. RMS Titanic was built by Harland & Wolff in Belfast between 1909 and 1912. At its peak the shipyard employed 35,000 people.',
+                    articles: [
+                        { title: 'How the Troubles Began: A Timeline', source: 'Irish Times', url: 'https://www.irishtimes.com/news/ireland/irish-news/how-the-troubles-began-a-timeline-1.3987076', desc: 'Definitive chronology from Ireland\u2019s newspaper of record.' },
+                        { title: "The Troubles \u2014 A Euphemism for Bloody Conflict", source: 'Irish Times', url: 'https://www.irishtimes.com/news/politics/the-troubles-a-euphemism-for-bloody-conflict-1.3983352', desc: "Why \u201cThe Troubles\u201d was chosen as a word \u2014 and what it conceals." },
+                        { title: 'Belfast, 1969: The Troubles Were Coming', source: 'Irish Times', url: 'https://www.irishtimes.com/culture/books/belfast-1969-the-troubles-were-coming-1.3963024', desc: 'Memoir extract \u2014 the night the guns came out, from a Belfast man who was there.' },
+                        { title: "Giving Voice to the Troubles: How Literature Told the North\u2019s Story", source: 'Irish Times', url: 'https://www.irishtimes.com/culture/books/giving-voice-to-the-troubles-how-literature-has-told-the-north-s-story-1.3642490', desc: 'How Seamus Heaney, Robert McLiam Wilson and others made sense of the conflict in fiction.' },
+                        { title: 'Titanic Belfast', source: 'titanicbelfast.com', url: 'https://www.titanicbelfast.com', desc: 'Official site \u2014 tickets, hours, SS Nomadic combo pass.' },
+                        { title: 'Cab Tours Belfast (Black Taxi)', source: 'cabtoursbelfast.com', url: 'https://www.cabtoursbelfast.com', desc: 'The Black Taxi tour that takes you through Falls Rd, Shankill Rd and the peace walls.' }
+                    ]
+                },
+                {
+                    date: 'June 8',
+                    location: 'Belfast \u2192 Dublin',
+                    highlight: 'Return to the Capital',
+                    backgroundImage: 'Dublin 2.png',
+                    briefing: 'Drive 2 hours back to Dublin, optionally stopping in Drogheda — the medieval town with 5,000 years of history on its doorstep at Newgrange. Final evening in Ireland\'s literary heart with dinner at Patrick Guilbaud.',
+                    coordinates: { lat: 53.3438, lng: -6.2546 },
+                    hotel: 'The Samuel Hotel',
+                    hotelDetails: 'Return to Dublin central location.',
+                    guide: [
+                        { name: 'Brú na Bóinne (Newgrange)', type: 'ancient', desc: 'Neolithic passage tomb (3200 BC) older than Stonehenge or the pyramids. UNESCO World Heritage Site.', tip: 'Only accessible by shuttle from Brú na Bóinne Visitor Centre. Book online — day-of rarely available.' },
+                        { name: 'Drogheda (town)', type: 'walk', desc: 'Medieval walled town on the River Boyne. Narrow streets, Gothic St. Peter\'s Church with the head of St. Oliver Plunkett.', tip: '30-minute stop on the way back. Worth the detour.' },
+                        { name: 'Monasterboice', type: 'ancient', desc: 'Ruined early-Christian monastery with some of the finest high crosses in Ireland — Muiredach\'s Cross is 5.5 m tall.', tip: 'Free, atmospheric, usually empty. 15 min off the M1.' },
+                        { name: 'James Joyce Centre', type: 'museum', desc: 'Elegant Georgian townhouse on North Great George\'s Street — Joyce\'s Dublin, rooms, Bloomsday programming.', tip: '€10. Small but perfectly formed. Great bookshop.' },
+                        { name: 'MoLI (Museum of Literature Ireland)', type: 'museum', desc: 'Beautiful modern museum in UCD Newman House — Joyce\'s first edition of Ulysses, rotating shows.', tip: '€10. Café in the garden is lovely.' },
+                        { name: 'Patrick Guilbaud', type: 'restaurant', desc: 'Two-Michelin-star French-Irish fine dining in the Merrion Hotel — Dublin\'s grandest gastronomic address.', tip: 'Book 6+ weeks ahead. The set lunch is an (almost) affordable way in.' },
+                        { name: "The Brazen Head", type: 'pub', desc: 'Ireland\'s oldest pub (1198) near Christ Church Cathedral — Wolfe Tone and Daniel O\'Connell both drank here.', tip: 'Food is fine, atmosphere is the reason. Traditional music most evenings.' },
+                        { name: 'Sweny\'s Chemist', type: 'quirky', desc: 'The unchanged chemist shop from Ulysses — now run by volunteers who read Joyce aloud daily.', tip: 'Donations welcome. Buy the lemon soap Bloom bought.' }
+                    ],
+                    funFact: 'At Newgrange, on the dawn of the winter solstice, a narrow beam of sunlight penetrates a "roof box" above the entrance and travels down the 19-metre passage to light up the inner chamber — for 17 minutes. The builders nailed this alignment 5,200 years ago. A lottery assigns the 60 annual attendee spots.',
+                    historical: 'Drogheda was the site of Oliver Cromwell\'s infamous 1649 siege — around 3,000 men, women, and children were killed when the town was stormed. The head of St. Oliver Plunkett, martyred in 1681, is preserved in a reliquary in St. Peter\'s Church. Dublin itself came into its modern form in the Georgian era (1714–1830), when the wide boulevards, squares, and red-brick townhouses we associate with the city were built.',
+                    articles: [
+                        { title: 'James Joyce Centre Dublin', source: 'jamesjoyce.ie', url: 'https://jamesjoyce.ie', desc: "Joyce\u2019s Dublin, rooms, Bloomsday programming and bookshop." },
+                        { title: 'A Literary Dublin Walking Tour', source: 'The Guardian', url: 'https://www.theguardian.com/travel/2015/jun/08/dublin-literary-trail-ireland', desc: 'Sites of Joyce, Wilde, Beckett and Yeats \u2014 the definitive literary walk.' }
+                    ]
+                },
+                {
+                    date: 'June 9',
+                    location: 'Departure',
+                    highlight: 'Farewell Ireland',
+                    backgroundImage: 'Dublin.png',
+                    briefing: 'Return your rental car at Dublin airport and depart. Take with you memories of ancient monks, wild cliffs, literary giants, pub sessions, and the Irish warmth that makes you want to come back.',
+                    coordinates: { lat: 53.3438, lng: -6.2546 },
+                    hotel: 'Depart',
+                    hotelDetails: 'Check out and depart.',
+                    guide: [
+                        { name: 'Dublin Airport (DUB)', type: 'site', desc: 'Two terminals; most US flights from T2. Allow extra time — airport has been busy in 2025.', tip: 'Arrive 3 hours ahead for international. Rental return well-signposted.' },
+                        { name: 'Fast Track (if booked)', type: 'quirky', desc: 'Dublin Airport\'s paid queue-skip — worth it if your flight is early and Sunday.', tip: 'Book online in advance, €9.99.' },
+                        { name: 'The Loop (airport shopping)', type: 'shop', desc: 'The duty-free. Butlers Chocolates, Jameson minis, Aran sweaters at fair prices.', tip: 'Butlers caramels make easy gifts.' },
+                        { name: 'The Marker Bar (airside T2)', type: 'cafe', desc: 'Proper pub pints after security if you\'ve got time to kill.', tip: 'Guinness tastes fine at 7am, apparently.' }
+                    ],
+                    funFact: 'The average Irish person says "sorry" 18 times a day and means it only once. You\'ll miss this.',
+                    historical: '',
+                    articles: [
+                        { title: 'Dublin Airport', source: 'dublinairport.com', url: 'https://www.dublinairport.com', desc: 'Live flight info, Fast Track booking, and terminal maps.' }
+                    ]
+                }
+            ];
+
+            const phases = {
+                dublin:   { color: '#2563eb', label: 'Dublin' },
+                kerry:    { color: '#15803d', label: 'Kerry & Dingle' },
+                clare:    { color: '#7c3aed', label: 'Clare & Atlantic' },
+                north:    { color: '#ea580c', label: 'Northern Ireland' },
+                return:   { color: '#b91c1c', label: 'Return & Depart' }
+            };
+
+            const tripDayMeta = [
+                { num: 1,  date: 'May 30', dayOfMonth: null, month: 'may',  loc: 'Dublin',            coords: [53.3438, -6.2546],  phase: 'dublin' },
+                { num: 2,  date: 'May 31', dayOfMonth: null, month: 'may',  loc: 'Dublin',            coords: [53.3438, -6.2546],  phase: 'dublin' },
+                { num: 3,  date: 'Jun 1',  dayOfMonth: 1,    month: 'june', loc: 'Kenmare',           coords: [51.8789, -9.5830],  phase: 'kerry' },
+                { num: 4,  date: 'Jun 2',  dayOfMonth: 2,    month: 'june', loc: 'Dingle',            coords: [52.1408, -10.2677], phase: 'kerry' },
+                { num: 5,  date: 'Jun 3',  dayOfMonth: 3,    month: 'june', loc: 'Ballyferriter',     coords: [52.1748, -10.3886], phase: 'kerry' },
+                { num: 6,  date: 'Jun 4',  dayOfMonth: 4,    month: 'june', loc: 'Doolin',            coords: [52.9904, -9.3868],  phase: 'clare' },
+                { num: 7,  date: 'Jun 5',  dayOfMonth: 5,    month: 'june', loc: 'Aran Islands',      coords: [53.0600, -9.5100],  phase: 'clare' },
+                { num: 8,  date: 'Jun 6',  dayOfMonth: 6,    month: 'june', loc: "Giant\'s Causeway", coords: [55.2413, -6.3969],  phase: 'north' },
+                { num: 9,  date: 'Jun 7',  dayOfMonth: 7,    month: 'june', loc: 'Belfast',           coords: [54.5973, -5.9301],  phase: 'north' },
+                { num: 10, date: 'Jun 8',  dayOfMonth: 8,    month: 'june', loc: 'Dublin',            coords: [53.3438, -6.2546],  phase: 'return' },
+                { num: 11, date: 'Jun 9',  dayOfMonth: 9,    month: 'june', loc: 'Depart',            coords: [53.3438, -6.2546],  phase: 'return' }
+            ];
+
+            const preTripchecklist = [
+                'Book hotels & confirm accessibility features',
+                'Reserve rental car (accessible vehicle)',
+                'Book fine dining: Chapter One, Patrick Guilbaud (6+ weeks)',
+                'Book Out of the Blue (Dingle) — call same-day',
+                'Arrange Black Taxi tour in Belfast',
+                'Book Titanic Belfast & Giant\'s Causeway visitor tickets',
+                'Book Doolin ferry to the Aran Islands',
+                'Book Old Bushmills Distillery tour',
+                'Purchase travel insurance (medical coverage essential)',
+                'Confirm flights & notify airline of accessibility needs',
+                'Check passports (valid 6+ months)',
+                'Notify bank of travel dates',
+                'Download offline maps',
+                'Pre-read Dubliners or Yeats\' poems',
+                'Listen to session playlist (Planxty, Bothy Band, Altan)',
+                'Watch Far and Away or Ryan\'s Daughter',
+                'Pack waterproof jacket & layers'
+            ];
+
+            const quotes = [
+                {
+                    author: 'Oscar Wilde',
+                    years: '1854 — 1900',
+                    quote: 'We are all in the gutter, but some of us are looking at the stars.',
+                    image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Oscar_Wilde_by_Napoleon_Sarony._Three-quarter-length_photograph%2C_seated.jpg/500px-Oscar_Wilde_by_Napoleon_Sarony._Three-quarter-length_photograph%2C_seated.jpg'
+                },
+                {
+                    author: 'James Joyce',
+                    years: '1882 — 1941',
+                    quote: 'Mistakes are the portals of discovery.',
+                    image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/Revolutionary_Joyce_Better_Contrast.jpg/500px-Revolutionary_Joyce_Better_Contrast.jpg'
+                },
+                {
+                    author: 'Sally Rooney',
+                    years: 'b. 1991',
+                    quote: 'Life offers up these moments of joy despite everything.',
+                    image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Sally_Rooney_%28cropped%29.png/500px-Sally_Rooney_%28cropped%29.png'
+                }
+            ];
+
+            // CULTURE — music, albums, artists, books, media
+            const traditionalAlbums = [
+                { title: 'The Chieftains 1', artist: 'The Chieftains', year: '1963', note: 'The foundational album of the modern Irish trad revival.', image: 'The_Chieftains_1.jpg' },
+                { title: 'Planxty', artist: 'Planxty', year: '1973', note: 'The supergroup album that made trad cool for a new generation.', image: 'planxty1972-1200.webp' },
+                { title: 'Old Hag You Have Killed Me', artist: 'The Bothy Band', year: '1976', note: 'Dizzying technical playing \u2014 jigs and reels at a gallop.', image: 'bothy%20band.jpg' },
+                { title: 'Horse with a Heart', artist: 'Altan', year: '1989', note: 'Donegal fiddle tradition in glorious full flight.', image: 'https://upload.wikimedia.org/wikipedia/en/e/e8/Horse_with_a_Heart.jpg' },
+                { title: 'Sharon Shannon', artist: 'Sharon Shannon', year: '1990', note: 'The accordion player who made trad swing; features Adam Clayton (U2).', image: 'Shannon%20Sharon.jpg' },
+                { title: 'Ordinary Man', artist: 'Christy Moore', year: '1985', note: 'Political, tender, and heart-stopping \u2014 Christy at his height.', image: 'https://upload.wikimedia.org/wikipedia/en/e/e4/Ordinary551.JPG' }
+            ];
+
+            const modernArtists = [
+                { name: 'Van Morrison', origin: 'Belfast', genre: 'soul / folk / jazz', note: 'Astral Weeks is often named one of the greatest albums ever made. His voice is a language.', best: '<strong>Astral Weeks</strong> (1968) & <strong>Moondance</strong> (1970)', image: 'van-morrison.jpg' },
+                { name: 'U2', origin: 'Dublin', genre: 'rock', note: "Ireland\u2019s most famous musical export \u2014 stadium rock with social conscience.", best: '<strong>The Joshua Tree</strong> (1987) & <strong>Achtung Baby</strong> (1991)', image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/U2_on_Joshua_Tree_Tour_2017_Brussels_8-1-17.jpg/500px-U2_on_Joshua_Tree_Tour_2017_Brussels_8-1-17.jpg' },
+                { name: "Sin\u00E9ad O\u2019Connor", origin: 'Dublin', genre: 'art rock', note: 'Vulnerable, ferocious, prophetic. A voice like no other in pop.', best: "<strong>I Do Not Want What I Haven\u2019t Got</strong> (1990)", image: "Sinead%20O%27connor.jpg" },
+                { name: 'The Cranberries', origin: 'Limerick', genre: 'alt rock', note: "Dolores O\u2019Riordan\u2019s aching voice defined a generation of Irish rock.", best: "<strong>Everybody Else Is Doing It, So Why Can\u2019t We?</strong> (1993)", image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/The-Cramberries-Paris-31-mai-2010_IMG_7726.JPG/500px-The-Cramberries-Paris-31-mai-2010_IMG_7726.JPG' },
+                { name: 'Hozier', origin: 'County Wicklow', genre: 'blues / soul', note: 'A huge, literate modern voice \u2014 gospel-tinged and politically awake.', best: '<strong>Hozier</strong> (2014) & <strong>Wasteland, Baby!</strong> (2019)', image: 'hozier.jpg' },
+                { name: 'Dermot Kennedy', origin: 'Dublin', genre: 'folk / pop', note: 'Busked his way up; now sells out arenas with raw, hymn-like ballads.', best: '<strong>Without Fear</strong> (2019)', image: 'dermot%20kennedy.jpg' },
+                { name: 'The Dubliners', origin: 'Dublin', genre: 'folk / ballad', note: "Sixties Dublin: Ronnie Drew\u2019s voice, Luke Kelly\u2019s thunder, the songs you\u2019ll hear in every pub.", best: '<strong>Seven Drunken Nights</strong> era (mid-1960s)', image: 'the%20dubliners.jpg' },
+                { name: 'Thin Lizzy', origin: 'Dublin', genre: 'rock', note: "Phil Lynott\u2019s twin-guitar hard rock was ten years ahead of its time.", best: '<strong>Jailbreak</strong> (1976)', image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Thin_Lizzy_-1983.jpg/500px-Thin_Lizzy_-1983.jpg' },
+                { name: 'Enya', origin: 'County Donegal', genre: 'new age / Celtic', note: 'Layered vocal textures; the sound of Irish Atlantic mist.', best: '<strong>Watermark</strong> (1988)', image: 'enya.jpg' },
+                { name: 'Fontaines D.C.', origin: 'Dublin', genre: 'post-punk', note: 'The defining new-generation Irish band \u2014 literary, loud, Dublin to the bone.', best: '<strong>Dogrel</strong> (2019) & <strong>Skinty Fia</strong> (2022)', image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f0/Fontaines_D.C._%2849135254267%29.jpg/500px-Fontaines_D.C._%2849135254267%29.jpg' },
+                { name: 'The Pogues', origin: 'London / Irish diaspora', genre: 'Celtic punk', note: "Shane MacGowan\u2019s lyrics are literature; the band invented Celtic punk.", best: '<strong>Rum, Sodomy & the Lash</strong> (1985)', image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/Pogues_Munich_2011.jpg/500px-Pogues_Munich_2011.jpg' }
+            ];
+
+            const booksList = [
+                { title: 'Dubliners', author: 'James Joyce', when: 'before', whenLabel: 'before / during', note: 'Short stories set in the exact streets you\u2019ll walk. Start with \u201cThe Dead.\u201d' },
+                { title: 'The Picture of Dorian Gray', author: 'Oscar Wilde', when: 'before', whenLabel: 'before', note: 'Dublin\u2019s most brilliant wit \u2014 his only novel, pure gothic mischief.' },
+                { title: "The Islandman (An tOile\u00E1nach)", author: "Tom\u00E1s \u00D3 Criomhthain", when: 'before', whenLabel: 'before June 3', note: 'Blasket Islands \u2014 life before the evacuation, told by one who lived it.' },
+                { title: 'Peig', author: 'Peig Sayers', when: 'before', whenLabel: 'before June 3', note: 'The most famous Blasket memoir \u2014 dictated by a woman who couldn\u2019t write.' },
+                { title: 'Hungry for Home', author: 'Cole Moreton', when: 'before', whenLabel: 'before June 3', note: 'Narrative of the end of Blasket Island life and the evacuation.' },
+                { title: "Angela\u2019s Ashes", author: 'Frank McCourt', when: 'before', whenLabel: 'before', note: 'Irish resilience, poverty, and dark humor. Pulitzer-winning memoir of Limerick.' },
+                { title: 'North', author: 'Seamus Heaney', when: 'before', whenLabel: 'before June 7', note: 'Nobel laureate on Irish identity and violence. Read before Belfast.' },
+                { title: 'Say Nothing', author: 'Patrick Radden Keefe', when: 'before', whenLabel: 'before June 7', note: 'The definitive gripping account of The Troubles \u2014 essential for the Black Taxi tour.' },
+                { title: 'How the Irish Saved Civilization', author: 'Thomas Cahill', when: 'before', whenLabel: 'before May 31', note: 'Irish monks preserved Western knowledge \u2014 primer for the Book of Kells.' },
+                { title: 'Collected Poems', author: 'W.B. Yeats', when: 'during', whenLabel: 'during', note: 'Read at the Cliffs of Moher, in Doolin, on the Aran Islands.' },
+                { title: 'Three Castles Burning', author: 'Donal Fallon', when: 'before', whenLabel: 'before May 31', note: 'History of Dublin told through twelve streets \u2014 indispensable before you walk them.' }
+            ];
+
+            const mediaList = [
+                { name: 'The Irish Times', url: 'https://www.irishtimes.com/', desc: "Ireland\u2019s newspaper of record since 1859." },
+                { name: 'RTÉ News', url: 'https://www.rte.ie/news/', desc: "Ireland\u2019s national public broadcaster." },
+                { name: 'The Irish Examiner', url: 'https://www.irishexaminer.com/', desc: 'Cork-based; strong Kerry/southwest coverage.' },
+                { name: 'The Irish Independent', url: 'https://www.independent.ie/', desc: 'Largest daily circulation in Ireland.' },
+                { name: 'The Journal', url: 'https://www.thejournal.ie/', desc: 'Free Irish news and analysis.' },
+                { name: 'Belfast Telegraph', url: 'https://www.belfasttelegraph.co.uk/', desc: "Northern Ireland\u2019s main daily paper." },
+                { name: 'Hot Press', url: 'https://www.hotpress.com/', desc: 'Irish music & culture magazine since 1977.' },
+                { name: 'History Ireland', url: 'https://historyireland.com/', desc: 'Specialist Irish history magazine \u2014 excellent.' },
+                { name: 'Totally Dublin', url: 'https://www.totallydublin.ie/', desc: 'Dublin listings, culture, food.' },
+                { name: 'The Dubliner', url: 'https://www.thedubliner.ie/', desc: 'Dublin city culture magazine.' }
+            ];
+
+            const initializeMap = (mapId, coords, zoom = 13) => {
+                if (mapsInitialized[mapId] || !window.L) return;
+                const mapElement = document.getElementById(mapId);
+                if (!mapElement || mapElement._leaflet_id) return;
+
+                try {
+                    const map = L.map(mapId, { attributionControl: false }).setView([coords.lat, coords.lng], zoom);
+                    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+                        attribution: 'CartoDB',
+                        maxZoom: 19,
+                        subdomains: 'abcd'
+                    }).addTo(map);
+                    L.circleMarker([coords.lat, coords.lng], {
+                        radius: 12, fillColor: '#8b4513', color: '#ffd700', weight: 3, opacity: 1, fillOpacity: 0.85
+                    }).addTo(map);
+                    setMapsInitialized(prev => ({ ...prev, [mapId]: true }));
+                } catch (e) {
+                    console.error('Map init error:', e);
+                }
+            };
+
+            const initializeRouteMap = () => {
+                if (mapsInitialized['routeMap'] || !window.L) return;
+                const mapElement = document.getElementById('routeMap');
+                if (!mapElement || mapElement._leaflet_id) return;
+
+                try {
+                    const map = L.map('routeMap', { attributionControl: false, zoomControl: true })
+                        .setView([53.6, -8.0], 7);
+
+                    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+                        attribution: 'CartoDB', maxZoom: 19, subdomains: 'abcd'
+                    }).addTo(map);
+
+                    tripDayMeta.forEach(d => {
+                        const color = phases[d.phase].color;
+                        const icon = L.divIcon({
+                            className: 'route-marker',
+                            html: `<div class="route-marker-inner" style="background:${color};">${d.num}</div>`,
+                            iconSize: [40, 40],
+                            iconAnchor: [20, 20]
+                        });
+                        L.marker(d.coords, { icon }).addTo(map).bindPopup(
+                            `<div style="font-family: 'Cinzel', serif; color: #8b4513;">
+                                <b>Day ${d.num} — ${d.date}</b><br/>
+                                <span style="color:#1a0f0a;">${d.loc}</span>
+                            </div>`,
+                            { closeButton: false }
+                        );
+                    });
+
+                    for (let i = 0; i < tripDayMeta.length - 1; i++) {
+                        const a = tripDayMeta[i];
+                        const b = tripDayMeta[i + 1];
+                        if (a.coords[0] === b.coords[0] && a.coords[1] === b.coords[1]) continue;
+                        const color = phases[b.phase].color;
+                        const isReturn = b.phase === 'return';
+                        L.polyline([a.coords, b.coords], {
+                            color: color,
+                            weight: 4,
+                            opacity: 0.85,
+                            dashArray: isReturn ? '8, 8' : null
+                        }).addTo(map);
+                    }
+
+                    setMapsInitialized(prev => ({ ...prev, routeMap: true }));
+                } catch (e) {
+                    console.error('Route map error:', e);
+                }
+            };
+
+            useEffect(() => {
+                if (activeTab === 'home') {
+                    setTimeout(initializeRouteMap, 150);
+                }
+            }, [activeTab]);
+
+            useEffect(() => {
+                if (activeTab === 'days' && expandedDay !== null) {
+                    setTimeout(() => {
+                        initializeMap(`day-map-${expandedDay}`, tripDaysList[expandedDay].coordinates);
+                    }, 150);
+                }
+            }, [expandedDay, activeTab]);
+
+            const toggleChecklist = (index) => {
+                setCheckedItems({ ...checkedItems, [index]: !checkedItems[index] });
+            };
+
+            const getDaysInMonth = (year, month) => new Date(year, month + 1, 0).getDate();
+            const getFirstDayOfMonth = (year, month) => new Date(year, month, 1).getDay();
+
+            const juneTripLookup = {};
+            tripDayMeta.forEach(d => { if (d.month === 'june') juneTripLookup[d.dayOfMonth] = d; });
+
+            const renderMonthGrid = (year, monthIndex, tripLookup) => {
+                const daysInMonth = getDaysInMonth(year, monthIndex);
+                const firstDay = getFirstDayOfMonth(year, monthIndex);
+                const cells = [];
+                for (let i = 0; i < firstDay; i++) {
+                    cells.push(<div key={`empty-${monthIndex}-${i}`} className="calendar-cell empty"></div>);
+                }
+                for (let day = 1; day <= daysInMonth; day++) {
+                    const tripInfo = tripLookup[day];
+                    const isTrip = !!tripInfo;
+                    const bgStyle = isTrip
+                        ? { background: `linear-gradient(135deg, ${phases[tripInfo.phase].color}dd 0%, ${phases[tripInfo.phase].color}aa 100%)`, borderColor: '#8b4513' }
+                        : {};
+                    cells.push(
+                        <div key={`day-${monthIndex}-${day}`} className={`calendar-cell ${isTrip ? 'trip-day' : ''}`} style={bgStyle}>
+                            <span className="cell-num" style={isTrip ? { color: '#fff', textShadow: '1px 1px 2px rgba(0,0,0,0.5)' } : {}}>{day}</span>
+                            {isTrip && (
+                                <span className="cell-loc" style={{ color: '#fff', textShadow: '1px 1px 2px rgba(0,0,0,0.6)' }}>
+                                    {tripInfo.loc}
+                                </span>
+                            )}
+                        </div>
+                    );
+                }
+                return cells;
+            };
+
+            return (
+                <div className="manuscript-bg min-h-screen pb-20">
+                    <div className="content-wrapper">
+                        <div className="max-w-6xl mx-auto px-6 py-12">
+                            <div className="manuscript-header">
+                                <div className="header-content">
+                                    <div className="celtic-corner">&#10086;</div>
+                                    <div className="ornament-line"></div>
+                                    <h1 className="text-6xl md:text-7xl font-bold mb-6">The Novaks Go To Ireland</h1>
+                                    <p className="text-2xl italic mb-4 gold-text">An Illuminated Adventure Through the Emerald Isle</p>
+                                    <p className="text-lg tracking-widest" style={{ letterSpacing: '4px' }}>May 30 – June 9, 2026</p>
+                                    <div className="ornament-line mt-6"></div>
+                                    <div className="ornamental-divider">&#9670; &#9670; &#9670;</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="max-w-6xl mx-auto px-6 mb-12">
+                            <div className="tab-nav">
+                                {[
+                                    { id: 'home', label: 'Home' },
+                                    { id: 'days', label: 'Days' },
+                                    { id: 'culture', label: 'Culture' },
+                                    { id: 'checklist', label: 'Checklist' }
+                                ].map(tab => (
+                                    <button key={tab.id} onClick={() => setActiveTab(tab.id)} className={`nav-button ${activeTab === tab.id ? 'active' : ''}`}>
+                                        {tab.label}
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+
+                        <div className="max-w-6xl mx-auto px-6">
+                            {/* HOME TAB */}
+                            {activeTab === 'home' && (
+                                <div className="space-y-10">
+                                    <div className="day-card">
+                                        <div className="day-card-corner-decoration">&#10022;</div>
+                                        <div className="day-card-content">
+                                            <p className="text-2xl gold-text mb-4 text-center" style={{ fontFamily: "'Cinzel', serif" }}>Welcome to Your Journey</p>
+                                            <p className="text-lg leading-relaxed mb-5">
+                                                The Novaks are getting back together for another memorable summer trip.
+                                                Last year we wandered the cobbled streets of Poland in search of the Novak roots —
+                                                this year we cross the Irish Sea to get closer to the Miller side of the
+                                                family (or close enough!). From the literary heart of Dublin to the wild
+                                                Atlantic coast, we'll trace the paths of Joyce, Yeats, and Wilde through
+                                                landscapes steeped in history, music, and legend.
+                                            </p>
+                                            <p className="text-lg leading-relaxed">
+                                                This is a journey through time — ancient Celtic art, medieval monasteries,
+                                                Victorian estates, 20th-century conflict, and vibrant modern cities.
+                                                Eleven days of beauty, laughter, pub sessions, windswept cliffs, and the
+                                                kind of stories that only come from the road. Sláinte, Novaks — let's go.
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    <div className="calendar-day-card">
+                                        <div className="day-card-corner-decoration">&#10022;</div>
+                                        <div className="day-card-content">
+                                            <p className="text-3xl gold-text mb-2 text-center" style={{ fontFamily: "'Cinzel', serif" }}>Your Calendar</p>
+                                            <p className="text-center gold-text mb-2 text-base italic">Eleven days across the Emerald Isle</p>
+
+                                            <div className="calendar-month-label">May 2026</div>
+                                            <div className="calendar-grid">
+                                                {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(day => (
+                                                    <div key={`may-h-${day}`} className="calendar-header">{day}</div>
+                                                ))}
+                                                {(() => {
+                                                    const mayLookup = { 30: tripDayMeta[0], 31: tripDayMeta[1] };
+                                                    const year = 2026, monthIndex = 4;
+                                                    const daysInMay = getDaysInMonth(year, monthIndex);
+                                                    const firstDayMay = getFirstDayOfMonth(year, monthIndex);
+                                                    const cells = [];
+                                                    for (let i = 0; i < firstDayMay; i++) cells.push(<div key={`mayempty-${i}`} className="calendar-cell empty"></div>);
+                                                    for (let day = 1; day <= daysInMay; day++) {
+                                                        const tripInfo = mayLookup[day];
+                                                        const isTrip = !!tripInfo;
+                                                        const bgStyle = isTrip
+                                                            ? { background: `linear-gradient(135deg, ${phases[tripInfo.phase].color}dd 0%, ${phases[tripInfo.phase].color}aa 100%)`, borderColor: '#8b4513' }
+                                                            : {};
+                                                        cells.push(
+                                                            <div key={`may-d-${day}`} className={`calendar-cell ${isTrip ? 'trip-day' : ''}`} style={bgStyle}>
+                                                                <span className="cell-num" style={isTrip ? { color: '#fff', textShadow: '1px 1px 2px rgba(0,0,0,0.5)' } : {}}>{day}</span>
+                                                                {isTrip && (
+                                                                    <span className="cell-loc" style={{ color: '#fff', textShadow: '1px 1px 2px rgba(0,0,0,0.6)' }}>{tripInfo.loc}</span>
+                                                                )}
+                                                            </div>
+                                                        );
+                                                    }
+                                                    return cells;
+                                                })()}
+                                            </div>
+
+                                            <div className="calendar-month-label">June 2026</div>
+                                            <div className="calendar-grid">
+                                                {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(day => (
+                                                    <div key={`jun-h-${day}`} className="calendar-header">{day}</div>
+                                                ))}
+                                                {renderMonthGrid(2026, 5, juneTripLookup)}
+                                            </div>
+                                            <p className="text-center mt-6 mb-2 text-sm gold-text italic">Trip days colored by phase — open <b>Days</b> tab for details.</p>
+                                        </div>
+                                    </div>
+
+                                    <div className="day-card route-day-card">
+                                        <div className="day-card-corner-decoration">&#10022;</div>
+                                        <div className="day-card-content">
+                                            <p className="text-3xl gold-text mb-2 text-center" style={{ fontFamily: "'Cinzel', serif" }}>Your Route Across Ireland</p>
+                                            <p className="text-center gold-text mb-8 italic">Numbered by day, colored by phase</p>
+                                            <div className="map-container map-container-vertical">
+                                                <div id="routeMap"></div>
+                                            </div>
+                                            <div className="route-legend">
+                                                {Object.entries(phases).map(([key, p]) => (
+                                                    <div key={key} className="legend-item">
+                                                        <div className="legend-swatch" style={{ background: p.color }}></div>
+                                                        <div>
+                                                            <div className="legend-label">{p.label}</div>
+                                                            <div className="legend-days">
+                                                                {key === 'dublin' && 'Days 1–2'}
+                                                                {key === 'kerry' && 'Days 3–5'}
+                                                                {key === 'clare' && 'Days 6–7'}
+                                                                {key === 'north' && 'Days 8–9'}
+                                                                {key === 'return' && 'Days 10–11 (dashed)'}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div className="day-card">
+                                        <div className="day-card-corner-decoration">&#10022;</div>
+                                        <div className="day-card-content">
+                                            <p className="text-3xl gold-text mb-8 text-center" style={{ fontFamily: "'Cinzel', serif" }}>Your Journey Unfolds</p>
+                                            <div className="route-summary">
+                                                <div className="route-card">
+                                                    <div className="route-card-location">Dublin</div>
+                                                    <div className="route-card-days">Days 1–2</div>
+                                                    <div className="route-card-desc">Literary capital: Trinity, Book of Kells, Joyce &amp; Wilde</div>
+                                                </div>
+                                                <div className="route-card">
+                                                    <div className="route-card-location">Kerry &amp; Dingle</div>
+                                                    <div className="route-card-days">Days 3–5</div>
+                                                    <div className="route-card-desc">Ring of Kerry, Slea Head, Blasket Islands, Gaeltacht pubs</div>
+                                                </div>
+                                                <div className="route-card">
+                                                    <div className="route-card-location">Cliffs &amp; Music</div>
+                                                    <div className="route-card-days">Days 6–7</div>
+                                                    <div className="route-card-desc">Sunset over Atlantic, Aran Islands, traditional music in Doolin</div>
+                                                </div>
+                                                <div className="route-card">
+                                                    <div className="route-card-location">North Coast &amp; Belfast</div>
+                                                    <div className="route-card-days">Days 8–9</div>
+                                                    <div className="route-card-desc">Giant's Causeway, Bushmills, Titanic, lived history of The Troubles</div>
+                                                </div>
+                                                <div className="route-card">
+                                                    <div className="route-card-location">Return to Dublin</div>
+                                                    <div className="route-card-days">Days 10–11</div>
+                                                    <div className="route-card-desc">Final evenings in the capital, then farewell</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+
+                            {/* DAYS TAB */}
+                            {activeTab === 'days' && (
+                                <div className="space-y-10">
+                                    {tripDaysList.map((day, idx) => {
+                                        const isExpanded = expandedDay === idx;
+                                        const cardStyle = isExpanded && day.backgroundImage
+                                            ? { backgroundImage: `url('${day.backgroundImage}')` }
+                                            : {};
+                                        return (
+                                            <div
+                                                key={idx}
+                                                className={`day-card ${isExpanded ? 'expanded' : ''}`}
+                                                style={cardStyle}
+                                            >
+                                                <div className="day-card-corner-decoration">&#10022;</div>
+                                                <div className="day-card-content">
+                                                    <div className="day-header">
+                                                        <div>
+                                                            <div className="day-date">{day.date}</div>
+                                                            <div className="day-location">{day.location}</div>
+                                                            <div className="day-highlight">{day.highlight}</div>
+                                                        </div>
+                                                        <div className="toggle-btn" onClick={() => setExpandedDay(isExpanded ? null : idx)}>
+                                                            {isExpanded ? '\u25BE' : '\u25B8'}
+                                                        </div>
+                                                    </div>
+
+                                                    <div className="day-brief">{day.briefing}</div>
+
+                                                    {isExpanded && (
+                                                        <div className="expanded-content">
+                                                            <div className="section-title">Map of {day.location}</div>
+                                                            <div className="map-container">
+                                                                <div id={`day-map-${idx}`}></div>
+                                                            </div>
+
+                                                            <div className="section-title">Where to Stay</div>
+                                                            <div className="hotel-info">
+                                                                <div className="hotel-name">{day.hotel}</div>
+                                                                <div className="hotel-details">{day.hotelDetails}</div>
+                                                            </div>
+
+                                                            <div className="section-title">Things to Do, Visit &amp; Eat</div>
+                                                            <div className="guide-grid">
+                                                                {day.guide && day.guide.map((g, gIdx) => (
+                                                                    <div key={gIdx} className="guide-card">
+                                                                        <div className="guide-head">
+                                                                            <span className="guide-name">{g.name}</span>
+                                                                            <span className={`guide-type ${g.type.replace(/\s/g, '')}`}>{g.type}</span>
+                                                                        </div>
+                                                                        <div className="guide-desc">{g.desc}</div>
+                                                                        {g.tip && <div className="guide-tip"><strong>Tip:</strong> {g.tip}</div>}
+                                                                    </div>
+                                                                ))}
+                                                            </div>
+
+                                                            {day.funFact && (
+                                                                <>
+                                                                    <div className="section-title">Fun Fact</div>
+                                                                    <div className="fun-fact">{day.funFact}</div>
+                                                                </>
+                                                            )}
+
+                                                            {day.historical && (
+                                                                <>
+                                                                    <div className="section-title">Historical Context</div>
+                                                                    <div className="historical-note">{day.historical}</div>
+                                                                </>
+                                                            )}
+
+                                                            {day.articles && day.articles.length > 0 && (
+                                                                <>
+                                                                    <div className="section-title">Read More</div>
+                                                                    <div className="articles-list">
+                                                                        {day.articles.map((a, aIdx) => (
+                                                                            <div key={aIdx} className="article-card">
+                                                                                <a href={a.url} target="_blank" rel="noopener noreferrer">{a.title}</a>
+                                                                                <span className="article-source">{a.source}</span>
+                                                                                <div className="article-desc">{a.desc}</div>
+                                                                            </div>
+                                                                        ))}
+                                                                    </div>
+                                                                </>
+                                                            )}
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+                            )}
+
+                            {/* CULTURE TAB */}
+                            {activeTab === 'culture' && (
+                                <div className="space-y-10">
+                                    {/* Traditional Music */}
+                                    <div className="day-card">
+                                        <div className="day-card-corner-decoration">&#10022;</div>
+                                        <div className="day-card-content">
+                                            <p className="text-3xl gold-text mb-3 text-center" style={{ fontFamily: "'Cinzel', serif" }}>Traditional Irish Music</p>
+                                            <p className="leading-relaxed mb-4">A <b>session</b> (<i>seisiún</i>) is a spontaneous conversation in music. Musicians gather in a pub — usually in a semi-circle at a corner table — and play tunes from memory. No one announces anything. Someone starts a jig or a reel; others fall in when they recognize it. Sets flow into one another. A good session is sacred: when the music is playing, you listen. Clap after a set, not during, and never mid-tune.</p>
+
+                                            <div className="culture-subtitle">Essential Instruments</div>
+                                            <div className="instrument-list">
+                                                <div className="instrument-pill"><strong>Uilleann pipes</strong><span>Bellows-blown Irish bagpipes. Melancholy, complex, the great Irish voice.</span></div>
+                                                <div className="instrument-pill"><strong>Fiddle</strong><span>Violin played with drive and ornament. Regional styles differ (Donegal, Sligo, Clare).</span></div>
+                                                <div className="instrument-pill"><strong>Bodhr&aacute;n</strong><span>Frame drum played with a double-ended stick (tipper). The session\'s pulse.</span></div>
+                                                <div className="instrument-pill"><strong>Tin whistle</strong><span>Six-hole metal flute. Cheap, portable, beautiful in the hands of a master.</span></div>
+                                                <div className="instrument-pill"><strong>Concertina</strong><span>Small hexagonal squeezebox. Favored in Clare for its clarity.</span></div>
+                                                <div className="instrument-pill"><strong>Flute (wooden)</strong><span>Simple-system wooden flute. Breathy, warm — very different to the classical silver flute.</span></div>
+                                            </div>
+
+                                            <div className="culture-subtitle">Essential Traditional Albums</div>
+                                            <div className="album-grid">
+                                                {traditionalAlbums.map((a, i) => (
+                                                    <div
+                                                        key={i}
+                                                        className={`album-card ${a.image ? 'has-image' : ''}`}
+                                                        style={a.image ? { background: `linear-gradient(180deg, rgba(250,246,240,0.15) 0%, rgba(250,246,240,0.55) 45%, rgba(250,246,240,0.95) 100%), url('${a.image}') center/cover no-repeat` } : {}}
+                                                    >
+                                                        <div className="album-title">{a.title}</div>
+                                                        <div className="album-artist">{a.artist}</div>
+                                                        <span className="album-year">{a.year}</span>
+                                                        <div className="album-note">{a.note}</div>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {/* Modern Artists */}
+                                    <div className="day-card">
+                                        <div className="day-card-corner-decoration">&#10022;</div>
+                                        <div className="day-card-content">
+                                            <p className="text-3xl gold-text mb-3 text-center" style={{ fontFamily: "'Cinzel', serif" }}>Modern Irish Music</p>
+                                            <p className="leading-relaxed mb-4 italic">Irish musicians who have shaped modern popular music — and the album to put on as you drive.</p>
+                                            <div className="artist-grid">
+                                                {modernArtists.map((a, i) => (
+                                                    <div
+                                                        key={i}
+                                                        className={`artist-card ${a.image ? 'has-image' : ''}`}
+                                                        style={a.image ? { background: `linear-gradient(180deg, rgba(250,246,240,0.12) 0%, rgba(250,246,240,0.55) 45%, rgba(250,246,240,0.95) 100%), url('${a.image}') center/cover no-repeat` } : {}}
+                                                    >
+                                                        <div className="artist-name">{a.name}</div>
+                                                        <div className="artist-origin">{a.origin}</div>
+                                                        <span className="artist-genre">{a.genre}</span>
+                                                        <div className="artist-note">{a.note}</div>
+                                                        <div className="artist-best"><strong>Listen:</strong> <span dangerouslySetInnerHTML={{ __html: a.best }}></span></div>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {/* Books to Read */}
+                                    <div className="day-card">
+                                        <div className="day-card-corner-decoration">&#10022;</div>
+                                        <div className="day-card-content">
+                                            <p className="text-3xl gold-text mb-3 text-center" style={{ fontFamily: "'Cinzel', serif" }}>Books for the Journey</p>
+                                            <p className="leading-relaxed mb-4 italic">Read before, during, and after. The best preparation for Ireland is its writers.</p>
+                                            <div className="book-grid">
+                                                {booksList.map((b, i) => (
+                                                    <div key={i} className="book-card">
+                                                        <div className="book-title">{b.title}</div>
+                                                        <div className="book-author">{b.author}</div>
+                                                        <span className={`book-when ${b.when}`}>{b.whenLabel}</span>
+                                                        <div className="book-note">{b.note}</div>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {/* Newspapers & Media */}
+                                    <div className="day-card">
+                                        <div className="day-card-corner-decoration">&#10022;</div>
+                                        <div className="day-card-content">
+                                            <p className="text-3xl gold-text mb-3 text-center" style={{ fontFamily: "'Cinzel', serif" }}>Irish Newspapers &amp; Media</p>
+                                            <p className="leading-relaxed mb-4 italic">Read a local paper every morning. You\'ll come home knowing what the country is actually thinking.</p>
+                                            <div className="media-grid">
+                                                {mediaList.map((m, i) => (
+                                                    <div key={i} className="media-card">
+                                                        <div className="media-name"><a href={m.url} target="_blank" rel="noopener noreferrer">{m.name}</a></div>
+                                                        <div className="media-desc">{m.desc}</div>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {/* Existing heritage topics */}
+                                    <div className="day-card">
+                                        <div className="day-card-corner-decoration">&#10022;</div>
+                                        <div className="day-card-content">
+                                            <p className="text-3xl gold-text mb-10 text-center" style={{ fontFamily: "'Cinzel', serif" }}>Irish Heritage Topics</p>
+
+                                            <div className="section-title">The Book of Kells</div>
+                                            <p className="mb-5 leading-relaxed">An 8th-century illuminated manuscript created by Celtic monks at Kells monastery around 800 AD. One of the world's most beautifully decorated medieval books, with intricate Celtic knotwork, spirals, and sacred geometry that represents the apex of monastic artistry.</p>
+
+                                            <div className="section-title">The Troubles (1969–1998)</div>
+                                            <p className="mb-5 leading-relaxed">A 30-year conflict in Northern Ireland between Catholic nationalists (seeking Irish reunification) and Protestant unionists (supporting British rule). Over 3,500 people died. The Good Friday Agreement (1998) brought peace. Belfast is now a thriving, creative city where healing is visible everywhere.</p>
+
+                                            <div className="section-title">Irish Language (Gaeilge)</div>
+                                            <p className="mb-5 leading-relaxed">Dingle Peninsula is a Gaeltacht region where 75% of locals speak Irish daily. The language nearly died in the 20th century but is now protected and celebrated as a living, vibrant part of Irish identity.</p>
+                                            <p className="text-sm mb-4 bg-amber-50 p-4 border-l-4 border-amber-900">
+                                                <strong>Key Phrases:</strong><br/>
+                                                &bull; Dia duit (hello, literally "God be with you")<br/>
+                                                &bull; Go raibh maith agat (thank you)<br/>
+                                                &bull; Sláinte (cheers, literally "health")
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+
+                            {/* CHECKLIST TAB */}
+                            {activeTab === 'checklist' && (
+                                <div className="space-y-10">
+                                    <div className="day-card">
+                                        <div className="day-card-corner-decoration">&#10022;</div>
+                                        <div className="day-card-content">
+                                            <p className="text-3xl gold-text mb-8 text-center" style={{ fontFamily: "'Cinzel', serif" }}>Preparation Checklist</p>
+                                            <div className="space-y-4">
+                                                {preTripchecklist.map((item, idx) => (
+                                                    <div
+                                                        key={idx}
+                                                        onClick={() => toggleChecklist(idx)}
+                                                        className={`p-4 rounded cursor-pointer border-l-4 transition-all ${checkedItems[idx] ? 'bg-green-100 border-green-700 opacity-60' : 'bg-amber-50 border-amber-900 hover:bg-amber-100'}`}
+                                                    >
+                                                        <div className="flex items-center gap-4">
+                                                            <div className={`w-6 h-6 border-2 flex items-center justify-center rounded text-sm font-bold flex-shrink-0 ${checkedItems[idx] ? 'bg-green-700 border-green-700 text-white' : 'border-amber-900'}`}>
+                                                                {checkedItems[idx] && '\u2713'}
+                                                            </div>
+                                                            <span className={`${checkedItems[idx] ? 'line-through text-gray-500' : 'text-amber-900'}`}>{item}</span>
+                                                        </div>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                            <div className="mt-8 p-5 bg-amber-100 rounded border-3 border-amber-900">
+                                                <p className="font-bold gold-text text-lg">Progress: {Object.values(checkedItems).filter(Boolean).length} / {preTripchecklist.length} Completed</p>
+                                                <div className="w-full bg-amber-200 rounded-full h-5 overflow-hidden mt-4 border border-amber-900">
+                                                    <div
+                                                        className="bg-gradient-to-r from-amber-700 to-amber-900 h-full transition-all"
+                                                        style={{ width: `${(Object.values(checkedItems).filter(Boolean).length / preTripchecklist.length) * 100}%` }}
+                                                    />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+
+                        {/* Voices of Ireland */}
+                        <div className="max-w-6xl mx-auto px-6 mt-20">
+                            <div className="day-card">
+                                <div className="day-card-corner-decoration">&#10022;</div>
+                                <div className="day-card-content">
+                                    <p className="text-3xl gold-text mb-2 text-center" style={{ fontFamily: "'Cinzel', serif" }}>Voices of Ireland</p>
+                                    <p className="text-center gold-text mb-8 italic">Wisdom from three of the island's great writers</p>
+                                    <div className="quotes-grid">
+                                        {quotes.map((q, i) => (
+                                            <div key={i} className="quote-card">
+                                                <div className="quote-portrait">
+                                                    <img src={q.image} alt={q.author} />
+                                                </div>
+                                                <div className="quote-text">{q.quote}</div>
+                                                <div className="quote-author">{q.author}</div>
+                                                <div className="quote-years">{q.years}</div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="max-w-6xl mx-auto px-6 mt-12 mb-10">
+                            <div className="footer day-card">
+                                <div className="celtic-corner" style={{ marginBottom: '30px' }}>&#10086;</div>
+                                <p className="text-lg mb-6 leading-relaxed">May your journey be filled with beauty, laughter, unexpected kindnesses, and unforgettable moments.</p>
+                                <div className="ornamental-divider">&#9670; &#9670; &#9670;</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        ReactDOM.render(<IrelandDashboard />, document.getElementById('root'));
+    </script>
+</body>
+</html>
