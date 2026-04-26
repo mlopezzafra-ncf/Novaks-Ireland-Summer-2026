@@ -1377,8 +1377,8 @@
                 { num: 4,  date: 'Jun 2',  dayOfMonth: 2,    month: 'june', loc: 'Dingle',            coords: [52.1408, -10.2677], phase: 'kerry',  image: 'ring-of-kerry.png' },
                 { num: 5,  date: 'Jun 3',  dayOfMonth: 3,    month: 'june', loc: 'Ballyferriter',     coords: [52.1748, -10.3886], phase: 'kerry',  image: 'dingle.png' },
                 { num: 6,  date: 'Jun 4',  dayOfMonth: 4,    month: 'june', loc: 'Doolin',            coords: [52.9904, -9.3868],  phase: 'clare',  image: 'doolin.png' },
-                { num: 7,  date: 'Jun 5',  dayOfMonth: 5,    month: 'june', loc: 'Aran Islands',      coords: [53.0600, -9.5100],  phase: 'clare',  image: 'aran-islands.png' },
-                { num: 8,  date: 'Jun 6',  dayOfMonth: 6,    month: 'june', loc: "Giant\u2019s Causeway", coords: [55.2408, -6.5117],  phase: 'north',  image: 'belfast.png' },
+                { num: 7,  date: 'Jun 5',  dayOfMonth: 5,    month: 'june', loc: "Aran \u2192 Dublin", coords: [53.3380, -6.2607],  phase: 'clare',  image: 'aran-islands.png' },
+                { num: 8,  date: 'Jun 6',  dayOfMonth: 6,    month: 'june', loc: 'Bushmills',         coords: [55.2070, -6.5263],  phase: 'north',  image: 'belfast.png' },
                 { num: 9,  date: 'Jun 7',  dayOfMonth: 7,    month: 'june', loc: 'Belfast',           coords: [54.5973, -5.9301],  phase: 'north',  image: 'belfast.png' },
                 { num: 10, date: 'Jun 8',  dayOfMonth: 8,    month: 'june', loc: 'Dublin',            coords: [53.3351, -6.2625],  phase: 'return', image: 'dublin-2.png' },
                 { num: 11, date: 'Jun 9',  dayOfMonth: 9,    month: 'june', loc: 'Depart (DUB)',      coords: [53.4213, -6.2701],  phase: 'return', image: 'dublin.png' }
@@ -1798,6 +1798,10 @@
                         }).addTo(map);
                     }
 
+                    // Auto-frame to all markers so the whole route is visible regardless of layout changes
+                    const allCoords = tripDayMeta.map(d => d.coords);
+                    map.fitBounds(allCoords, { padding: [40, 40] });
+
                     setMapsInitialized(prev => ({ ...prev, routeMap: true }));
                 } catch (e) {
                     console.error('Route map error:', e);
@@ -1859,14 +1863,15 @@
                 // covers both calendar clicks and toggle-button clicks the same way.
             };
 
-            const renderMonthGrid = (year, monthIndex, tripLookup) => {
+            const renderMonthGrid = (year, monthIndex, tripLookup, endDay) => {
                 const daysInMonth = getDaysInMonth(year, monthIndex);
                 const firstDay = getFirstDayOfMonth(year, monthIndex);
+                const lastDay = endDay ? Math.min(endDay, daysInMonth) : daysInMonth;
                 const cells = [];
                 for (let i = 0; i < firstDay; i++) {
                     cells.push(<div key={`empty-${monthIndex}-${i}`} className="calendar-cell empty"></div>);
                 }
-                for (let day = 1; day <= daysInMonth; day++) {
+                for (let day = 1; day <= lastDay; day++) {
                     const tripInfo = tripLookup[day];
                     const isTrip = !!tripInfo;
                     const bgStyle = isTrip
@@ -1893,6 +1898,15 @@
                             )}
                         </div>
                     );
+                }
+                // Pad the final partial row with empty cells so the grid keeps its 7-column shape
+                const totalCells = firstDay + lastDay;
+                const remainder = totalCells % 7;
+                if (remainder !== 0) {
+                    const pad = 7 - remainder;
+                    for (let i = 0; i < pad; i++) {
+                        cells.push(<div key={`tail-${monthIndex}-${i}`} className="calendar-cell empty"></div>);
+                    }
                 }
                 return cells;
             };
@@ -2072,7 +2086,7 @@
                                                 {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(day => (
                                                     <div key={`jun-h-${day}`} className="calendar-header">{day}</div>
                                                 ))}
-                                                {renderMonthGrid(2026, 5, juneTripLookup)}
+                                                {renderMonthGrid(2026, 5, juneTripLookup, 9)}
                                             </div>
                                             <p className="text-center mt-6 mb-2 text-sm gold-text italic">Trip days colored by phase — open <b>Days</b> tab for details.</p>
                                         </div>
