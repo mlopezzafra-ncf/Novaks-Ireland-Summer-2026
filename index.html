@@ -1560,11 +1560,11 @@
             // Per-day places (hotel + key attractions). Keyed by tripDaysList index.
             const dayPlaces = {
                 0: [ // May 30 — Travel day: destination airport + hotel
-                    { name: "Dublin Airport (DUB) \u2014 arrival 8:15 AM May 31", lat: 53.4213, lng: -6.2701, type: 'site' },
+                    { confirmed: true, name: "Dublin Airport (DUB) \u2014 arrival 8:15 AM May 31", lat: 53.4213, lng: -6.2701, type: 'site' },
                     { name: 'Iveagh Garden Hotel (destination, 4 PM check-in)', lat: 53.3351, lng: -6.2625, type: 'hotel' }
                 ],
                 1: [ // May 31 — Dublin
-                    { name: 'Dublin Airport (arrival 8:15 AM)', lat: 53.4213, lng: -6.2701, type: 'site' },
+                    { confirmed: true, name: 'Dublin Airport (arrival 8:15 AM)', lat: 53.4213, lng: -6.2701, type: 'site' },
                     { name: 'Iveagh Garden Hotel', lat: 53.3351, lng: -6.2625, type: 'hotel' },
                     { name: 'Trinity College & Book of Kells', lat: 53.3439, lng: -6.2576, type: 'museum' },
                     { name: 'National Museum of Ireland', lat: 53.3405, lng: -6.2545, type: 'museum' },
@@ -1579,7 +1579,7 @@
                 ],
                 2: [ // June 1 — Kenmare
                     { name: 'Brook Lane Hotel', lat: 51.8810, lng: -9.5832, type: 'hotel' },
-                    { name: 'Dublin Airport (car pickup)', lat: 53.4213, lng: -6.2701, type: 'site' },
+                    { confirmed: true, name: 'Dublin Airport (car pickup 10 AM)', lat: 53.4213, lng: -6.2701, type: 'site' },
                     { name: 'Cahir Castle (en route)', lat: 52.3775, lng: -7.9272, type: 'ancient' },
                     { name: 'Kenmare Stone Circle', lat: 51.8786, lng: -9.5867, type: 'ancient' },
                     { name: 'Kenmare Heritage Centre', lat: 51.8793, lng: -9.5832, type: 'museum' },
@@ -1607,16 +1607,16 @@
                 ],
                 5: [ // June 4 — Ballyferriter → Doolin
                     { name: "Hotel Doolin (Piper\u2019s Chair)", lat: 53.0142, lng: -9.3756, type: 'hotel' },
-                    { name: 'Tarbert \u2013 Killimer Ferry', lat: 52.5803, lng: -9.3639, type: 'quirky' },
-                    { name: 'Cliffs of Moher', lat: 52.9715, lng: -9.4260, type: 'viewpoint' },
+                    { confirmed: true, name: 'Tarbert \u2013 Killimer Ferry (route)', lat: 52.5803, lng: -9.3639, type: 'quirky' },
+                    { confirmed: true, name: 'Cliffs of Moher (evening highlight)', lat: 52.9715, lng: -9.4260, type: 'viewpoint' },
                     { name: 'Poulnabrone Dolmen (Burren)', lat: 53.0472, lng: -9.1402, type: 'ancient' },
                     { name: 'Aillwee Cave', lat: 53.1014, lng: -9.1136, type: 'quirky' },
                     { name: "McGann\u2019s Pub", lat: 53.0150, lng: -9.3756, type: 'pub' },
                     { name: "Gus O\u2019Connor\u2019s Pub", lat: 53.0158, lng: -9.3781, type: 'pub' }
                 ],
                 6: [ // June 5 — Doolin Ferry → Aran Islands → drive to Dublin
-                    { name: 'Doolin Pier (10:00 AM ferry)', lat: 53.0125, lng: -9.4072, type: 'quirky' },
-                    { name: "Inisheer Harbour", lat: 53.0617, lng: -9.5219, type: 'viewpoint' },
+                    { confirmed: true, name: 'Doolin Pier \u2014 Ferry 10:00 AM (BOOKED)', lat: 53.0125, lng: -9.4072, type: 'quirky' },
+                    { confirmed: true, name: "Inisheer Harbour (BOOKED ferry destination)", lat: 53.0617, lng: -9.5219, type: 'viewpoint' },
                     { name: "O\u2019Brien\u2019s Castle (Inisheer)", lat: 53.0585, lng: -9.5131, type: 'ancient' },
                     { name: 'Plassey Shipwreck', lat: 53.0660, lng: -9.5067, type: 'quirky' },
                     { name: 'Cill Gobnait', lat: 53.0606, lng: -9.5200, type: 'ancient' },
@@ -1624,15 +1624,16 @@
                 ],
                 7: [ // June 6 — Giant's Causeway
                     { name: 'Grays Bushmills Hotel', lat: 55.2070, lng: -6.5263, type: 'hotel' },
-                    { name: "Giant\u2019s Causeway", lat: 55.2408, lng: -6.5117, type: 'site' },
+                    { confirmed: true, name: "Giant\u2019s Causeway (today\u2019s plan)", lat: 55.2408, lng: -6.5117, type: 'site' },
                     { name: 'Carrick-a-Rede Rope Bridge', lat: 55.2400, lng: -6.3286, type: 'walk' },
-                    { name: 'Old Bushmills Distillery (1 PM tour booked)', lat: 55.2056, lng: -6.5261, type: 'site' },
+                    { confirmed: true, name: 'Old Bushmills Distillery \u2014 1 PM tour (BOOKED)', lat: 55.2056, lng: -6.5261, type: 'site' },
                     { name: 'Dunluce Castle', lat: 55.2108, lng: -6.5787, type: 'ancient' },
                     { name: 'Dark Hedges', lat: 55.1344, lng: -6.3781, type: 'quirky' },
                     { name: 'Bushmills Inn', lat: 55.2042, lng: -6.5239, type: 'restaurant' }
                 ],
                 8: [ // June 7 — Belfast
-                    { name: 'The Merchant Hotel (Black Taxi pickup)', lat: 54.6006, lng: -5.9269, type: 'hotel' },
+                    { name: 'The Merchant Hotel (Black Taxi pickup 1 PM)', lat: 54.6006, lng: -5.9269, type: 'hotel' },
+                    { confirmed: true, name: '3-Hour Black Taxi Tour \u2014 1 PM (BOOKED)', lat: 54.6006, lng: -5.9269, type: 'site' },
                     { name: 'Titanic Belfast', lat: 54.6083, lng: -5.9100, type: 'museum' },
                     { name: 'Ulster Museum', lat: 54.5807, lng: -5.9345, type: 'museum' },
                     { name: 'Crumlin Road Gaol', lat: 54.6140, lng: -5.9480, type: 'site' },
@@ -1651,8 +1652,8 @@
                 ],
                 10: [ // June 9 — Depart
                     { name: 'Iveagh Garden Hotel (checkout 12 PM)', lat: 53.3351, lng: -6.2625, type: 'hotel' },
-                    { name: 'Dublin Airport (DUB) \u2014 EI 0105 departs 11:10 AM', lat: 53.4213, lng: -6.2701, type: 'site' },
-                    { name: 'Newway Car Return (DUB)', lat: 53.4213, lng: -6.2701, type: 'site' }
+                    { confirmed: true, name: 'Dublin Airport (DUB) \u2014 EI 0105 11:10 AM (BOOKED)', lat: 53.4213, lng: -6.2701, type: 'site' },
+                    { confirmed: true, name: 'Newway Car Return \u2014 10:00 AM (BOOKED)', lat: 53.4213, lng: -6.2701, type: 'site' }
                 ]
             };
 
@@ -1661,6 +1662,11 @@
                 site: '#b45309', ancient: '#7c3aed', viewpoint: '#0d9488', walk: '#15803d',
                 cafe: '#d97706', quirky: '#9333ea', shop: '#9d4edd'
             };
+
+            // Tier colors for confirmed vs possible
+            const HOTEL_COLOR = '#b91c1c';        // crimson red
+            const CONFIRMED_COLOR = '#15803d';   // forest green
+            const POSSIBLE_COLOR = '#a78a5e';    // muted brown
 
             const initializeMap = (mapId, dayIndex) => {
                 if (!window.L) return;
@@ -1681,17 +1687,48 @@
                     if (places.length > 0) {
                         const coords = [];
                         places.forEach(p => {
-                            const color = placeTypeColors[p.type] || '#8b4513';
                             const isHotel = p.type === 'hotel';
-                            L.circleMarker([p.lat, p.lng], {
-                                radius: isHotel ? 14 : 10,
-                                fillColor: color,
-                                color: '#ffffff',
-                                weight: isHotel ? 3 : 2,
-                                opacity: 1,
-                                fillOpacity: 0.9
-                            }).addTo(map).bindPopup(
-                                `<div style="font-family:'Cinzel',serif;color:#8b4513;">
+                            const isConfirmed = !!p.confirmed;
+                            const tierLabel = isHotel ? 'Hotel' : isConfirmed ? 'Scheduled' : 'Possible';
+                            const tierColor = isHotel ? HOTEL_COLOR : isConfirmed ? CONFIRMED_COLOR : POSSIBLE_COLOR;
+
+                            let marker;
+                            if (isHotel) {
+                                // Hotel: square marker with bed/hotel icon
+                                marker = L.marker([p.lat, p.lng], {
+                                    icon: L.divIcon({
+                                        className: 'place-marker-hotel',
+                                        html: `<div style="width:34px;height:34px;background:${HOTEL_COLOR};border:3px solid #ffd700;border-radius:6px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 10px rgba(0,0,0,0.55);">
+                                            <span style="font-size:18px;line-height:1;">\uD83C\uDFE8</span>
+                                        </div>`,
+                                        iconSize: [34, 34],
+                                        iconAnchor: [17, 17]
+                                    })
+                                });
+                            } else if (isConfirmed) {
+                                // Scheduled: bigger green circle with star
+                                marker = L.marker([p.lat, p.lng], {
+                                    icon: L.divIcon({
+                                        className: 'place-marker-confirmed',
+                                        html: `<div style="width:26px;height:26px;background:${CONFIRMED_COLOR};border:2.5px solid #ffffff;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 3px 8px rgba(0,0,0,0.5);color:#fff;font-weight:bold;font-size:14px;line-height:1;">\u2605</div>`,
+                                        iconSize: [26, 26],
+                                        iconAnchor: [13, 13]
+                                    })
+                                });
+                            } else {
+                                // Possible: small muted circle
+                                marker = L.circleMarker([p.lat, p.lng], {
+                                    radius: 7,
+                                    fillColor: POSSIBLE_COLOR,
+                                    color: '#ffffff',
+                                    weight: 2,
+                                    opacity: 1,
+                                    fillOpacity: 0.85
+                                });
+                            }
+                            marker.addTo(map).bindPopup(
+                                `<div style="font-family:'Cinzel',serif;color:#8b4513;min-width:140px;">
+                                    <span style="display:inline-block;font-size:10px;font-weight:bold;letter-spacing:1px;text-transform:uppercase;color:#fff;background:${tierColor};padding:2px 7px;border-radius:10px;margin-bottom:5px;">${tierLabel}</span><br/>
                                     <b>${p.name}</b><br/>
                                     <span style="text-transform:capitalize;color:#666;font-size:11px;letter-spacing:1px;">${p.type}</span>
                                 </div>`,
@@ -2141,27 +2178,61 @@
                                                             <div className="map-container">
                                                                 <div id={`day-map-${idx}`}></div>
                                                             </div>
-                                                            {dayPlaces[idx] && dayPlaces[idx].length > 0 && (
-                                                                <div style={{
-                                                                    display: 'flex', flexWrap: 'wrap', gap: '8px 14px',
-                                                                    padding: '10px 14px', margin: '10px 0',
-                                                                    background: 'linear-gradient(135deg, rgba(250,246,240,0.9) 0%, rgba(245,240,232,0.85) 100%)',
-                                                                    border: '2px solid #d4a574', borderRadius: '2px',
-                                                                    fontSize: '12px', color: '#1a0f0a'
-                                                                }}>
-                                                                    {Array.from(new Set(dayPlaces[idx].map(p => p.type))).map(t => (
-                                                                        <span key={t} style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                                                                            <span style={{
-                                                                                width: '12px', height: '12px', borderRadius: '50%',
-                                                                                background: placeTypeColors[t] || '#8b4513',
-                                                                                border: '2px solid #fff',
-                                                                                boxShadow: '0 1px 2px rgba(0,0,0,0.3)'
-                                                                            }}></span>
-                                                                            <span style={{ textTransform: 'capitalize', fontFamily: "'Cinzel', serif", color: '#8b4513' }}>{t}</span>
-                                                                        </span>
-                                                                    ))}
-                                                                </div>
-                                                            )}
+                                                            {dayPlaces[idx] && dayPlaces[idx].length > 0 && (() => {
+                                                                const hasHotel = dayPlaces[idx].some(p => p.type === 'hotel');
+                                                                const hasConfirmed = dayPlaces[idx].some(p => p.confirmed && p.type !== 'hotel');
+                                                                const hasPossible = dayPlaces[idx].some(p => !p.confirmed && p.type !== 'hotel');
+                                                                return (
+                                                                    <div style={{
+                                                                        display: 'flex', flexWrap: 'wrap', gap: '10px 18px',
+                                                                        padding: '12px 16px', margin: '10px 0',
+                                                                        background: 'linear-gradient(135deg, rgba(250,246,240,0.9) 0%, rgba(245,240,232,0.85) 100%)',
+                                                                        border: '2px solid #d4a574', borderRadius: '2px',
+                                                                        fontSize: '12px', color: '#1a0f0a'
+                                                                    }}>
+                                                                        {hasHotel && (
+                                                                            <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                                                                                <span style={{
+                                                                                    width: '20px', height: '20px',
+                                                                                    background: HOTEL_COLOR,
+                                                                                    border: '2px solid #ffd700',
+                                                                                    borderRadius: '4px',
+                                                                                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                                                                    fontSize: '12px',
+                                                                                    boxShadow: '0 2px 4px rgba(0,0,0,0.3)'
+                                                                                }}>{'\uD83C\uDFE8'}</span>
+                                                                                <span style={{ fontFamily: "'Cinzel', serif", color: '#8b4513', fontWeight: 'bold' }}>Hotel</span>
+                                                                            </span>
+                                                                        )}
+                                                                        {hasConfirmed && (
+                                                                            <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                                                                                <span style={{
+                                                                                    width: '18px', height: '18px',
+                                                                                    background: CONFIRMED_COLOR,
+                                                                                    border: '2px solid #fff',
+                                                                                    borderRadius: '50%',
+                                                                                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                                                                    color: '#fff', fontWeight: 'bold', fontSize: '10px',
+                                                                                    boxShadow: '0 2px 4px rgba(0,0,0,0.3)'
+                                                                                }}>{'\u2605'}</span>
+                                                                                <span style={{ fontFamily: "'Cinzel', serif", color: '#8b4513', fontWeight: 'bold' }}>Scheduled</span>
+                                                                            </span>
+                                                                        )}
+                                                                        {hasPossible && (
+                                                                            <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                                                                                <span style={{
+                                                                                    width: '14px', height: '14px',
+                                                                                    background: POSSIBLE_COLOR,
+                                                                                    border: '2px solid #fff',
+                                                                                    borderRadius: '50%',
+                                                                                    boxShadow: '0 2px 4px rgba(0,0,0,0.3)'
+                                                                                }}></span>
+                                                                                <span style={{ fontFamily: "'Cinzel', serif", color: '#8b4513', fontWeight: 'bold' }}>Possible idea</span>
+                                                                            </span>
+                                                                        )}
+                                                                    </div>
+                                                                );
+                                                            })()}
 
                                                             {day.hotel && day.hotel !== 'Depart' && day.hotel !== 'Overnight flight (Aer Lingus EI0114)' && (
                                                                 <>
