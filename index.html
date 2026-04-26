@@ -702,6 +702,161 @@
         @media (max-width: 720px) {
             .quotes-grid { grid-template-columns: 1fr; }
         }
+
+        /* === MOBILE RESPONSIVE === */
+        @media (max-width: 720px) {
+            /* Page padding */
+            .max-w-6xl { padding-left: 12px !important; padding-right: 12px !important; }
+
+            /* Header */
+            .manuscript-header { padding: 32px 18px; margin-bottom: 24px; }
+            .manuscript-header h1 {
+                font-size: 28px !important;
+                letter-spacing: 1px !important;
+                line-height: 1.15 !important;
+                margin-bottom: 14px !important;
+            }
+            .manuscript-header .text-2xl { font-size: 15px !important; line-height: 1.4 !important; }
+            .manuscript-header .text-lg { font-size: 12px !important; }
+            .celtic-corner { width: 56px; height: 56px; font-size: 30px; margin: 12px auto; }
+            .ornament-line { width: 80%; max-width: 240px; }
+            .ornamental-divider { font-size: 16px; letter-spacing: 8px; margin: 14px 0; }
+
+            /* Tab nav */
+            .tab-nav { gap: 6px; margin-bottom: 22px; }
+            .nav-button {
+                padding: 9px 12px;
+                font-size: 11.5px;
+                letter-spacing: 1px;
+                border-width: 2px;
+                box-shadow: 0 4px 8px rgba(0,0,0,0.25);
+            }
+
+            /* Day card */
+            .day-card { margin-bottom: 22px; }
+            .day-card-content { padding: 20px 14px; }
+            .day-date { font-size: 22px; }
+            .day-location { font-size: 16px; }
+            .day-highlight { font-size: 13px; }
+            .toggle-btn { font-size: 26px; }
+            .day-brief { padding: 14px; font-size: 14px; }
+
+            /* Section titles */
+            .section-title { font-size: 16px; margin: 20px 0 10px 0; padding-bottom: 8px; }
+
+            /* Big card titles ("Welcome to Your Journey", etc.) */
+            .text-3xl { font-size: 22px !important; }
+            .text-2xl { font-size: 18px !important; }
+            .day-card-content > p.text-3xl,
+            .day-card-content > p.text-2xl { line-height: 1.25 !important; }
+
+            /* Calendar */
+            .calendar-day-card { margin-bottom: 22px; }
+            .calendar-grid { padding: 10px 6px; gap: 3px; }
+            .calendar-cell {
+                padding-top: 3px;
+                border-width: 2px;
+            }
+            .calendar-cell .cell-num { font-size: 13px; line-height: 1; }
+            .calendar-cell .cell-loc {
+                font-size: 7px;
+                letter-spacing: 0;
+                padding: 0 1px;
+                line-height: 1;
+                margin-top: 2px;
+                font-weight: bold;
+            }
+            .calendar-cell.trip-day::before { font-size: 9px; top: 0; right: 2px; }
+            .calendar-header {
+                padding: 6px 1px;
+                font-size: 10px;
+                letter-spacing: 0;
+            }
+            .calendar-month-label {
+                font-size: 17px;
+                padding: 14px 0 6px 0;
+            }
+
+            /* Maps */
+            .map-container > div { height: 280px; }
+            .map-container-vertical { max-width: 100%; }
+            .map-container-vertical > div { height: 480px; }
+
+            /* Route legend */
+            .route-legend {
+                grid-template-columns: 1fr 1fr;
+                gap: 8px;
+                padding: 12px;
+            }
+            .legend-item { font-size: 12px; gap: 6px; }
+            .legend-swatch { width: 18px; height: 18px; }
+            .legend-label { font-size: 12px; }
+            .legend-days { font-size: 10px; }
+
+            /* Route summary cards */
+            .route-summary { gap: 12px; }
+            .route-card { padding: 14px; }
+            .route-card-location { font-size: 18px; }
+            .route-card-days { font-size: 12px; }
+            .route-card-desc { font-size: 13px; }
+
+            /* Hotel / Guide / Article cards */
+            .hotel-info { padding: 12px; }
+            .hotel-name { font-size: 16px; }
+            .hotel-details { font-size: 13px; line-height: 1.55; }
+            .guide-card { padding: 12px 14px; }
+            .guide-name { font-size: 15px; }
+            .guide-desc { font-size: 13px; line-height: 1.5; }
+            .guide-tip { font-size: 12px; padding-top: 5px; }
+            .guide-card-image { max-height: 160px; }
+            .article-card { padding: 10px 12px; }
+            .article-card a { font-size: 14px; }
+            .article-source { font-size: 10px; padding: 1px 6px; }
+            .article-desc { font-size: 12px; }
+
+            /* Fun fact / historical */
+            .fun-fact { padding: 14px; font-size: 14px; }
+            .historical-note { padding: 14px; font-size: 13px; }
+
+            /* Album / artist / book / media tiles */
+            .album-grid, .artist-grid, .book-grid, .media-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+            }
+            .album-card, .artist-card, .book-card, .media-card { padding: 10px; min-height: 160px; }
+            .album-title, .artist-name, .book-title, .media-name { font-size: 13px; }
+            .album-artist, .artist-origin, .book-author, .media-desc { font-size: 11px; }
+            .album-note, .artist-note, .book-note, .artist-best { font-size: 12px; }
+            .instrument-list { grid-template-columns: 1fr; }
+
+            /* Quotes (already 1-col) */
+            .quote-card { padding: 14px 10px; }
+            .quote-portrait { width: 76px; height: 76px; }
+            .quote-text { font-size: 13px; padding: 0 4px; }
+            .quote-author { font-size: 13px; }
+            .quote-years { font-size: 10px; }
+
+            /* Checklist items */
+            .max-w-6xl .space-y-4 > div { padding: 12px !important; font-size: 13px; }
+
+            /* Footer */
+            .footer { padding: 24px 14px; }
+            .footer p { font-size: 14px !important; }
+
+            /* Welcome image */
+            .day-card-content img[alt="The Novaks"] { max-height: 320px !important; }
+        }
+
+        @media (max-width: 420px) {
+            .manuscript-header h1 { font-size: 24px !important; }
+            .calendar-grid { padding: 8px 4px; gap: 2px; }
+            .calendar-cell .cell-loc { font-size: 6.5px; }
+            .calendar-header { font-size: 9px; padding: 5px 0; }
+            .calendar-month-label { font-size: 15px; }
+            .nav-button { padding: 8px 10px; font-size: 11px; letter-spacing: 0.5px; }
+            .album-grid, .artist-grid, .book-grid, .media-grid { grid-template-columns: 1fr; }
+            .route-legend { grid-template-columns: 1fr; }
+        }
         .quote-card {
             background: linear-gradient(135deg, rgba(250,246,240,0.95) 0%, rgba(245,240,232,0.92) 100%);
             border: 2px solid #8b4513;
@@ -911,11 +1066,11 @@
                     hotel: 'Overnight flight (Aer Lingus EI0114)',
                     hotelDetails: "No hotel tonight \u2014 transatlantic red-eye PHL \u2192 DUB. John & Rose on seats 17D / 17E; Emily on a separate booking. 1 \u00D7 23kg checked bag each. Wheelchair for Ramp arranged for John & Rose. Arrive Dublin 8:15 AM Sun 31 May \u2192 Iveagh Garden Hotel check-in from 4 PM. Pam joins the group in Dublin on Mon 1 Jun.",
                     guide: [
-                        { name: "Leg 1 \u2014 AA 5924 \u2022 Syracuse \u2192 Philadelphia", type: 'site', desc: "Sat 30 May 2026. Depart SYR 2:58 PM (gate TBD, Eastern Time) \u2192 Arrive PHL 4:20 PM (Terminal F). Flight time: 1h 22min. Operated by Piedmont Airlines for American Eagle \u2014 typically Embraer ERJ-145 (50-seat regional jet, 2\u20131 seating). Economy Class (Q), booking ref LXRBKF. Snack & drink service. No seatback IFE. 1 \u00D7 23kg checked bag per passenger, 1 \u00D7 carry-on. 2 \u00D7 Wheelchair for Ramp pre-arranged.", tip: "Check in with American at aa.com using LXRBKF, 24 hrs before departure. Arrive SYR 90 min early. Seats not assigned \u2014 select at check-in." },
-                        { name: "Layover \u2014 Philadelphia (PHL)", type: 'quirky', desc: "~4 hour layover at PHL. Arrive Terminal F (regional) 4:20 PM \u2192 connect Terminal A East (Aer Lingus gates) for 8:25 PM departure. Transfer via inter-terminal shuttle bus or walkway (~15\u201320 min). TSA re-clearance NOT required (same airport security zone).", tip: "Plenty of time to eat. Terminal A has several sit-down restaurants \u2014 try Chickie\u2019s & Pete\u2019s for Philly crab fries. Wheelchair attendants will meet John & Rose at the gate and take them to Terminal A." },
-                        { name: "Leg 2 \u2014 EI 0114 \u2022 Philadelphia \u2192 Dublin (red-eye)", type: 'site', desc: "Sat 30 May 2026. Depart PHL 8:25 PM (Terminal A East) \u2192 Arrive DUB 8:15 AM Sun 31 May (Terminal 2). Flight time: 6h 50min. Operated by Aer Lingus \u2014 Airbus A330-300 widebody, 2\u20134\u20132 economy layout. Economy Class (Q), booking ref 28BSD2. Seats 17D (aisle) and 17E (middle). Complimentary hot dinner + breakfast, complimentary wine & beer, seatback IFE. 1 \u00D7 23kg checked bag per passenger. 2 \u00D7 Wheelchair for Ramp.", tip: "Check in at aerlingus.com with 28BSD2 from 30 hrs before. Dublin is Irish Standard Time (UTC+1) \u2014 5 hours ahead of Eastern. Eye masks, neck pillows, and water are game-changers on a red-eye." },
-                        { name: "Wheelchair for Ramp \u2014 all legs", type: 'quirky', desc: "Pre-arranged curbside \u2192 gate \u2192 onward gate \u2192 curbside at DUB for both John and Rose. Coordinated across American Airlines and Aer Lingus. Attendants will meet you at each transfer point.", tip: "Confirm with each airline 24 hrs before departure. Allow extra time at PHL for the Terminal F \u2192 Terminal A East transfer. At DUB, meet-and-greet continues through baggage claim." },
-                        { name: "Arrival at Dublin Airport (DUB)", type: 'site', desc: "Land Terminal 2 around 8:15 AM Sun 31 May. Passport control \u2192 baggage claim \u2192 Arrivals Hall. Wheelchair service escorts through passport control and baggage.", tip: "Take the Aircoach or Dublin Express bus (\u20AC10\u201312) or a taxi (\u20AC30\u201335) to the Iveagh Garden Hotel on Harcourt Street \u2014 ~25 min. Hotel check-in is from 4 PM, but luggage storage available earlier." }
+                        { confirmed: true, name: "Leg 1 \u2014 AA 5924 \u2022 Syracuse \u2192 Philadelphia", type: 'site', desc: "Sat 30 May 2026. Depart SYR 2:58 PM (gate TBD, Eastern Time) \u2192 Arrive PHL 4:20 PM (Terminal F). Flight time: 1h 22min. Operated by Piedmont Airlines for American Eagle \u2014 typically Embraer ERJ-145 (50-seat regional jet, 2\u20131 seating). Economy Class (Q), booking ref LXRBKF. Snack & drink service. No seatback IFE. 1 \u00D7 23kg checked bag per passenger, 1 \u00D7 carry-on. 2 \u00D7 Wheelchair for Ramp pre-arranged.", tip: "Check in with American at aa.com using LXRBKF, 24 hrs before departure. Arrive SYR 90 min early. Seats not assigned \u2014 select at check-in." },
+                        { confirmed: true, name: "Layover \u2014 Philadelphia (PHL)", type: 'quirky', desc: "~4 hour layover at PHL. Arrive Terminal F (regional) 4:20 PM \u2192 connect Terminal A East (Aer Lingus gates) for 8:25 PM departure. Transfer via inter-terminal shuttle bus or walkway (~15\u201320 min). TSA re-clearance NOT required (same airport security zone).", tip: "Plenty of time to eat. Terminal A has several sit-down restaurants \u2014 try Chickie\u2019s & Pete\u2019s for Philly crab fries. Wheelchair attendants will meet John & Rose at the gate and take them to Terminal A." },
+                        { confirmed: true, name: "Leg 2 \u2014 EI 0114 \u2022 Philadelphia \u2192 Dublin (red-eye)", type: 'site', desc: "Sat 30 May 2026. Depart PHL 8:25 PM (Terminal A East) \u2192 Arrive DUB 8:15 AM Sun 31 May (Terminal 2). Flight time: 6h 50min. Operated by Aer Lingus \u2014 Airbus A330-300 widebody, 2\u20134\u20132 economy layout. Economy Class (Q), booking ref 28BSD2. Seats 17D (aisle) and 17E (middle). Complimentary hot dinner + breakfast, complimentary wine & beer, seatback IFE. 1 \u00D7 23kg checked bag per passenger. 2 \u00D7 Wheelchair for Ramp.", tip: "Check in at aerlingus.com with 28BSD2 from 30 hrs before. Dublin is Irish Standard Time (UTC+1) \u2014 5 hours ahead of Eastern. Eye masks, neck pillows, and water are game-changers on a red-eye." },
+                        { confirmed: true, name: "Wheelchair for Ramp \u2014 all legs", type: 'quirky', desc: "Pre-arranged curbside \u2192 gate \u2192 onward gate \u2192 curbside at DUB for both John and Rose. Coordinated across American Airlines and Aer Lingus. Attendants will meet you at each transfer point.", tip: "Confirm with each airline 24 hrs before departure. Allow extra time at PHL for the Terminal F \u2192 Terminal A East transfer. At DUB, meet-and-greet continues through baggage claim." },
+                        { confirmed: true, name: "Arrival at Dublin Airport (DUB)", type: 'site', desc: "Land Terminal 2 around 8:15 AM Sun 31 May. Passport control \u2192 baggage claim \u2192 Arrivals Hall. Wheelchair service escorts through passport control and baggage.", tip: "Take the Aircoach or Dublin Express bus (\u20AC10\u201312) or a taxi (\u20AC30\u201335) to the Iveagh Garden Hotel on Harcourt Street \u2014 ~25 min. Hotel check-in is from 4 PM, but luggage storage available earlier." }
                     ],
                     funFact: 'Dublin has been a UNESCO City of Literature since 2010 — only the fourth city in the world to earn the title. Four Dublin-connected writers have won the Nobel Prize in Literature: Yeats, Shaw, Beckett, and Heaney.',
                     historical: 'Dublin was founded by Vikings around 841 AD as a slave-trading settlement along the Liffey. The name comes from "Dubh Linn" ("black pool"). For eight centuries it was the second city of the British Empire; in 1922 it became the capital of the Irish Free State.',
@@ -934,7 +1089,7 @@
                     briefing: 'Step into the world of Joyce, Wilde, and Yeats. Tour Trinity College, see the Book of Kells, wander through the Long Room, and end the day atop the Guinness Storehouse with 360° views of Dublin. Check into the Iveagh Garden Hotel from 4 PM.',
                     coordinates: { lat: 53.3351, lng: -6.2625 },
                     hotel: 'Iveagh Garden Hotel',
-                    hotelDetails: "Deluxe Triple Room (3 adults) with complimentary breakfast at Elle\u2019s Bistro. 72/74 Harcourt Street, Dublin 2. Booking #41791 \u2014 \u20AC319 pay at hotel. Check-in from 4 PM May 31, check-out by 12 PM June 1. Phone: +353 1 568 5500 | reservations@igh.ie",
+                    hotelDetails: "Deluxe Triple Room (3 adults) with complimentary breakfast at Elle\u2019s Bistro. 72/74 Harcourt Street, Dublin 2. Booking #41791 \u2014 pay at hotel. Check-in from 4 PM May 31, check-out by 12 PM June 1. Phone: +353 1 568 5500 | reservations@igh.ie",
                     guide: [
                         { name: 'Trinity College & Book of Kells', type: 'museum', desc: 'Ireland\'s oldest university (1592) houses the 9th-century illuminated Gospel manuscript and the staggering Long Room library.', tip: 'Book timed-entry tickets online in advance — €18.50 for Fast Track. Go first thing (8:30am) to beat coach tours.' },
                         { name: 'National Museum of Ireland — Archaeology', type: 'museum', desc: 'Bog bodies, the Ardagh Chalice, Viking Dublin hoards. One of Europe\'s great archaeological collections — and free.', tip: 'Free entry, closed Mondays. Allow 2 hours.' },
@@ -963,9 +1118,9 @@
                     briefing: 'Pam arrives and you collect the Newway rental car at Dublin Airport at 10 AM, then drive south through the midlands into Kerry \u2014 a 4.5-hour journey ending in Kenmare, a heritage town nestled between mountains and the sea. Overnight at the beloved Brook Lane Hotel.',
                     coordinates: { lat: 51.8789, lng: -9.5830 },
                     hotel: "Brook Lane Hotel \u2014 The Studio",
-                    hotelDetails: "Booking #7003 under Rose Novak \u2014 The Studio, 4 adults, 1 night (Mon 1 \u2192 Tue 2 Jun). Bed & Breakfast rate \u20AC310 pay at hotel. Check-in from 3 PM, check-out by 12 PM. Award-winning cooked-to-order breakfast at Casey\u2019s Bar & Restaurant served until 11 AM \u2014 free-range eggs from the farm, handmade sausages from their rare-breed pigs, and Eggs Benedict \u201CBrook Lane Style.\u201D Wi-Fi, flat-screen TV, bottled water on request. Nestled between the Ring of Kerry and Ring of Beara. Strict 72-hr cancellation policy. Kenmare, Co. Kerry \u2014 +353 (0)64 6642077 | info@brooklanehotel.com.",
+                    hotelDetails: "Booking #7003 under Rose Novak \u2014 The Studio, 4 adults, 1 night (Mon 1 \u2192 Tue 2 Jun). Bed & Breakfast rate, pay at hotel. Check-in from 3 PM, check-out by 12 PM. Award-winning cooked-to-order breakfast at Casey\u2019s Bar & Restaurant served until 11 AM \u2014 free-range eggs from the farm, handmade sausages from their rare-breed pigs, and Eggs Benedict \u201CBrook Lane Style.\u201D Wi-Fi, flat-screen TV, bottled water on request. Nestled between the Ring of Kerry and Ring of Beara. Strict 72-hr cancellation policy. Kenmare, Co. Kerry \u2014 +353 (0)64 6642077 | info@brooklanehotel.com.",
                     guide: [
-                        { name: 'Newway Car Rental (Dublin Airport)', type: 'site', desc: "Pickup 10:00 AM Mon 1 Jun at Dublin Airport. Intermediate Estate Auto (e.g. Toyota Corolla Estate). Return 10:00 AM Tue 9 Jun at Dublin Airport. Booking #OFZ2FM32W4 \u2014 \u20AC879.36 total (car \u20AC788.56 + additional driver \u20AC90.80). Includes unlimited mileage, CDW, theft protection, third-party cover, VAT \u2014 \u20AC0 excess.", tip: 'Bring a valid licence and a payment card in the main driver\u2019s name. Free cancellation up to 24 hrs before pickup.' },
+                        { confirmed: true, name: 'Newway Car Rental \u2014 Dublin Airport pickup 10:00 AM (BOOKED)', type: 'site', desc: "Booked under Emily Waight, Booking #OFZ2FM32W4. Pickup Mon 1 Jun 10:00 AM at Dublin Airport \u2192 Return Tue 9 Jun 10:00 AM, same location. Vehicle: Intermediate Estate Auto (e.g. Toyota Corolla Estate). Includes 1 \u00D7 Additional Driver, Unlimited Mileage, Collision Damage Waiver (\u20AC0 excess), Theft Protection (\u20AC0 excess), Third-Party Cover, and VAT.", tip: 'At the counter present a valid driving licence + 1 payment card in the main driver\u2019s name. Free cancellation up to 24 hrs before pickup. If you cancel within 24 hrs you get a full refund less \u20AC45.' },
                         { name: 'Cahir Castle (en route)', type: 'ancient', desc: 'One of Ireland\'s largest and best-preserved castles (13th c.), on an island in the River Suir. Worth a 45-min stop just off the M8.', tip: '€5 entry; Barry Lyndon was filmed here.' },
                         { name: 'Kenmare Stone Circle', type: 'ancient', desc: 'Bronze Age (2200–500 BC) circle of 15 stones — one of the largest in southwest Ireland, 5 min from the town square.', tip: 'Free; enter through the small gate off Market Street.' },
                         { name: 'Kenmare Heritage Centre', type: 'museum', desc: 'Tiny museum covering the town\'s planned 17th-century origins and its 19th-century lace-making tradition.', tip: 'Free; 30 minutes is plenty.' },
@@ -990,7 +1145,7 @@
                     briefing: 'Drive the iconic Ring of Kerry — one of the world\'s great coastal routes. Detour onto the wilder Skellig Ring with its views across to Skellig Michael, stop at Skelligs Chocolate Factory, and end the day in Dingle town with a pub music session.',
                     coordinates: { lat: 52.1408, lng: -10.2677 },
                     hotel: 'Dingle Skellig Hotel',
-                    hotelDetails: "Booking #R38594H under John Novak \u2014 two Classic Rooms, 4 adults total, 1 night (Tue 2 \u2192 Wed 3 Jun). Room 1 (John): double bed; Room 2 (Pamela): two single beds \u2014 adjoining rooms requested. Bed & Breakfast rate \u20AC580 total (\u20AC290 per room), full Irish breakfast in The Coastguard Restaurant included. Access to Leisure Club (pool, steam room, jacuzzi); Peninsula Spa treatments available for extra \u2014 pre-book. Check-in 4:00\u201311:30 PM, cancellation deadline Sun 31 May 4 PM (48-hr policy). Dingle Bay views. Manage booking at dingleskellig.com.",
+                    hotelDetails: "Booking #R38594H under John Novak \u2014 two Classic Rooms, 4 adults total, 1 night (Tue 2 \u2192 Wed 3 Jun). Room 1 (John): double bed; Room 2 (Pamela): two single beds \u2014 adjoining rooms requested. Bed & Breakfast rate, full Irish breakfast in The Coastguard Restaurant included. Access to Leisure Club (pool, steam room, jacuzzi); Peninsula Spa treatments available for extra \u2014 pre-book. Check-in 4:00\u201311:30 PM, cancellation deadline Sun 31 May 4 PM (48-hr policy). Dingle Bay views. Manage booking at dingleskellig.com.",
                     guide: [
                         { name: 'Moll\'s Gap & Ladies\' View', type: 'viewpoint', desc: 'Two of Kerry\'s most photographed viewpoints — mountain passes looking back over the Killarney lakes.', tip: 'Avoid Avoca café crowd by arriving before 10am or after 3pm.' },
                         { name: 'Staigue Stone Fort', type: 'ancient', desc: 'One of the finest stone ringforts in Ireland, c. 300-400 AD, in a dramatic mountain amphitheater above Sneem.', tip: 'Free; €1 honesty-box for the farm access road.' },
@@ -1017,7 +1172,7 @@
                     briefing: 'Drive leisurely along Slea Head Drive — one of the most stunning stretches of the Wild Atlantic Way. Visit the Blasket Centre, see Iron Age beehive huts, gaze out to the evacuated islands, and overnight in Ballyferriter, deep in Irish-speaking country.',
                     coordinates: { lat: 52.1748, lng: -10.3886 },
                     hotel: "Ceann Sib\u00E9al Hotel",
-                    hotelDetails: "Confirmation #6720768429661 under John Novak \u2014 two Deluxe Double rooms with sea view, 1 night (Wed 3 \u2192 Thu 4 Jun), 4 adults total. Standard rate includes breakfast; free cancellation up to 48 hrs before arrival. \u20AC398 grand total \u2014 card on file is charged 24\u201348 hrs before arrival. Check-in from 4 PM, check-out by 11 AM (late check-out to 3 PM is \u20AC50). Ballyferriter (Baile an Fheirt\u00E9araigh), Dingle V92 Y4EK \u2014 in the heart of the Irish-speaking Gaeltacht. Phone: +353 66 9156 433 | info@ceannsibealhotel.com.",
+                    hotelDetails: "Confirmation #6720768429661 under John Novak \u2014 two Deluxe Double rooms with sea view, 1 night (Wed 3 \u2192 Thu 4 Jun), 4 adults total. Standard rate includes breakfast; free cancellation up to 48 hrs before arrival. Card on file is charged 24\u201348 hrs before arrival. Check-in from 4 PM, check-out by 11 AM (late check-out to 3 PM available for a fee). Ballyferriter (Baile an Fheirt\u00E9araigh), Dingle V92 Y4EK \u2014 in the heart of the Irish-speaking Gaeltacht. Phone: +353 66 9156 433 | info@ceannsibealhotel.com.",
                     guide: [
                         { name: 'Gallarus Oratory', type: 'ancient', desc: 'A perfectly preserved 6th–9th century dry-stone Christian oratory — not a drop of water has got in in 1,200 years.', tip: '€3 through the visitor centre, or wander around the outside for free.' },
                         { name: 'Beehive Huts (Fahan)', type: 'ancient', desc: 'Cluster of Iron Age / early medieval clocháns — drystone domed houses right on Slea Head Drive.', tip: '€3 honesty box at the farm gate. Most atmospheric of the several groups.' },
@@ -1047,7 +1202,7 @@
                     briefing: 'Drive north from Kerry to Doolin, County Clare (about 4 hours with the Tarbert ferry). Visit the Cliffs of Moher in the evening — the sun doesn\'t set until 10:15 PM in June — and settle into Doolin, Ireland\'s unofficial capital of traditional music.',
                     coordinates: { lat: 52.9904, lng: -9.3868 },
                     hotel: "Hotel Doolin \u2014 Piper\u2019s Chair Self-Catering House",
-                    hotelDetails: "Booking #5518 under John Novak \u2014 Houses @ Hotel Doolin, one-night stay. Two-storey self-catering house with open-plan kitchen/living/dining downstairs, three bedrooms and a shared family bathroom upstairs; sleeps up to 5. For 4 adults. \u20AC450 pay at hotel. Arrival from 3 PM Thu 4 Jun, collect keys at Hotel Doolin reception 4\u20139 PM. Check-out strictly by 12 PM Fri 5 Jun. Fitz Cross, Doolin, Co. Clare. Phone: 065 707 4111 | reservations@hoteldoolin.ie. Fitz\u2019s Pub on site with nightly trad sessions; McGann\u2019s (6 min walk) & McDermott\u2019s (7 min walk) also have nightly music. Cliffs of Moher just 9 km away.",
+                    hotelDetails: "Booking #5518 under John Novak \u2014 Houses @ Hotel Doolin, one-night stay. Two-storey self-catering house with open-plan kitchen/living/dining downstairs, three bedrooms and a shared family bathroom upstairs; sleeps up to 5. For 4 adults. Pay at hotel. Arrival from 3 PM Thu 4 Jun, collect keys at Hotel Doolin reception 4\u20139 PM. Check-out strictly by 12 PM Fri 5 Jun. Fitz Cross, Doolin, Co. Clare. Phone: 065 707 4111 | reservations@hoteldoolin.ie. Fitz\u2019s Pub on site with nightly trad sessions; McGann\u2019s (6 min walk) & McDermott\u2019s (7 min walk) also have nightly music. Cliffs of Moher just 9 km away.",
                     guide: [
                         { name: 'Tarbert – Killimer Ferry', type: 'quirky', desc: 'Shannon estuary car ferry — cuts 137 km off the drive and is half the fun. 20-minute crossing.', tip: '€25 one-way. Sailings every 30 min, no reservation needed.' },
                         { name: 'Cliffs of Moher (evening)', type: 'viewpoint', desc: '214 m sheer Atlantic cliffs stretching 14 km. Go at 7–9pm — crowds gone, golden light, puffins nesting May–July.', tip: 'Visitor centre closes at 9pm but cliffs are open after — bring a torch for the walk back. Parking €8.' },
@@ -1068,15 +1223,15 @@
                 },
                 {
                     date: 'June 5',
-                    location: 'Aran Islands Day Trip',
-                    highlight: 'Inisheer by Pony Cart',
+                    location: 'Aran Islands \u2192 Dublin',
+                    highlight: 'Inisheer by Morning, Dublin by Night',
                     backgroundImage: 'aran-islands.png',
-                    briefing: "10:00 AM ferry from Doolin Pier to Inis O\u00EDrr (Inisheer), the smallest and most easterly of the Aran Islands \u2014 a 20-minute crossing. Explore by pony trap, see the Plassey shipwreck, wander an ancient castle, and catch the 1:45 PM return ferry back to Doolin. Evening of traditional music in the Doolin pubs.",
+                    briefing: "10:00 AM ferry from Doolin Pier to Inis O\u00EDrr (Inisheer), the smallest and most easterly of the Aran Islands \u2014 a 20-minute crossing. Explore by pony trap, see the Plassey shipwreck, wander an ancient castle, and catch the 1:45 PM return ferry back to Doolin. After lunch, drive ~3 hours east to Dublin and check into The Green hotel near St Stephen\u2019s Green for the night.",
                     coordinates: { lat: 53.06, lng: -9.51 },
-                    hotel: "Hotel Doolin \u2014 Piper\u2019s Chair Self-Catering House",
-                    hotelDetails: "Second night in the Piper\u2019s Chair house (Fitz Cross, Doolin). \u26A0 Booking #5518 covers only Jun 4 \u2192 Jun 5 (check-out 12 PM) \u2014 the Jun 5 night needs its own reservation. Phone 065 707 4111 or reservations@hoteldoolin.ie to extend. Same self-catering house, 4 adults, Fitz\u2019s Pub on site, McGann\u2019s (6 min) & McDermott\u2019s (7 min) for nightly sessions.",
+                    hotel: 'The Green (Dublin)',
+                    hotelDetails: "Confirmation #267716609 \u2014 two Green King rooms (2 adults each) for 1 night, Fri 5 \u2192 Sat 6 Jun. Room 1 booked under John Novak, includes breakfast. Room 2 booked under Emily Novak Waight, room only. Advance Purchase rate, paid in full, non-refundable (one date change permitted up to 7 days prior). Check-in 3:00 PM, check-out 11:00 AM. The Green is a boutique 4-star on St Stephen\u2019s Green \u2014 walking distance to Trinity College, Grafton Street, and most of central Dublin.",
                     guide: [
-                        { name: "Doolin Ferry to Inis O\u00EDrr \u2014 BOOKED", type: 'quirky', desc: "Order #2Y4N4Q1V3N6F5U1G under Rose Novak \u2014 4 adults, \u20AC148 total (paid, Visa \u22ef3101). Outbound booking #12558274: Doolin \u2192 Inis O\u00EDrr one-way 10:00 AM (4 \u00D7 \u20AC25). Return booking #12558275: Inis O\u00EDrr \u2192 Doolin 1:45 PM (4 \u00D7 \u20AC12). Walk straight to the pier \u2014 no ticket-office check-in required.", tip: "QR codes needed on every leg \u2014 save them to your phone or print before arriving at Doolin Pier. Sit at the back outside; crossings can be rough. Bonus: use code \u201Caillwee10\u201D for 10% off the Aillwee Burren Experience.", image: 'doolin-ferry.jpg', link: 'https://doolinferry.com/' },
+                        { confirmed: true, name: "Doolin Ferry to Inis O\u00EDrr \u2014 BOOKED", type: 'quirky', desc: "Order #2Y4N4Q1V3N6F5U1G under Rose Novak \u2014 4 adults, paid in full. Outbound booking #12558274: Doolin \u2192 Inis O\u00EDrr one-way 10:00 AM. Return booking #12558275: Inis O\u00EDrr \u2192 Doolin 1:45 PM. Walk straight to the pier \u2014 no ticket-office check-in required.", tip: "QR codes needed on every leg \u2014 save them to your phone or print before arriving at Doolin Pier. Sit at the back outside; crossings can be rough. Bonus: use code \u201Caillwee10\u201D for 10% off the Aillwee Burren Experience.", image: 'doolin-ferry.jpg', link: 'https://doolinferry.com/' },
                         { name: "O\'Brien\'s Castle (Caisleán Uí Bhriain)", type: 'ancient', desc: '14th-century tower-house high on the hill above the harbour — 360° views across the island and over to the Cliffs of Moher.', tip: 'Free. 20-minute walk up from the pier. Ruin open to the sky.' },
                         { name: 'Plassey Shipwreck', type: 'quirky', desc: 'Rusting hull of the MV Plassey, beached during a 1960 storm. Featured in the opening credits of Father Ted.', tip: 'On the east side of the island, walkable or by pony trap.' },
                         { name: 'Pony & Trap Tour', type: 'quirky', desc: 'Traditional jaunting car tour from the harbour — drivers narrate in English and Irish. About 1 hour.', tip: '€20 per head. Ask for Tomás or any of the regulars at the pier.' },
@@ -1096,18 +1251,18 @@
                 },
                 {
                     date: 'June 6',
-                    location: "Northern Ireland \u2014 Giant\'s Causeway",
-                    highlight: "Giant\'s Causeway & Bushmills",
+                    location: "Dublin \u2192 Northern Ireland (Bushmills)",
+                    highlight: "Giant\u2019s Causeway & Bushmills",
                     backgroundImage: 'belfast.png',
-                    briefing: "Drive from Doolin up through the midlands and into Northern Ireland (about 5.5 hours). Explore UNESCO-listed Giant\'s Causeway — 60-million-year-old hexagonal basalt columns — and visit Bushmills Distillery, licensed to distill since 1608.",
-                    coordinates: { lat: 55.2413, lng: -6.3969 },
-                    hotel: 'Portrush Adelphi',
-                    hotelDetails: '4-star, coastal, panoramic ocean views over the Atlantic and the Skerries. €180–240/night.',
+                    briefing: "Check out of The Green by 11 AM and drive from Dublin up the M1 motorway into Northern Ireland (about 3 hours to Bushmills). Visit UNESCO-listed Giant\u2019s Causeway \u2014 60-million-year-old hexagonal basalt columns \u2014 and walk straight into the 1:00 PM Premium Tour & Tasting at Old Bushmills Distillery. Settle in for the night at the Grays Bushmills.",
+                    coordinates: { lat: 55.2056, lng: -6.5261 },
+                    hotel: 'Grays Bushmills',
+                    hotelDetails: "Booking #DY4C3RX under Prof. John Novak \u2014 Family Suite, 3 adults, 1 night (Sat 6 \u2192 Sun 7 Jun). Bed & Breakfast 2026 rate \u2014 includes a full Irish breakfast. Check-in 3:00\u201310:00 PM, cancellation deadline Thu 4 Jun 3:00 PM. Boutique guesthouse in Bushmills village, walking distance to the distillery and a short drive to the Causeway.",
                     guide: [
                         { name: "Giant\'s Causeway", type: 'site', desc: '40,000 interlocking basalt columns formed by a Paleogene volcanic eruption. UNESCO since 1986.', tip: 'Visitor centre £15 (with audio); but the stones themselves are free — park and walk down.' },
                         { name: 'Causeway Coastal Walk', type: 'walk', desc: 'Cliff-top path from the Causeway towards Port na Spaniagh — some of Ireland\'s most dramatic coastline.', tip: 'The Shepherd\'s Steps route (red trail) is the classic 2 km loop. Windproof layers essential.' },
                         { name: "Carrick-a-Rede Rope Bridge", type: 'walk', desc: 'Swaying rope bridge 30 m above the sea, linking the mainland to a tiny fisherman\'s island.', tip: 'Book timed tickets online (£15) — sells out. Not suitable for vertigo.' },
-                        { name: 'Old Bushmills Distillery', type: 'site', desc: 'Licensed since 1608 — the oldest licensed whiskey distillery in the world. Tours end with a tasting.', tip: 'Book tours in advance (£15). The Distillery Reserve, only sold on-site, is the one to buy.' },
+                        { confirmed: true, name: 'Old Bushmills Distillery \u2014 Premium Tour & Tasting (BOOKED)', type: 'site', desc: "Booked Sat 6 Jun at 1:00 PM \u2014 Booking #9115176, 2.5-hour Premium Tour & Tasting for 3 (1 Adult, 1 Senior, 1 Driver), pre-paid. 2 Distillery Rd, Bushmills BT57 8XH. The world\u2019s oldest licensed whiskey distillery \u2014 King James I granted the original licence on 20 April 1608, making it 418 years old in 2026. Whiskey was being distilled on this site long before: the first record of \u201Cthe spirit\u201D (uisce beatha) here dates to 1276, when a Knight of Malta stopped for a dram. The Distillery Co. we know today was incorporated in 1784 under Hugh Anderson. Destroyed by fire in 1885 (rebuilt in the red-sandstone pagoda style you\u2019ll see today), bought by Irish Distillers in 1972, sold to Diageo in 2005 and then to Proximo Spirits in 2014, which still owns it. Every drop of Bushmills is triple-distilled.", tip: "Bring your booking ID 9115176. Email distillery.tours@bushmills.com or call +44 28 2073 3218 for any changes. The Distillery Reserve, only sold on-site, is the one to buy home.", link: 'https://bushmills.com' },
                         { name: 'Dunluce Castle', type: 'ancient', desc: 'Dramatic cliff-top ruin that inspired C. S. Lewis\'s Cair Paravel. The kitchen literally fell into the sea in 1639.', tip: '£6. A quick stop; 30 minutes is plenty.' },
                         { name: 'Dark Hedges (Bregagh Road)', type: 'quirky', desc: 'Beech-tree tunnel planted in the 18th century; Game of Thrones\' Kingsroad.', tip: 'Free. Go at dawn or dusk; midday is busy and underwhelming.' },
                         { name: 'Bushmills Inn', type: 'restaurant', desc: '17th-century coaching inn with turf fires, stone floors, and one of the region\'s best dining rooms.', tip: 'Book dinner. The seafood chowder is legendary.' },
@@ -1131,9 +1286,9 @@
                     briefing: "Pickup at 1:00 PM from The Merchant Hotel: the 3-Hour Ultimate Belfast Experience Black Taxi Tour \u2014 Falls Road, Shankill Road, peace walls, and the murals that tell both sides of the story. Afternoon / early evening at Titanic Belfast, one of the world\u2019s great museums. End with dinner at The Merchant.",
                     coordinates: { lat: 54.6006, lng: -5.9269 },
                     hotel: 'The Merchant Hotel',
-                    hotelDetails: "Deluxe Twin Victorian Room (3 adults: John, Rose, Pam) \u2014 booked under Rose Novak, ref #1C9EDWK. 1 night, Sun 7 Jun \u2192 Mon 8 Jun. Check-in 3:00\u201311:00 PM, check-out 12 noon. \u00A3429 total on the Lowest Flexible Rate \u2014 pay at hotel, includes breakfast at The Great Room, rooftop hot tub, sauna & steam room, Wi-Fi. Twin-bed configuration, self-parking requested, dinner & drinks in hotel flagged. Cancellation deadline Sat 6 Jun 3:00 PM. 5-star Grade A listed Victorian building, 16 Skipper Street, Cathedral Quarter \u2014 same address as the 1 PM Black Taxi pickup.",
+                    hotelDetails: "Deluxe Twin Victorian Room (3 adults: John, Rose, Pam) \u2014 booked under Rose Novak, ref #1C9EDWK. 1 night, Sun 7 Jun \u2192 Mon 8 Jun. Check-in 3:00\u201311:00 PM, check-out 12 noon. Lowest Flexible Rate \u2014 pay at hotel, includes breakfast at The Great Room, rooftop hot tub, sauna & steam room, Wi-Fi. Twin-bed configuration, self-parking requested, dinner & drinks in hotel flagged. Cancellation deadline Sat 6 Jun 3:00 PM. 5-star Grade A listed Victorian building, 16 Skipper Street, Cathedral Quarter \u2014 same address as the 1 PM Black Taxi pickup.",
                     guide: [
-                        { name: '3-Hour Ultimate Belfast Experience (BelfastTours.com) — BOOKED', type: 'site', desc: "Booked for Sun 7 Jun at 1:00 PM \u2014 pickup at The Merchant Hotel, 16 Skipper Street. Three passengers (John, Rose, Pam). Guides present Republican and Loyalist stories on a neutral basis. Balance due to the driver: \u00A3305 (deposit already paid).", tip: "Cash preferred \u2014 not all drivers carry card machines, so bring \u00A3305 in cash or ring to confirm card payment. Booking managed at belfasttours.com \u2014 contact John Novak / pamelainasia@gmail.com / +1 434-566-8014." },
+                        { confirmed: true, name: '3-Hour Ultimate Belfast Experience (BelfastTours.com) — BOOKED', type: 'site', desc: "Booked for Sun 7 Jun at 1:00 PM \u2014 pickup at The Merchant Hotel, 16 Skipper Street. Three passengers (John, Rose, Pam). Guides present Republican and Loyalist stories on a neutral basis. Balance due to the driver on the day (deposit already paid).", tip: "Cash preferred \u2014 not all drivers carry card machines, so bring cash or ring to confirm card payment. Booking managed at belfasttours.com \u2014 contact John Novak / pamelainasia@gmail.com / +1 434-566-8014." },
                         { name: 'Titanic Belfast', source: 'museum', type: 'museum', desc: 'A six-storey museum on the exact slipway where RMS Titanic was built. Atmospheric, emotionally-weighted, superb.', tip: 'Book timed tickets (£25). Allow 3 hours. SS Nomadic ticket next door is included.' },
                         { name: 'Ulster Museum', type: 'museum', desc: 'Ireland\'s best archaeology/art museum for its size — Egyptology, Irish art, dinosaur bones, Troubles history — all free.', tip: 'Free entry. The Troubles gallery on the top floor is essential.' },
                         { name: 'Crumlin Road Gaol', type: 'site', desc: 'Victorian prison used until 1996 — held Republican and Loyalist prisoners during the Troubles. Evocative guided tour.', tip: '£13. Tour lasts 75 minutes.' },
@@ -1149,7 +1304,7 @@
                         { title: "The Troubles \u2014 A Euphemism for Bloody Conflict", source: 'Irish Times', url: 'https://www.irishtimes.com/news/politics/the-troubles-a-euphemism-for-bloody-conflict-1.3983352', desc: "Why \u201cThe Troubles\u201d was chosen as a word \u2014 and what it conceals." },
                         { title: 'Belfast, 1969: The Troubles Were Coming', source: 'Irish Times', url: 'https://www.irishtimes.com/culture/books/belfast-1969-the-troubles-were-coming-1.3963024', desc: 'Memoir extract \u2014 the night the guns came out, from a Belfast man who was there.' },
                         { title: "Giving Voice to the Troubles: How Literature Told the North\u2019s Story", source: 'Irish Times', url: 'https://www.irishtimes.com/culture/books/giving-voice-to-the-troubles-how-literature-has-told-the-north-s-story-1.3642490', desc: 'How Seamus Heaney, Robert McLiam Wilson and others made sense of the conflict in fiction.' },
-                        { title: '3-Hour Ultimate Belfast Experience (our booking)', source: 'belfasttours.com', url: 'https://www.belfasttours.com/', desc: "Booked Black Taxi Tour operator \u2014 pickup 1 PM at The Merchant Hotel, 3 passengers, \u00A3305 balance due on the day. Cash preferred." },
+                        { title: '3-Hour Ultimate Belfast Experience (our booking)', source: 'belfasttours.com', url: 'https://www.belfasttours.com/', desc: "Booked Black Taxi Tour operator \u2014 pickup 1 PM at The Merchant Hotel, 3 passengers. Balance due to the driver day-of (cash preferred)." },
                         { title: 'Titanic Belfast', source: 'titanicbelfast.com', url: 'https://www.titanicbelfast.com', desc: 'Official site \u2014 tickets, hours, SS Nomadic combo pass.' },
                         { title: 'Belfast Tours FAQs', source: 'belfasttours.com', url: 'https://www.belfasttours.com/faq/', desc: 'Cash vs card, pickup locations, neutral-guide policy and other booking details.' }
                     ]
@@ -1162,7 +1317,7 @@
                     briefing: "Drive 2 hours back to Dublin, optionally stopping in Drogheda \u2014 the medieval town with 5,000 years of history on its doorstep at Newgrange. Check into the Iveagh Garden Hotel from 4 PM for the final night. Dinner at Patrick Guilbaud.",
                     coordinates: { lat: 53.3351, lng: -6.2625 },
                     hotel: 'Iveagh Garden Hotel',
-                    hotelDetails: "Deluxe Triple Room (3 adults) with complimentary breakfast at Elle\u2019s Bistro. 72/74 Harcourt Street, Dublin 2. Booking #41810 under John Novak \u2014 \u20AC369 pay at hotel. Check-in from 4 PM Mon 8 Jun, check-out by 12 PM Tue 9 Jun (in time for the 11:10 AM Aer Lingus flight to JFK). Phone: +353 1 568 5500 | reservations@igh.ie. Cancellation policy: 48 hrs / 12 PM two days before arrival.",
+                    hotelDetails: "Deluxe Triple Room (3 adults) with complimentary breakfast at Elle\u2019s Bistro. 72/74 Harcourt Street, Dublin 2. Booking #41810 under John Novak \u2014 pay at hotel. Check-in from 4 PM Mon 8 Jun, check-out by 12 PM Tue 9 Jun (in time for the 11:10 AM Aer Lingus flight to JFK). Phone: +353 1 568 5500 | reservations@igh.ie. Cancellation policy: 48 hrs / 12 PM two days before arrival.",
                     guide: [
                         { name: 'Brú na Bóinne (Newgrange)', type: 'ancient', desc: 'Neolithic passage tomb (3200 BC) older than Stonehenge or the pyramids. UNESCO World Heritage Site.', tip: 'Only accessible by shuttle from Brú na Bóinne Visitor Centre. Book online — day-of rarely available.' },
                         { name: 'Drogheda (town)', type: 'walk', desc: 'Medieval walled town on the River Boyne. Narrow streets, Gothic St. Peter\'s Church with the head of St. Oliver Plunkett.', tip: '30-minute stop on the way back. Worth the detour.' },
@@ -1182,19 +1337,20 @@
                 },
                 {
                     date: 'June 9',
-                    location: 'Dublin \u2192 New York \u2192 Syracuse',
+                    location: 'Dublin \u2192 JFK, then home (Syracuse / Tampa)',
                     highlight: 'Farewell Ireland',
                     backgroundImage: 'dublin.png',
-                    briefing: "Return the Newway rental car at Dublin Airport by 10 AM, then fly home with Aer Lingus. John & Rose depart DUB at 11:10 AM, connect at JFK, and land back in Syracuse just before midnight. US Customs pre-clearance happens at Dublin \u2014 arrive 3 hours early.",
+                    briefing: "Return the Newway rental car at Dublin Airport by 10 AM, then fly home with Aer Lingus. All three Novaks share the 11:10 AM DUB \u2192 JFK leg (EI 0105). At JFK the group splits: Pam boards EI 5090 to Tampa at 6:00 PM, while John & Rose take EI 5080 to Syracuse at 10:25 PM. US Customs pre-clearance happens at Dublin \u2014 arrive 3 hours early.",
                     coordinates: { lat: 53.3438, lng: -6.2546 },
                     hotel: 'Depart',
                     hotelDetails: "Check out and depart. Rental car back to Newway at DUB by 10 AM; Aer Lingus flight EI 0105 to JFK 11:10 AM.",
                     guide: [
-                        { name: "Newway Car Return (DUB) \u2014 10:00 AM", type: 'site', desc: "Return the Intermediate Estate Auto (Toyota Corolla Estate or similar) by 10:00 AM Tue 9 Jun. Booking #OFZ2FM32W4. Signposted \u201CRental Car Return\u201D at the airport \u2014 ground floor, short walk to Terminal 2.", tip: "Fill up at the airport fuel station en route (signed before rental return). Keep the fuel receipt \u2014 Newway asks for proof of top-up to avoid re-fuel surcharge." },
-                        { name: "Leg 1 \u2014 EI 0105 \u2022 Dublin \u2192 New York JFK", type: 'site', desc: "Tue 9 Jun 2026. Depart DUB 11:10 AM (Terminal 2) \u2192 Arrive JFK 1:40 PM (Terminal 7, Eastern Time). Flight time: 7h 30min. Operated by Aer Lingus \u2014 Airbus A330-300 widebody, 2\u20134\u20132 economy layout. Economy Class (Q), booking ref 28BSD2. Seats 22C (aisle) and 22A (window). Complimentary hot meal + mid-flight snack, complimentary wine & beer, seatback IFE with films, TV, music. 1 \u00D7 23kg checked bag per passenger. 2 \u00D7 Wheelchair for Ramp.", tip: "Arrive DUB 3 hrs early \u2014 US Customs pre-clearance happens in Dublin (you\u2019ll clear US immigration before boarding). When you land at JFK you\u2019re a domestic arrival, no customs line." },
-                        { name: "Layover \u2014 John F. Kennedy International (JFK)", type: 'quirky', desc: "~8h 45min layover at JFK (1:40 PM \u2192 10:25 PM). Arrive JFK Terminal 7 (Aer Lingus) \u2192 connect to Terminal 5 (JetBlue) for EI 5080. Transfer via free JFK AirTrain \u2014 factor in 30\u201345 min. Terminal 7 will close before your connection, so plan to transfer to T5 sooner rather than later.", tip: "T5 has a great dining scene (Deep Blue Sushi, Shake Shack, La Vie). Long layover \u2014 you could in theory leave and see Queens or Manhattan (90 min each way on LIRR), but with wheelchair service it\u2019s simpler to stay airside. T5 has quiet lounges and Jetblue Lost in Paradise bar." },
-                        { name: "Leg 2 \u2014 EI 5080 \u2022 JFK \u2192 Syracuse", type: 'site', desc: "Tue 9 Jun 2026. Depart JFK 10:25 PM (Terminal 5) \u2192 Arrive SYR 11:52 PM. Flight time: 1h 27min. Operated by JetBlue (B6) on Aer Lingus code-share \u2014 typically Embraer E190 regional jet (2\u20132 seating). Economy (Q). Complimentary JetBlue snacks (Cheez-Its, Terra Chips, cookies) + drinks. Free DirecTV at seat + free Fly-Fi Wi-Fi. 1 \u00D7 23kg checked bag per passenger. 2 \u00D7 Wheelchair for Ramp.", tip: "Seat selection available at jetblue.com with booking LXRBKF from 24 hrs before. Landing just before midnight \u2014 arrange Syracuse ground transport in advance." },
-                        { name: "Wheelchair for Ramp \u2014 all legs", type: 'quirky', desc: "Pre-arranged curbside-to-gate assistance on both EI 0105 (Aer Lingus) and EI 5080 (JetBlue). Attendants will meet John & Rose at DUB curb \u2192 check-in \u2192 security \u2192 gate \u2192 JFK arrival \u2192 T7-to-T5 AirTrain \u2192 JetBlue gate \u2192 SYR baggage claim \u2192 curbside.", tip: "Re-confirm 24 hrs before departure with each airline. Mention the T7 \u2192 T5 connection explicitly \u2014 a second chair may be assigned for the AirTrain transfer." },
+                        { confirmed: true, name: "Newway Car Return (DUB) \u2014 10:00 AM", type: 'site', desc: "Return the Intermediate Estate Auto (Toyota Corolla Estate or similar) by 10:00 AM Tue 9 Jun. Booking #OFZ2FM32W4. Signposted \u201CRental Car Return\u201D at the airport \u2014 ground floor, short walk to Terminal 2.", tip: "Fill up at the airport fuel station en route (signed before rental return). Keep the fuel receipt \u2014 Newway asks for proof of top-up to avoid re-fuel surcharge." },
+                        { confirmed: true, name: "Leg 1 \u2014 EI 0105 \u2022 Dublin \u2192 New York JFK (all three Novaks)", type: 'site', desc: "Tue 9 Jun 2026. Depart DUB 11:10 AM (Terminal 2) \u2192 Arrive JFK 1:40 PM (Terminal 7, Eastern Time). Flight time: 7h 30min. Operated by Aer Lingus \u2014 Airbus A330-300 widebody, 2\u20134\u20132 economy layout. Economy Class. John & Rose: booking 28BSD2, seats 22C (aisle) & 22A (window). Pam: booking 2D2F6F, seat 21A. Complimentary hot meal + mid-flight snack, complimentary wine & beer, seatback IFE with films, TV, music. 1 \u00D7 23kg checked bag per passenger. 2 \u00D7 Wheelchair for Ramp (John & Rose).", tip: "Arrive DUB 3 hrs early \u2014 US Customs pre-clearance happens in Dublin (you\u2019ll clear US immigration before boarding). When you land at JFK you\u2019re a domestic arrival, no customs line." },
+                        { confirmed: true, name: "Layover \u2014 John F. Kennedy International (JFK)", type: 'quirky', desc: "At JFK the group splits. Pam has a 4h 20min layover (1:40 PM \u2192 6:00 PM) before flying to Tampa. John & Rose have a longer ~8h 45min wait (1:40 PM \u2192 10:25 PM) before their Syracuse flight. Both parties transfer from JFK Terminal 7 (Aer Lingus) to Terminal 5 (JetBlue) via the free JFK AirTrain \u2014 factor in 30\u201345 min.", tip: "Good chance for a farewell meal together at T5 (Deep Blue Sushi, Shake Shack, La Vie) before Pam boards her flight. T7 closes before John & Rose\u2019s connection, so transfer to T5 early." },
+                        { confirmed: true, name: "Leg 2 (Pam) \u2014 EI 5090 \u2022 JFK \u2192 Tampa", type: 'site', desc: "Tue 9 Jun 2026. Depart JFK 6:00 PM (Terminal 5) \u2192 Arrive TPA 9:12 PM. Flight time: 3h 12min. Operated by JetBlue (B6) on Aer Lingus code-share. Economy (N). Booking ref 2D2F6F. Seat not yet selected \u2014 book at jetblue.com or aerlingus.com. 1 \u00D7 23kg checked bag. 1 \u00D7 10kg/22lb carry-on + personal item. Free DirecTV + Fly-Fi Wi-Fi. Complimentary snacks.", tip: "Ticket 0532413293260. A seat on the JFK\u2192TPA leg is still open \u2014 select online 24 hrs before for best choice." },
+                        { confirmed: true, name: "Leg 2 (John & Rose) \u2014 EI 5080 \u2022 JFK \u2192 Syracuse", type: 'site', desc: "Tue 9 Jun 2026. Depart JFK 10:25 PM (Terminal 5) \u2192 Arrive SYR 11:52 PM. Flight time: 1h 27min. Operated by JetBlue (B6) on Aer Lingus code-share \u2014 typically Embraer E190 regional jet (2\u20132 seating). Economy (Q). Complimentary JetBlue snacks (Cheez-Its, Terra Chips, cookies) + drinks. Free DirecTV at seat + free Fly-Fi Wi-Fi. 1 \u00D7 23kg checked bag per passenger. 2 \u00D7 Wheelchair for Ramp.", tip: "Seat selection available at jetblue.com with booking LXRBKF from 24 hrs before. Landing just before midnight \u2014 arrange Syracuse ground transport in advance." },
+                        { confirmed: true, name: "Wheelchair for Ramp \u2014 all legs", type: 'quirky', desc: "Pre-arranged curbside-to-gate assistance on both EI 0105 (Aer Lingus) and EI 5080 (JetBlue). Attendants will meet John & Rose at DUB curb \u2192 check-in \u2192 security \u2192 gate \u2192 JFK arrival \u2192 T7-to-T5 AirTrain \u2192 JetBlue gate \u2192 SYR baggage claim \u2192 curbside.", tip: "Re-confirm 24 hrs before departure with each airline. Mention the T7 \u2192 T5 connection explicitly \u2014 a second chair may be assigned for the AirTrain transfer." },
                         { name: 'Fast Track (if booked)', type: 'quirky', desc: "Dublin Airport\u2019s paid queue-skip for security \u2014 worth it given the wheelchair-assisted timing and the 3-hour arrival window.", tip: 'Book online in advance, \u20AC9.99 per person. Not needed if you\u2019re already being escorted by wheelchair service, which bypasses queues automatically.' },
                         { name: 'The Loop (airport shopping)', type: 'shop', desc: 'The duty-free at DUB. Butlers Chocolates, Jameson minis, Aran sweaters at fair prices, Irish whiskey selection.', tip: 'Butlers caramels make easy gifts. Save some liquid purchases for duty-free at JFK if you\u2019re continuing.' }
                     ],
@@ -1247,6 +1403,52 @@
                 'Watch Far and Away or Ryan\'s Daughter',
                 'Pack waterproof jacket & layers'
             ];
+
+            // Budget tracker — for Pam & Emily, hidden from parents (linked from "Other" tab)
+            const budgetItems = [
+                // Flights
+                { category: 'Flights', date: 'May 30 \u2192 Jun 9', who: 'John & Rose', desc: 'Round-trip SYR \u2192 PHL \u2192 DUB / DUB \u2192 JFK \u2192 SYR', provider: 'Aer Lingus + American Eagle', ref: '28BSD2 / LXRBKF', amount: 2178.16, currency: 'USD', status: 'paid' },
+                { category: 'Flights', date: 'Jun 9', who: 'Pam', desc: 'One-way DUB \u2192 JFK \u2192 TPA (incl. extras)', provider: 'Aer Lingus + JetBlue', ref: '2D2F6F', amount: 584.72, currency: 'EUR', status: 'paid' },
+                // Car
+                { category: 'Car Rental', date: 'Jun 1 \u2192 9', who: 'Group', desc: 'Intermediate Estate Auto + additional driver, full coverage', provider: 'Newway (DUB)', ref: 'OFZ2FM32W4', amount: 879.36, currency: 'EUR', status: 'paid' },
+                // Hotels
+                { category: 'Hotels', date: 'May 31 \u2192 Jun 1', who: 'Emily', desc: 'Iveagh Garden Hotel \u2014 Deluxe Triple, B&B', provider: 'Iveagh Garden Hotel', ref: '41791', amount: 319.00, currency: 'EUR', status: 'pay-at-hotel' },
+                { category: 'Hotels', date: 'Jun 1 \u2192 2', who: 'Rose', desc: 'Brook Lane Hotel \u2014 The Studio, B&B (4 adults)', provider: 'Brook Lane Hotel, Kenmare', ref: '7003', amount: 310.00, currency: 'EUR', status: 'pay-at-hotel' },
+                { category: 'Hotels', date: 'Jun 2 \u2192 3', who: 'John', desc: 'Dingle Skellig \u2014 2 Classic Rooms B&B', provider: 'Dingle Skellig Hotel', ref: 'R38594H', amount: 580.00, currency: 'EUR', status: 'pay-at-hotel' },
+                { category: 'Hotels', date: 'Jun 3 \u2192 4', who: 'John', desc: "Ceann Sib\u00E9al \u2014 2 Deluxe Doubles, sea view, B&B", provider: "Ceann Sib\u00E9al Hotel, Ballyferriter", ref: '6720768429661', amount: 398.00, currency: 'EUR', status: 'card-on-file' },
+                { category: 'Hotels', date: 'Jun 4 \u2192 5', who: 'John', desc: "Hotel Doolin \u2014 Piper\u2019s Chair self-catering house (4 adults)", provider: 'Hotel Doolin', ref: '5518', amount: 450.00, currency: 'EUR', status: 'pay-at-hotel' },
+                { category: 'Hotels', date: 'Jun 5 \u2192 6', who: 'John + Emily', desc: "The Green (Dublin) \u2014 2 \u00D7 Green King rooms (incl. breakfast on John\u2019s)", provider: 'The Green, St Stephen\u2019s Green', ref: '267716609', amount: 835.16, currency: 'EUR', status: 'paid' },
+                { category: 'Hotels', date: 'Jun 6 \u2192 7', who: 'John', desc: 'Grays Bushmills \u2014 Family Suite (3 adults), B&B', provider: 'Grays Bushmills', ref: 'DY4C3RX', amount: 285.00, currency: 'GBP', status: 'pay-at-hotel' },
+                { category: 'Hotels', date: 'Jun 7 \u2192 8', who: 'Rose', desc: 'The Merchant \u2014 Deluxe Twin Victorian (3 adults), B&B', provider: 'The Merchant Hotel, Belfast', ref: '1C9EDWK', amount: 429.00, currency: 'GBP', status: 'pay-at-hotel' },
+                { category: 'Hotels', date: 'Jun 8 \u2192 9', who: 'John', desc: 'Iveagh Garden Hotel \u2014 Deluxe Triple, B&B', provider: 'Iveagh Garden Hotel', ref: '41810', amount: 369.00, currency: 'EUR', status: 'pay-at-hotel' },
+                // Activities
+                { category: 'Activities', date: 'Jun 5', who: 'Rose', desc: 'Doolin Ferry to Inis O\u00EDrr (return, 4 adults)', provider: 'Doolin Ferry Co.', ref: '2Y4N4Q1V3N6F5U1G', amount: 148.00, currency: 'EUR', status: 'paid' },
+                { category: 'Activities', date: 'Jun 6', who: 'Pam', desc: 'Old Bushmills Premium Tour & Tasting (3 ppl)', provider: 'Old Bushmills Distillery', ref: '9115176', amount: 125.00, currency: 'GBP', status: 'paid' },
+                { category: 'Activities', date: 'Jun 7', who: 'John (deposit)', desc: '3-Hour Ultimate Belfast Experience (Black Taxi, 3 ppl) \u2014 balance due to driver', provider: 'BelfastTours.com', ref: '\u2014', amount: 305.00, currency: 'GBP', status: 'balance-due' }
+            ];
+
+            const fmtMoney = (amount, currency) => {
+                if (amount === null || amount === undefined) return '\u2014';
+                const symbol = currency === 'USD' ? '$' : currency === 'GBP' ? '\u00A3' : '\u20AC';
+                return `${symbol}${amount.toFixed(2)}`;
+            };
+
+            // Live exchange rates pulled at last edit (frankfurter.dev) \u2014 update if needed.
+            const exchangeRates = { eurUsd: 1.1712, eurGbp: 0.86803, asOf: '24 Apr 2026' };
+            const toEur = (amount, currency) => {
+                if (currency === 'EUR') return amount;
+                if (currency === 'USD') return amount / exchangeRates.eurUsd;
+                if (currency === 'GBP') return amount / exchangeRates.eurGbp;
+                return amount;
+            };
+
+            const statusLabels = {
+                'paid': { label: 'Paid', color: '#15803d' },
+                'pay-at-hotel': { label: 'Pay at hotel', color: '#b45309' },
+                'card-on-file': { label: 'Card on file', color: '#b45309' },
+                'balance-due': { label: 'Balance due', color: '#ea580c' },
+                'unbooked': { label: 'Unbooked', color: '#b91c1c' }
+            };
 
             // 40 quotes rotating across 12 Irish writers
             const allQuotes = [
@@ -1412,19 +1614,19 @@
                     { name: "McGann\u2019s Pub", lat: 53.0150, lng: -9.3756, type: 'pub' },
                     { name: "Gus O\u2019Connor\u2019s Pub", lat: 53.0158, lng: -9.3781, type: 'pub' }
                 ],
-                6: [ // June 5 — Aran Islands day trip
-                    { name: "Hotel Doolin (Piper\u2019s Chair)", lat: 53.0142, lng: -9.3756, type: 'hotel' },
-                    { name: 'Doolin Pier', lat: 53.0125, lng: -9.4072, type: 'quirky' },
+                6: [ // June 5 — Doolin Ferry → Aran Islands → drive to Dublin
+                    { name: 'Doolin Pier (10:00 AM ferry)', lat: 53.0125, lng: -9.4072, type: 'quirky' },
                     { name: "Inisheer Harbour", lat: 53.0617, lng: -9.5219, type: 'viewpoint' },
                     { name: "O\u2019Brien\u2019s Castle (Inisheer)", lat: 53.0585, lng: -9.5131, type: 'ancient' },
                     { name: 'Plassey Shipwreck', lat: 53.0660, lng: -9.5067, type: 'quirky' },
-                    { name: 'Cill Gobnait', lat: 53.0606, lng: -9.5200, type: 'ancient' }
+                    { name: 'Cill Gobnait', lat: 53.0606, lng: -9.5200, type: 'ancient' },
+                    { name: 'The Green (Dublin) \u2014 tonight', lat: 53.3380, lng: -6.2607, type: 'hotel' }
                 ],
                 7: [ // June 6 — Giant's Causeway
-                    { name: 'Portrush Adelphi Hotel', lat: 55.2050, lng: -6.6530, type: 'hotel' },
+                    { name: 'Grays Bushmills Hotel', lat: 55.2070, lng: -6.5263, type: 'hotel' },
                     { name: "Giant\u2019s Causeway", lat: 55.2408, lng: -6.5117, type: 'site' },
                     { name: 'Carrick-a-Rede Rope Bridge', lat: 55.2400, lng: -6.3286, type: 'walk' },
-                    { name: 'Old Bushmills Distillery', lat: 55.2056, lng: -6.5261, type: 'site' },
+                    { name: 'Old Bushmills Distillery (1 PM tour booked)', lat: 55.2056, lng: -6.5261, type: 'site' },
                     { name: 'Dunluce Castle', lat: 55.2108, lng: -6.5787, type: 'ancient' },
                     { name: 'Dark Hedges', lat: 55.1344, lng: -6.3781, type: 'quirky' },
                     { name: 'Bushmills Inn', lat: 55.2042, lng: -6.5239, type: 'restaurant' }
@@ -1585,6 +1787,23 @@
                 }
             }, [expandedDay, activeTab]);
 
+            // Whenever a day expands (from calendar click or toggle), scroll its top to the
+            // top of the viewport. Fires in three waves so the eventual map render doesn't
+            // leave us stranded mid-card.
+            useEffect(() => {
+                if (activeTab !== 'days' || expandedDay === null) return;
+                const scrollToCard = () => {
+                    const el = document.getElementById(`day-anchor-${expandedDay}`);
+                    if (!el) return;
+                    const top = el.getBoundingClientRect().top + window.scrollY - 20;
+                    window.scrollTo({ top, behavior: 'smooth' });
+                };
+                const t1 = setTimeout(scrollToCard, 50);
+                const t2 = setTimeout(scrollToCard, 350);
+                const t3 = setTimeout(scrollToCard, 900);
+                return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); };
+            }, [expandedDay, activeTab]);
+
             const toggleChecklist = (index) => {
                 setCheckedItems({ ...checkedItems, [index]: !checkedItems[index] });
             };
@@ -1599,10 +1818,8 @@
                 const idx = tripNum - 1;
                 setActiveTab('days');
                 setExpandedDay(idx);
-                setTimeout(() => {
-                    const el = document.getElementById(`day-anchor-${idx}`);
-                    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }, 120);
+                // Actual scroll is handled by the useEffect on expandedDay below \u2014
+                // covers both calendar clicks and toggle-button clicks the same way.
             };
 
             const renderMonthGrid = (year, monthIndex, tripLookup) => {
@@ -1713,7 +1930,8 @@
                                     { id: 'home', label: 'Home' },
                                     { id: 'days', label: 'Days' },
                                     { id: 'culture', label: 'Culture' },
-                                    { id: 'checklist', label: 'Checklist' }
+                                    { id: 'checklist', label: 'Checklist' },
+                                    { id: 'other', label: 'Other' }
                                 ].map(tab => (
                                     <button key={tab.id} onClick={() => setActiveTab(tab.id)} className={`nav-button ${activeTab === tab.id ? 'active' : ''}`}>
                                         {tab.label}
@@ -1945,16 +2163,30 @@
                                                                 </div>
                                                             )}
 
-                                                            <div className="section-title">Where to Stay</div>
-                                                            <div className="hotel-info">
-                                                                <div className="hotel-name">{day.hotel}</div>
-                                                                <div className="hotel-details">{day.hotelDetails}</div>
-                                                            </div>
+                                                            {day.hotel && day.hotel !== 'Depart' && day.hotel !== 'Overnight flight (Aer Lingus EI0114)' && (
+                                                                <>
+                                                                    <div className="section-title">Where We Are Staying</div>
+                                                                    <div className="hotel-info">
+                                                                        <div className="hotel-name">{day.hotel}</div>
+                                                                        <div className="hotel-details">{day.hotelDetails}</div>
+                                                                    </div>
+                                                                </>
+                                                            )}
+                                                            {(day.hotel === 'Depart' || day.hotel === 'Overnight flight (Aer Lingus EI0114)') && (
+                                                                <>
+                                                                    <div className="section-title">Where We Are Staying</div>
+                                                                    <div className="hotel-info">
+                                                                        <div className="hotel-name">{day.hotel}</div>
+                                                                        <div className="hotel-details">{day.hotelDetails}</div>
+                                                                    </div>
+                                                                </>
+                                                            )}
 
-                                                            <div className="section-title">Things to Do, Visit &amp; Eat</div>
-                                                            <div className="guide-grid">
-                                                                {day.guide && day.guide.map((g, gIdx) => (
-                                                                    <div key={gIdx} className="guide-card">
+                                                            {(() => {
+                                                                const confirmed = (day.guide || []).filter(g => g.confirmed);
+                                                                const possible = (day.guide || []).filter(g => !g.confirmed);
+                                                                const renderCard = (g, gIdx, key) => (
+                                                                    <div key={key} className="guide-card">
                                                                         {g.image && <img src={g.image} alt={g.name} className="guide-card-image" />}
                                                                         <div className="guide-head">
                                                                             <span className="guide-name">{g.name}</span>
@@ -1968,8 +2200,28 @@
                                                                             </div>
                                                                         )}
                                                                     </div>
-                                                                ))}
-                                                            </div>
+                                                                );
+                                                                return (
+                                                                    <>
+                                                                        {confirmed.length > 0 && (
+                                                                            <>
+                                                                                <div className="section-title">Today&rsquo;s Plan</div>
+                                                                                <div className="guide-grid">
+                                                                                    {confirmed.map((g, gIdx) => renderCard(g, gIdx, `c-${gIdx}`))}
+                                                                                </div>
+                                                                            </>
+                                                                        )}
+                                                                        {possible.length > 0 && (
+                                                                            <>
+                                                                                <div className="section-title">Possible Things to Do</div>
+                                                                                <div className="guide-grid">
+                                                                                    {possible.map((g, gIdx) => renderCard(g, gIdx, `p-${gIdx}`))}
+                                                                                </div>
+                                                                            </>
+                                                                        )}
+                                                                    </>
+                                                                );
+                                                            })()}
 
                                                             {day.funFact && (
                                                                 <>
@@ -2167,6 +2419,131 @@
                                     </div>
                                 </div>
                             )}
+
+                            {/* OTHER TAB — Budget tracker for Pam & Emily */}
+                            {activeTab === 'other' && (() => {
+                                const totals = budgetItems.reduce((acc, it) => {
+                                    if (it.amount === null) return acc;
+                                    acc[it.currency] = (acc[it.currency] || 0) + it.amount;
+                                    return acc;
+                                }, {});
+                                const byCategory = budgetItems.reduce((acc, it) => {
+                                    (acc[it.category] = acc[it.category] || []).push(it);
+                                    return acc;
+                                }, {});
+                                const categoryOrder = ['Flights', 'Hotels', 'Car Rental', 'Activities'];
+                                return (
+                                    <div className="space-y-10">
+                                        <div className="day-card">
+                                            <div className="day-card-corner-decoration">&#10022;</div>
+                                            <div className="day-card-content">
+                                                <p className="text-3xl gold-text mb-2 text-center" style={{ fontFamily: "'Cinzel', serif" }}>Budget Tracker</p>
+                                                <p className="text-center gold-text mb-4 italic">For Pam &amp; Emily \u2014 confirmed bookings, balances, and what still needs paying</p>
+                                                <div style={{ background: 'linear-gradient(135deg, rgba(255,215,0,0.18) 0%, rgba(212,165,116,0.12) 100%)', border: '2px solid #8b4513', borderRadius: '2px', padding: '14px 18px', marginBottom: '20px', fontStyle: 'italic', textAlign: 'center', color: '#1a0f0a' }}>
+                                                    Quiet tab \u2014 prices live here so the day-by-day pages stay clean.
+                                                </div>
+
+                                                {/* Totals by currency */}
+                                                <div className="section-title">Running Totals (by currency)</div>
+                                                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '12px', margin: '12px 0 18px 0' }}>
+                                                    {Object.entries(totals).map(([cur, total]) => (
+                                                        <div key={cur} style={{
+                                                            background: 'linear-gradient(135deg, rgba(212,165,116,0.3) 0%, rgba(139,69,19,0.18) 100%)',
+                                                            border: '3px solid #8b4513', borderRadius: '2px', padding: '16px', textAlign: 'center',
+                                                            boxShadow: '0 4px 10px rgba(0,0,0,0.15)'
+                                                        }}>
+                                                            <div style={{ fontFamily: "'Cinzel', serif", fontSize: '13px', color: '#8b4513', letterSpacing: '2px' }}>{cur}</div>
+                                                            <div style={{ fontFamily: "'Cinzel', serif", fontSize: '26px', fontWeight: 'bold', color: '#1a0f0a', marginTop: '4px' }}>{fmtMoney(total, cur)}</div>
+                                                        </div>
+                                                    ))}
+                                                </div>
+
+                                                {/* Grand totals converted to EUR & USD */}
+                                                {(() => {
+                                                    const eurTotal = budgetItems.reduce((s, it) => s + (it.amount === null ? 0 : toEur(it.amount, it.currency)), 0);
+                                                    const usdTotal = eurTotal * exchangeRates.eurUsd;
+                                                    return (
+                                                        <>
+                                                            <div className="section-title">Grand Total (everything converted)</div>
+                                                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '12px', margin: '12px 0 8px 0' }}>
+                                                                <div style={{
+                                                                    background: 'linear-gradient(135deg, #8b4513 0%, #6b3410 100%)',
+                                                                    border: '3px solid #8b4513', borderRadius: '2px', padding: '20px', textAlign: 'center',
+                                                                    boxShadow: '0 6px 14px rgba(0,0,0,0.3)'
+                                                                }}>
+                                                                    <div style={{ fontFamily: "'Cinzel', serif", fontSize: '13px', color: '#ffd700', letterSpacing: '2px' }}>TOTAL IN EUR</div>
+                                                                    <div style={{ fontFamily: "'Cinzel', serif", fontSize: '32px', fontWeight: 'bold', color: '#ffd700', marginTop: '6px' }}>{fmtMoney(eurTotal, 'EUR')}</div>
+                                                                </div>
+                                                                <div style={{
+                                                                    background: 'linear-gradient(135deg, #8b4513 0%, #6b3410 100%)',
+                                                                    border: '3px solid #8b4513', borderRadius: '2px', padding: '20px', textAlign: 'center',
+                                                                    boxShadow: '0 6px 14px rgba(0,0,0,0.3)'
+                                                                }}>
+                                                                    <div style={{ fontFamily: "'Cinzel', serif", fontSize: '13px', color: '#ffd700', letterSpacing: '2px' }}>TOTAL IN USD</div>
+                                                                    <div style={{ fontFamily: "'Cinzel', serif", fontSize: '32px', fontWeight: 'bold', color: '#ffd700', marginTop: '6px' }}>{fmtMoney(usdTotal, 'USD')}</div>
+                                                                </div>
+                                                            </div>
+                                                            <p style={{ textAlign: 'center', fontSize: '12px', color: '#8b4513', fontStyle: 'italic', marginBottom: '24px' }}>
+                                                                Converted at \u20AC1 = ${exchangeRates.eurUsd.toFixed(4)} USD &nbsp;\u00B7&nbsp; \u20AC1 = \u00A3{exchangeRates.eurGbp.toFixed(4)} GBP &nbsp;\u00B7&nbsp; rates as of {exchangeRates.asOf} (frankfurter.dev)
+                                                            </p>
+                                                        </>
+                                                    );
+                                                })()}
+
+                                                {/* Per-category lists */}
+                                                {categoryOrder.map(cat => byCategory[cat] && (
+                                                    <div key={cat} style={{ marginBottom: '24px' }}>
+                                                        <div className="section-title">{cat}</div>
+                                                        <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '10px', margin: '12px 0' }}>
+                                                            {byCategory[cat].map((it, i) => {
+                                                                const st = statusLabels[it.status] || { label: it.status, color: '#8b4513' };
+                                                                return (
+                                                                    <div key={i} style={{
+                                                                        background: 'linear-gradient(135deg, rgba(250,246,240,0.92) 0%, rgba(245,240,232,0.88) 100%)',
+                                                                        border: '2px solid #d4a574', borderLeft: `5px solid ${st.color}`,
+                                                                        borderRadius: '2px', padding: '14px 16px',
+                                                                        display: 'grid', gridTemplateColumns: '1fr auto', gap: '10px', alignItems: 'center'
+                                                                    }}>
+                                                                        <div>
+                                                                            <div style={{ fontFamily: "'Cinzel', serif", fontWeight: 'bold', color: '#8b4513', fontSize: '15px' }}>{it.desc}</div>
+                                                                            <div style={{ color: '#555', fontSize: '13px', marginTop: '4px' }}>
+                                                                                <b>{it.date}</b> &nbsp;\u00B7&nbsp; {it.provider} &nbsp;\u00B7&nbsp; ref {it.ref} &nbsp;\u00B7&nbsp; booked by {it.who}
+                                                                            </div>
+                                                                            <span style={{
+                                                                                display: 'inline-block', marginTop: '6px',
+                                                                                fontSize: '11px', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '1px',
+                                                                                padding: '3px 9px', borderRadius: '12px',
+                                                                                background: st.color, color: '#fff'
+                                                                            }}>{st.label}</span>
+                                                                        </div>
+                                                                        <div style={{
+                                                                            fontFamily: "'Cinzel', serif", fontSize: '20px', fontWeight: 'bold',
+                                                                            color: it.amount === null ? '#b91c1c' : '#1a0f0a', whiteSpace: 'nowrap'
+                                                                        }}>
+                                                                            {fmtMoney(it.amount, it.currency)}
+                                                                        </div>
+                                                                    </div>
+                                                                );
+                                                            })}
+                                                        </div>
+                                                    </div>
+                                                ))}
+
+                                                <div className="section-title">Notes</div>
+                                                <div style={{ background: 'linear-gradient(135deg, rgba(139,69,19,0.12) 0%, rgba(212,165,116,0.08) 100%)', border: '2px dotted #8b4513', borderRadius: '2px', padding: '16px', fontSize: '14px', lineHeight: 1.7, color: '#1a0f0a' }}>
+                                                    <ul style={{ listStyle: 'disc', paddingLeft: '22px', margin: 0 }}>
+                                                        <li>Mixed currencies (EUR / GBP / USD) \u2014 leaving the totals separate to avoid forex rounding noise. Convert near settlement using the day\u2019s rate.</li>
+                                                        <li>\u201CPay at hotel\u201D items haven\u2019t been charged yet \u2014 the cards on file will be charged either at check-in or 24\u201348 hrs before arrival.</li>
+                                                        <li>All hotel nights are now booked. Only \u201Cpay at hotel\u201D balances and the Belfast Black Taxi cash balance remain to settle on the trip.</li>
+                                                        <li>Belfast Black Taxi balance is paid in cash to the driver on the day \u2014 bring it from an ATM in Belfast city centre.</li>
+                                                        <li>Splitting tips: ferry, distillery and taxi were paid by individual people \u2014 worth a quick reconciliation at the end of the trip.</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                );
+                            })()}
                         </div>
 
                         {/* Voices of Ireland */}
