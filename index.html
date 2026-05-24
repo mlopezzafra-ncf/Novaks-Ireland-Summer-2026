@@ -12,9 +12,29 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Crimson+Text:ital@0;1&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Crimson+Text:ital@0;1&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet">
     <style>
         * { box-sizing: border-box; }
+
+        /* === HARRY CLARKE STAINED GLASS PALETTE === */
+        :root {
+            --bg-primary: #1a1035;
+            --bg-card: #2d1b4e;
+            --bg-card-hover: #3a2460;
+            --accent-gold: #c9a84c;
+            --accent-gold-light: #e8c97a;
+            --accent-ruby: #8b1a2e;
+            --accent-ruby-light: #b8334a;
+            --accent-cobalt: #1e3a6e;
+            --accent-cobalt-light: #2e5499;
+            --text-primary: #f2e8d5;
+            --text-secondary: #c9b99a;
+            --text-muted: #9a8a6a;
+            --border-lead: #0d0820;
+            --glow-amber: rgba(201,168,76,0.15);
+            --glow-amber-strong: rgba(201,168,76,0.28);
+            --glow-ruby: rgba(139,26,46,0.25);
+        }
 
         html, body {
             margin: 0;
@@ -24,12 +44,13 @@
 
         body {
             font-family: 'Crimson Text', Georgia, serif;
-            color: #1a0f0a;
-            background-color: #2d1810;
+            color: var(--text-primary);
+            background: radial-gradient(ellipse at top center, #3d2b1f 0%, var(--bg-primary) 55%, var(--border-lead) 100%);
+            background-attachment: fixed;
             position: relative;
         }
 
-        /* Ireland Map as faded background for the entire website */
+        /* Ireland Map as faded background — softer, deeper-blended into the indigo */
         body::before {
             content: '';
             position: fixed;
@@ -42,7 +63,9 @@
             background-position: center center;
             background-size: contain;
             background-attachment: fixed;
-            opacity: 0.30;
+            opacity: 0.10;
+            filter: hue-rotate(220deg) saturate(0.4) brightness(0.7);
+            mix-blend-mode: screen;
             z-index: 0;
             pointer-events: none;
         }
@@ -55,9 +78,9 @@
             right: 0;
             bottom: 0;
             background:
-                repeating-linear-gradient(0deg, rgba(139,69,19,0.03) 0px, transparent 1px, transparent 2px, rgba(139,69,19,0.015) 3px),
-                repeating-linear-gradient(90deg, rgba(139,69,19,0.03) 0px, transparent 1px, transparent 2px, rgba(139,69,19,0.015) 3px),
-                linear-gradient(135deg, rgba(249,243,234,0.70) 0%, rgba(240,232,220,0.64) 25%, rgba(235,229,217,0.60) 50%, rgba(240,232,220,0.64) 75%, rgba(249,243,234,0.70) 100%);
+                radial-gradient(circle at 20% 30%, rgba(30,58,110,0.18) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(139,26,46,0.10) 0%, transparent 50%),
+                radial-gradient(circle at 50% 100%, rgba(201,168,76,0.08) 0%, transparent 60%);
             z-index: 1;
             pointer-events: none;
         }
@@ -70,15 +93,15 @@
             padding: 70px 40px;
             position: relative;
             background:
-                linear-gradient(135deg, rgba(26,15,10,0.55) 0%, rgba(45,24,16,0.45) 50%, rgba(26,15,10,0.55) 100%),
+                radial-gradient(ellipse at top center, rgba(61,43,31,0.55) 0%, rgba(26,16,53,0.85) 55%, rgba(13,8,32,0.95) 100%),
                 url('header.png') center center / cover no-repeat;
-            border: 4px double #8b4513;
-            border-radius: 2px;
+            border: 2px solid var(--border-lead);
+            border-top: 3px solid var(--accent-gold);
+            border-radius: 4px;
             margin-bottom: 40px;
             box-shadow:
-                0 10px 30px rgba(0,0,0,0.4),
-                inset 0 1px 0 rgba(255,255,255,0.5),
-                inset 0 -1px 0 rgba(0,0,0,0.2);
+                inset 0 0 60px var(--glow-amber-strong),
+                0 8px 40px rgba(0,0,0,0.7);
             overflow: hidden;
         }
         .manuscript-header::before {
@@ -129,13 +152,14 @@
             width: 60%; max-width: 300px;
         }
 
-        /* Day card */
+        /* Day card — leaded glass panel */
         .day-card {
-            background: linear-gradient(135deg, rgba(250,246,240,0.95) 0%, rgba(245,240,232,0.93) 50%, rgba(250,246,240,0.95) 100%);
-            backdrop-filter: blur(3px);
-            border: 3px solid #8b4513;
-            border-radius: 2px;
-            box-shadow: 0 12px 25px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.6), inset 0 -2px 5px rgba(0,0,0,0.05);
+            background: var(--bg-card);
+            border: 2px solid var(--border-lead);
+            border-radius: 4px;
+            box-shadow:
+                inset 0 0 30px var(--glow-amber),
+                0 4px 20px rgba(0,0,0,0.6);
             position: relative;
             overflow: hidden;
             padding: 0;
@@ -143,29 +167,41 @@
             background-size: cover;
             background-position: center center;
             background-repeat: no-repeat;
+            transition: background 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .day-card:hover {
+            background: var(--bg-card-hover);
+            box-shadow:
+                inset 0 0 40px var(--glow-amber-strong),
+                0 6px 30px rgba(0,0,0,0.75);
         }
 
         .day-card::before {
             content: '';
             position: absolute;
             top: 0; left: 0; right: 0;
-            height: 6px;
-            background: linear-gradient(90deg, #8b4513 0%, #d4a574 25%, #8b4513 50%, #d4a574 75%, #8b4513 100%);
+            height: 3px;
+            background: linear-gradient(90deg, var(--border-lead) 0%, var(--accent-gold) 30%, var(--accent-gold-light) 50%, var(--accent-gold) 70%, var(--border-lead) 100%);
             z-index: 2;
         }
 
         .day-card::after {
             content: '';
             position: absolute;
-            top: 0; right: 0;
-            width: 40px; height: 40px;
-            background: radial-gradient(circle, #d4a574 0%, transparent 70%);
-            opacity: 0.3;
+            top: 6px; right: 12px;
+            width: 38px; height: 38px;
+            background: radial-gradient(circle, var(--glow-amber-strong) 0%, transparent 70%);
+            opacity: 0.7;
             z-index: 2;
+            pointer-events: none;
         }
 
         .day-card.expanded {
-            background: linear-gradient(135deg, rgba(250,246,240,0.88) 0%, rgba(245,240,232,0.84) 50%, rgba(250,246,240,0.88) 100%);
+            background: var(--bg-card-hover);
+            box-shadow:
+                inset 0 0 50px var(--glow-amber-strong),
+                0 6px 32px rgba(0,0,0,0.75);
         }
 
         .day-card-corner-decoration {
@@ -181,20 +217,19 @@
             padding: 30px;
             position: relative;
             z-index: 1;
-            background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(139,69,19,0.02) 2px, rgba(139,69,19,0.02) 4px);
+            color: var(--text-primary);
         }
 
-        /* When a day is expanded, add a parchment overlay over its image so text is legible */
+        /* When a day is expanded with a background image, add an indigo wash so text stays legible */
         .day-card.expanded .day-card-content {
             background:
-                repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(139,69,19,0.02) 2px, rgba(139,69,19,0.02) 4px),
-                linear-gradient(135deg, rgba(250,246,240,0.86) 0%, rgba(245,240,232,0.82) 50%, rgba(250,246,240,0.86) 100%);
+                linear-gradient(135deg, rgba(26,16,53,0.88) 0%, rgba(45,27,78,0.82) 50%, rgba(26,16,53,0.88) 100%);
         }
 
         .day-header {
             text-align: center;
             padding-bottom: 20px;
-            border-bottom: 3px solid #8b4513;
+            border-bottom: 1px solid var(--accent-gold);
             margin-bottom: 20px;
             position: relative;
         }
@@ -203,9 +238,10 @@
             display: inline-block;
             border-left: none;
             padding-left: 0;
-            border-top: 2px dotted #d4a574;
+            border-top: 1px solid var(--accent-gold);
             padding-top: 6px;
             margin-top: 6px;
+            opacity: 0.9;
         }
         .day-header .toggle-btn {
             position: absolute;
@@ -219,39 +255,40 @@
             left: 50%;
             transform: translateX(-50%);
             font-size: 12px;
-            color: #8b4513;
+            color: var(--accent-gold);
             letter-spacing: 8px;
-            opacity: 0.5;
+            opacity: 0.6;
         }
-        .day-date { font-family: 'Cinzel', serif; font-size: 32px; font-weight: bold; color: #8b4513; text-shadow: 2px 2px 2px rgba(212,165,116,0.6); }
-        .day-location { font-family: 'Cinzel', serif; font-size: 24px; color: #1a0f0a; margin: 8px 0; text-shadow: 1px 1px 1px rgba(255,255,255,0.3); }
-        .day-highlight { font-size: 16px; font-style: italic; color: #8b4513; border-left: 3px solid #d4a574; padding-left: 10px; }
+        .day-date { font-family: 'Cinzel', serif; font-size: 32px; font-weight: bold; color: var(--accent-gold-light); text-shadow: 0 0 12px var(--glow-amber-strong); }
+        .day-location { font-family: 'Cinzel', serif; font-size: 24px; color: var(--text-primary); margin: 8px 0; }
+        .day-highlight { font-family: 'IM Fell English', serif; font-size: 17px; font-style: italic; color: var(--accent-gold-light); border-left: 3px solid var(--accent-ruby); padding-left: 12px; }
 
         .toggle-btn {
             font-size: 32px;
-            color: #8b4513;
+            color: var(--accent-gold);
             cursor: pointer;
             user-select: none;
             transition: all 0.3s;
-            filter: drop-shadow(1px 1px 1px rgba(0,0,0,0.2));
+            text-shadow: 0 0 10px var(--glow-amber-strong);
         }
-        .toggle-btn:hover { transform: scale(1.25); color: #d4a574; }
+        .toggle-btn:hover { transform: scale(1.25); color: var(--accent-gold-light); }
 
         .day-brief {
-            background: linear-gradient(135deg, rgba(212,165,116,0.2) 0%, rgba(139,69,19,0.1) 100%);
+            background: linear-gradient(135deg, rgba(30,58,110,0.35) 0%, rgba(13,8,32,0.45) 100%);
             padding: 18px;
-            border-left: 5px solid #8b4513;
-            border-top: 2px dashed #d4a574;
-            border-bottom: 2px dashed #d4a574;
+            border-left: 4px solid var(--accent-ruby);
+            border-right: 1px solid var(--accent-gold);
+            border-top: 1px solid var(--accent-gold);
+            border-bottom: 1px solid var(--accent-gold);
             margin: 20px 0;
             font-size: 16px;
             line-height: 1.7;
-            color: #1a0f0a;
-            box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+            color: var(--text-primary);
+            box-shadow: inset 0 0 18px var(--glow-amber);
         }
 
         .expanded-content {
-            border-top: 3px solid #8b4513;
+            border-top: 1px solid var(--accent-gold);
             padding-top: 25px;
             margin-top: 25px;
         }
@@ -259,22 +296,26 @@
         .section-title {
             font-family: 'Cinzel', serif;
             font-size: 20px;
-            color: #8b4513;
+            color: var(--accent-gold-light);
             font-weight: bold;
             margin: 25px 0 15px 0;
             padding-bottom: 10px;
-            border-bottom: 2px dotted #d4a574;
-            text-shadow: 1px 1px 1px rgba(212,165,116,0.4);
+            border-bottom: 1px solid var(--accent-gold);
+            text-shadow: 0 0 12px var(--glow-amber-strong);
             text-align: center;
+            letter-spacing: 1.5px;
         }
 
         .map-container {
-            border: 4px solid #8b4513;
-            border-radius: 2px;
+            border: 2px solid var(--border-lead);
+            box-shadow:
+                0 0 0 1px var(--accent-gold),
+                inset 0 0 30px var(--glow-amber),
+                0 8px 28px rgba(0,0,0,0.65);
+            border-radius: 4px;
             overflow: hidden;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.3);
             margin: 20px 0;
-            background: linear-gradient(135deg, #e8f4f8 0%, #d0e8f0 100%);
+            background: var(--bg-primary);
             position: relative;
         }
         .map-container > div { width: 100%; height: 350px; }
@@ -283,18 +324,18 @@
         .map-container-vertical > div { width: 100%; height: 720px; }
 
         .hotel-info {
-            background: linear-gradient(135deg, rgba(139,69,19,0.15) 0%, rgba(212,165,116,0.1) 100%);
+            background: linear-gradient(135deg, rgba(30,58,110,0.30) 0%, rgba(13,8,32,0.40) 100%);
             padding: 15px;
-            border-left: 5px solid #8b4513;
-            border-top: 2px dotted #d4a574;
+            border-left: 4px solid var(--accent-gold);
+            border-top: 1px solid var(--accent-gold);
             margin: 12px 0;
-            border-radius: 2px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            border-radius: 4px;
+            box-shadow: inset 0 0 18px var(--glow-amber);
         }
-        .hotel-name { font-weight: bold; color: #8b4513; font-size: 18px; text-shadow: 1px 1px 1px rgba(212,165,116,0.4); }
-        .hotel-details { font-size: 14px; color: #555; margin-top: 6px; font-style: italic; }
+        .hotel-name { font-family: 'Cinzel', serif; font-weight: bold; color: var(--accent-gold-light); font-size: 18px; text-shadow: 0 0 10px var(--glow-amber-strong); }
+        .hotel-details { font-size: 14px; color: var(--text-secondary); margin-top: 6px; font-style: italic; }
 
-        /* Guide cards (Things to Do / Visit / Eat) */
+        /* Guide cards (Things to Do / Visit / Eat) — small leaded panels */
         .guide-grid {
             display: grid;
             grid-template-columns: 1fr;
@@ -303,12 +344,12 @@
         }
 
         .guide-card {
-            background: linear-gradient(135deg, rgba(250,246,240,0.92) 0%, rgba(245,240,232,0.88) 100%);
-            border: 2px solid #d4a574;
-            border-left: 5px solid #8b4513;
+            background: rgba(13,8,32,0.45);
+            border: 1px solid var(--accent-gold);
+            border-left: 4px solid var(--accent-ruby);
             padding: 14px 16px;
-            border-radius: 2px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+            border-radius: 4px;
+            box-shadow: inset 0 0 16px var(--glow-amber), 0 2px 8px rgba(0,0,0,0.4);
         }
 
         .guide-card-image {
@@ -316,18 +357,19 @@
             max-height: 220px;
             object-fit: cover;
             border-radius: 2px;
-            border: 2px solid #d4a574;
+            border: 2px solid var(--border-lead);
+            box-shadow: 0 0 0 1px var(--accent-gold), 0 3px 10px rgba(0,0,0,0.5);
+            filter: saturate(0.85) contrast(1.1);
             margin: 0 0 12px 0;
             display: block;
-            box-shadow: 0 3px 8px rgba(0,0,0,0.15);
         }
 
         .guide-card a {
-            color: #8b4513;
+            color: var(--accent-gold-light);
             text-decoration: underline;
             font-weight: bold;
         }
-        .guide-card a:hover { color: #6b3410; }
+        .guide-card a:hover { color: var(--text-primary); }
 
         .guide-head {
             display: flex;
@@ -341,7 +383,7 @@
             font-family: 'Cinzel', serif;
             font-size: 17px;
             font-weight: bold;
-            color: #8b4513;
+            color: var(--accent-gold-light);
         }
 
         .guide-type {
@@ -351,65 +393,69 @@
             letter-spacing: 1px;
             padding: 3px 9px;
             border-radius: 12px;
-            background: #8b4513;
-            color: #ffd700;
+            background: var(--accent-cobalt);
+            color: var(--accent-gold-light);
+            border: 1px solid var(--accent-gold);
         }
 
-        .guide-type.restaurant { background: #7c3e15; }
-        .guide-type.pub { background: #3f2417; }
-        .guide-type.museum { background: #4f6b2a; }
-        .guide-type.viewpoint { background: #2563eb; }
-        .guide-type.walk { background: #15803d; }
-        .guide-type.ancient { background: #6b4a1d; }
-        .guide-type.quirky { background: #9a3412; }
-        .guide-type.shop { background: #9d4edd; }
-        .guide-type.cafe { background: #d97706; }
-        .guide-type.site { background: #6b3410; }
+        .guide-type.restaurant { background: var(--accent-ruby); border-color: var(--accent-gold-light); }
+        .guide-type.pub { background: #2d1810; border-color: var(--accent-gold); }
+        .guide-type.museum { background: var(--accent-cobalt); border-color: var(--accent-gold-light); }
+        .guide-type.viewpoint { background: #2563eb; border-color: var(--accent-gold); }
+        .guide-type.walk { background: #15803d; border-color: var(--accent-gold); }
+        .guide-type.ancient { background: #6b4a1d; border-color: var(--accent-gold-light); }
+        .guide-type.quirky { background: #7c1d6f; border-color: var(--accent-gold); }
+        .guide-type.shop { background: #6d28d9; border-color: var(--accent-gold); }
+        .guide-type.cafe { background: #b45309; border-color: var(--accent-gold); }
+        .guide-type.site { background: var(--accent-ruby); border-color: var(--accent-gold); }
 
-        .guide-desc { color: #1a0f0a; font-size: 14px; line-height: 1.5; margin-bottom: 6px; }
+        .guide-desc { color: var(--text-primary); font-size: 14px; line-height: 1.55; margin-bottom: 6px; }
         .guide-tip {
             font-size: 13px;
-            color: #555;
+            color: var(--text-secondary);
             font-style: italic;
-            border-top: 1px dashed rgba(139,69,19,0.25);
+            border-top: 1px dashed rgba(201,168,76,0.35);
             padding-top: 6px;
         }
-        .guide-tip strong { color: #8b4513; font-style: normal; }
+        .guide-tip strong { color: var(--accent-gold-light); font-style: normal; }
 
         .fun-fact {
-            background: linear-gradient(135deg, rgba(255,215,0,0.25) 0%, rgba(212,165,116,0.15) 100%);
-            border: 2px solid #8b4513;
-            border-radius: 2px;
+            background: linear-gradient(135deg, rgba(201,168,76,0.18) 0%, rgba(30,58,110,0.20) 100%);
+            border: 1px solid var(--accent-gold);
+            border-left: 4px solid var(--accent-gold-light);
+            border-radius: 4px;
             padding: 16px 18px;
             margin: 12px 0;
             font-size: 15px;
             line-height: 1.6;
-            color: #1a0f0a;
+            color: var(--text-primary);
             position: relative;
+            box-shadow: inset 0 0 20px var(--glow-amber);
             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
         .fun-fact::before {
             content: '\2728';
             position: absolute;
             top: -12px; left: 18px;
-            background: #faf6f0;
+            background: var(--bg-card);
             padding: 2px 8px;
-            border: 2px solid #8b4513;
+            border: 1px solid var(--accent-gold);
             border-radius: 12px;
             font-size: 14px;
         }
 
         .historical-note {
-            background: linear-gradient(135deg, rgba(139,69,19,0.22) 0%, rgba(212,165,116,0.15) 100%);
+            background: linear-gradient(135deg, rgba(30,58,110,0.30) 0%, rgba(13,8,32,0.40) 100%);
             padding: 18px;
-            border-left: 5px solid #8b4513;
+            border-left: 4px solid var(--accent-cobalt-light);
             margin: 15px 0;
-            border-radius: 2px;
-            font-size: 14px;
+            border-radius: 4px;
+            font-family: 'IM Fell English', serif;
+            font-size: 15px;
             line-height: 1.7;
-            color: #333;
+            color: var(--text-secondary);
             font-style: italic;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            box-shadow: inset 0 0 18px rgba(30,58,110,0.30);
         }
 
         /* Articles list */
@@ -420,26 +466,26 @@
         }
 
         .article-card {
-            background: linear-gradient(135deg, rgba(250,246,240,0.92) 0%, rgba(245,240,232,0.88) 100%);
-            border: 2px solid #d4a574;
+            background: rgba(13,8,32,0.45);
+            border: 1px solid var(--accent-gold);
             padding: 12px 14px;
-            border-radius: 2px;
+            border-radius: 4px;
             transition: all 0.2s;
         }
         .article-card:hover {
-            border-color: #8b4513;
+            border-color: var(--accent-gold-light);
             transform: translateX(3px);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.12);
+            box-shadow: 0 0 18px var(--glow-amber-strong);
         }
 
         .article-card a {
-            color: #8b4513;
+            color: var(--accent-gold-light);
             text-decoration: none;
             font-weight: bold;
             font-size: 15px;
             font-family: 'Cinzel', serif;
         }
-        .article-card a:hover { color: #6b3410; text-decoration: underline; }
+        .article-card a:hover { color: var(--text-primary); text-decoration: underline; }
 
         .article-source {
             display: inline-block;
@@ -447,8 +493,8 @@
             font-weight: bold;
             text-transform: uppercase;
             letter-spacing: 1px;
-            color: #ffd700;
-            background: #8b4513;
+            color: var(--text-primary);
+            background: var(--accent-ruby);
             padding: 2px 8px;
             border-radius: 10px;
             margin-left: 8px;
@@ -456,44 +502,39 @@
         }
 
         .article-desc {
-            color: #555;
+            color: var(--text-secondary);
             font-size: 13px;
             font-style: italic;
             margin-top: 4px;
         }
 
-        /* Calendar card with Ireland postcard as background */
+        /* Calendar card with Ireland postcard background — dimmed under indigo veil */
         .calendar-day-card {
             background:
-                linear-gradient(135deg, rgba(250,246,240,0.82) 0%, rgba(245,240,232,0.78) 100%),
+                linear-gradient(135deg, rgba(26,16,53,0.78) 0%, rgba(13,8,32,0.85) 100%),
                 url('ireland-postcard.png') center center / cover no-repeat;
-            backdrop-filter: blur(2px);
-            border: 3px solid #8b4513;
-            border-radius: 2px;
-            box-shadow: 0 12px 25px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.6);
+            border: 2px solid var(--border-lead);
+            border-top: 3px solid var(--accent-gold);
+            border-radius: 4px;
+            box-shadow:
+                inset 0 0 60px var(--glow-amber),
+                0 8px 32px rgba(0,0,0,0.7);
             position: relative;
             overflow: visible;
             margin-bottom: 30px;
         }
-        .calendar-day-card::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0;
-            height: 6px;
-            background: linear-gradient(90deg, #8b4513 0%, #d4a574 25%, #8b4513 50%, #d4a574 75%, #8b4513 100%);
-        }
+        .calendar-day-card::before { display: none; }
 
-        /* Route map card with Ireland Map as background */
+        /* Route map card with Ireland Map as background — dark cobalt wash */
         .route-day-card {
             background:
-                linear-gradient(135deg, rgba(250,246,240,0.55) 0%, rgba(245,240,232,0.5) 100%),
+                linear-gradient(135deg, rgba(26,16,53,0.70) 0%, rgba(13,8,32,0.85) 100%),
                 url('ireland-map.png') center center / contain no-repeat,
-                linear-gradient(135deg, #faf6f0 0%, #f5f0e8 100%);
+                var(--bg-card);
         }
         .route-day-card .day-card-content {
             background:
-                repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(139,69,19,0.02) 2px, rgba(139,69,19,0.02) 4px),
-                linear-gradient(135deg, rgba(250,246,240,0.35) 0%, rgba(245,240,232,0.3) 50%, rgba(250,246,240,0.35) 100%);
+                linear-gradient(135deg, rgba(26,16,53,0.20) 0%, rgba(13,8,32,0.20) 100%);
         }
 
         .calendar-grid {
@@ -508,12 +549,13 @@
             font-weight: bold;
             text-align: center;
             padding: 12px 5px;
-            color: #8b4513;
+            color: var(--accent-gold-light);
             font-size: 14px;
-            background: linear-gradient(135deg, rgba(250,246,240,0.92) 0%, rgba(240,232,220,0.85) 100%);
-            border: 2px solid #d4a574;
-            border-radius: 2px;
-            text-shadow: 1px 1px 1px rgba(212,165,116,0.5);
+            background: rgba(13,8,32,0.55);
+            border: 1px solid var(--accent-gold);
+            border-radius: 4px;
+            text-shadow: 0 0 8px var(--glow-amber-strong);
+            letter-spacing: 1px;
         }
 
         .calendar-cell {
@@ -523,28 +565,28 @@
             align-items: center;
             justify-content: flex-start;
             padding-top: 6px;
-            border: 2px solid #d4a574;
-            background: linear-gradient(135deg, rgba(250,246,240,0.9) 0%, rgba(245,240,232,0.85) 100%);
-            border-radius: 2px;
+            border: 1px solid var(--accent-gold);
+            background: rgba(13,8,32,0.55);
+            border-radius: 4px;
             font-size: 16px;
             font-weight: bold;
-            color: #1a0f0a;
+            color: var(--text-secondary);
             position: relative;
             transition: all 0.3s;
             cursor: default;
-            box-shadow: inset 0 1px 2px rgba(255,255,255,0.3);
+            box-shadow: inset 0 0 12px var(--glow-amber);
             overflow: hidden;
         }
         .calendar-cell:hover {
             box-shadow: 0 6px 12px rgba(0,0,0,0.15), inset 0 1px 2px rgba(255,255,255,0.3);
             transform: translateY(-2px);
         }
-        .calendar-cell .cell-num { font-size: 18px; line-height: 1; }
+        .calendar-cell .cell-num { font-size: 18px; line-height: 1; color: var(--text-primary); }
         .calendar-cell .cell-loc {
             font-family: 'Cinzel', serif;
             font-size: 9px;
             font-weight: bold;
-            color: #8b4513;
+            color: var(--accent-gold-light);
             text-transform: uppercase;
             letter-spacing: 0.5px;
             margin-top: 4px;
@@ -553,14 +595,14 @@
             padding: 0 2px;
         }
         .calendar-cell.trip-day {
-            border: 3px solid #8b4513;
-            box-shadow: 0 8px 16px rgba(139,69,19,0.4), inset 0 1px 0 rgba(255,255,255,0.7);
+            border: 2px solid var(--accent-gold);
+            box-shadow: inset 0 0 18px var(--glow-amber-strong), 0 4px 14px rgba(0,0,0,0.55);
             font-weight: bold;
             cursor: pointer;
         }
         .calendar-cell.trip-day:hover {
             transform: translateY(-3px) scale(1.04);
-            box-shadow: 0 12px 22px rgba(139,69,19,0.55), inset 0 1px 0 rgba(255,255,255,0.8);
+            box-shadow: inset 0 0 22px var(--glow-amber-strong), 0 6px 18px rgba(0,0,0,0.65);
             filter: brightness(1.08);
         }
         .calendar-cell.trip-day::before {
@@ -568,74 +610,76 @@
             position: absolute;
             top: -2px; right: 4px;
             font-size: 12px;
-            color: #ffd700;
-            text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
+            color: var(--accent-gold-light);
+            text-shadow: 0 0 8px var(--glow-amber-strong);
         }
         .calendar-cell.empty { background: transparent; border: none; cursor: default; box-shadow: none; }
 
         .calendar-month-label {
             font-family: 'Cinzel', serif;
             font-size: 22px;
-            color: #8b4513;
+            color: var(--accent-gold-light);
             text-align: center;
             font-weight: bold;
             padding: 20px 0 10px 0;
-            text-shadow: 1px 1px 2px rgba(255,255,255,0.5);
+            text-shadow: 0 0 10px var(--glow-amber-strong);
+            letter-spacing: 2px;
         }
 
         .nav-button {
             font-family: 'Cinzel', serif;
             font-weight: bold;
             padding: 14px 28px;
-            border: 3px solid #8b4513;
-            background: linear-gradient(135deg, #d4a574 0%, #c89860 100%);
-            color: white;
+            border: 1px solid var(--accent-gold);
+            background: rgba(13,8,32,0.55);
+            color: var(--text-secondary);
             cursor: pointer;
-            border-radius: 2px;
+            border-radius: 4px;
             transition: all 0.3s;
-            font-size: 16px;
+            font-size: 15px;
             text-transform: uppercase;
             letter-spacing: 2px;
-            box-shadow: 0 6px 15px rgba(0,0,0,0.3);
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+            box-shadow: inset 0 0 14px rgba(13,8,32,0.4);
         }
         .nav-button:hover {
-            background: linear-gradient(135deg, #c89860 0%, #b8884a 100%);
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+            background: var(--accent-cobalt);
+            color: var(--accent-gold-light);
+            box-shadow: inset 0 0 18px var(--glow-amber), 0 0 14px var(--glow-amber-strong);
+            transform: translateY(-2px);
         }
         .nav-button.active {
-            background: linear-gradient(135deg, #8b4513 0%, #6b3410 100%);
-            color: #ffd700;
-            box-shadow: 0 8px 20px rgba(139,69,19,0.5), inset 0 2px 5px rgba(0,0,0,0.3);
+            background: var(--accent-cobalt);
+            border-bottom: 3px solid var(--accent-gold);
+            color: var(--accent-gold-light);
+            box-shadow: inset 0 0 22px var(--glow-amber-strong);
         }
 
         .ornamental-divider {
             text-align: center;
             font-size: 22px;
-            color: #8b4513;
+            color: var(--accent-gold);
             margin: 25px 0;
             letter-spacing: 15px;
             font-weight: bold;
-            text-shadow: 1px 1px 2px rgba(212,165,116,0.5);
+            text-shadow: 0 0 10px var(--glow-amber-strong);
         }
 
         h1 {
             font-family: 'Cinzel', serif;
-            color: #8b4513;
-            text-shadow: 3px 3px 6px rgba(212,165,116,0.6);
+            color: var(--accent-gold-light);
+            text-shadow: 0 0 18px var(--glow-amber-strong);
             letter-spacing: 2px;
         }
-        .gold-text { color: #8b4513; text-shadow: 1px 1px 2px rgba(212,165,116,0.6); }
+        .gold-text { color: var(--accent-gold-light); text-shadow: 0 0 10px var(--glow-amber-strong); }
 
         .footer {
             text-align: center;
             padding: 40px;
-            border-top: 4px double #8b4513;
+            border-top: 1px solid var(--accent-gold);
             margin-top: 50px;
             font-style: italic;
-            color: #8b4513;
-            background: linear-gradient(135deg, rgba(212,165,116,0.3) 0%, rgba(139,69,19,0.18) 100%);
+            color: var(--text-secondary);
+            background: linear-gradient(135deg, rgba(30,58,110,0.25) 0%, rgba(13,8,32,0.45) 100%);
         }
 
         .tab-nav { display: flex; gap: 15px; flex-wrap: wrap; justify-content: center; margin-bottom: 40px; }
@@ -649,32 +693,33 @@
             max-width: 1100px;
         }
         .route-card {
-            background: linear-gradient(135deg, rgba(212,165,116,0.3) 0%, rgba(139,69,19,0.18) 100%);
-            border: 3px solid #8b4513;
+            background: rgba(13,8,32,0.55);
+            border: 1px solid var(--accent-gold);
+            border-top: 3px solid var(--accent-ruby);
             padding: 20px;
-            border-radius: 2px;
+            border-radius: 4px;
             text-align: center;
-            box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+            box-shadow: inset 0 0 22px var(--glow-amber), 0 4px 14px rgba(0,0,0,0.55);
             transition: all 0.3s;
         }
-        .route-card:hover { transform: translateY(-5px); box-shadow: 0 12px 25px rgba(0,0,0,0.25); }
-        .route-card-location { font-family: 'Cinzel', serif; font-size: 22px; font-weight: bold; color: #8b4513; margin-bottom: 8px; text-shadow: 1px 1px 2px rgba(212,165,116,0.4); }
-        .route-card-days { font-size: 14px; color: #666; margin-bottom: 8px; font-weight: bold; }
-        .route-card-desc { font-size: 14px; color: #1a0f0a; line-height: 1.5; }
+        .route-card:hover { transform: translateY(-5px); box-shadow: inset 0 0 28px var(--glow-amber-strong), 0 8px 22px rgba(0,0,0,0.65); }
+        .route-card-location { font-family: 'Cinzel', serif; font-size: 22px; font-weight: bold; color: var(--accent-gold-light); margin-bottom: 8px; text-shadow: 0 0 10px var(--glow-amber-strong); }
+        .route-card-days { font-size: 14px; color: var(--text-secondary); margin-bottom: 8px; font-weight: bold; letter-spacing: 1px; }
+        .route-card-desc { font-size: 14px; color: var(--text-primary); line-height: 1.5; }
 
-        .leaflet-container { background: linear-gradient(135deg, #e8f4f8 0%, #d0e8f0 100%) !important; }
-        .leaflet-popup-content-wrapper { background: linear-gradient(135deg, #f9f3ea 0%, #f0e8dc 100%); border: 2px solid #8b4513; }
-        .leaflet-popup-tip { background: #f0e8dc; }
+        .leaflet-container { background: var(--bg-primary) !important; }
+        .leaflet-popup-content-wrapper { background: var(--bg-card); color: var(--text-primary); border: 1px solid var(--accent-gold); border-radius: 4px; }
+        .leaflet-popup-tip { background: var(--bg-card); border: 1px solid var(--accent-gold); }
 
         .route-marker { background: transparent !important; border: none !important; }
         .route-marker-inner {
             width: 40px; height: 40px;
             border-radius: 50%;
-            border: 3px solid #ffffff;
+            border: 2px solid var(--accent-gold);
             display: flex; align-items: center; justify-content: center;
-            font-family: 'Cinzel', serif; font-weight: bold; color: #ffffff; font-size: 13px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+            font-family: 'Cinzel', serif; font-weight: bold; color: var(--text-primary); font-size: 13px;
+            box-shadow: 0 0 14px rgba(0,0,0,0.8), inset 0 0 12px var(--glow-amber);
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
         }
 
         .route-legend {
@@ -683,14 +728,42 @@
             gap: 12px;
             margin-top: 20px;
             padding: 20px;
-            background: linear-gradient(135deg, rgba(250,246,240,0.9) 0%, rgba(245,240,232,0.85) 100%);
-            border: 2px solid #8b4513;
-            border-radius: 2px;
+            background: rgba(13,8,32,0.55);
+            border: 1px solid var(--accent-gold);
+            border-radius: 4px;
+            box-shadow: inset 0 0 22px var(--glow-amber);
         }
-        .legend-item { display: flex; align-items: center; gap: 10px; font-size: 14px; color: #1a0f0a; }
-        .legend-swatch { width: 24px; height: 24px; border-radius: 50%; border: 2px solid #ffffff; box-shadow: 0 2px 4px rgba(0,0,0,0.3); flex-shrink: 0; }
-        .legend-label { font-family: 'Cinzel', serif; font-weight: bold; color: #8b4513; }
-        .legend-days { color: #666; font-size: 12px; font-style: italic; }
+        .legend-item { display: flex; align-items: center; gap: 10px; font-size: 14px; color: var(--text-primary); }
+        .legend-swatch { width: 24px; height: 24px; border-radius: 50%; border: 2px solid var(--text-primary); box-shadow: 0 2px 6px rgba(0,0,0,0.6); flex-shrink: 0; }
+        .legend-label { font-family: 'Cinzel', serif; font-weight: bold; color: var(--accent-gold-light); }
+        .legend-days { color: var(--text-secondary); font-size: 12px; font-style: italic; }
+
+        /* Pull-quote / epigraph — IM Fell English in amber on ruby rule */
+        .pull-quote, .epigraph {
+            font-family: 'IM Fell English', serif;
+            font-style: italic;
+            color: var(--accent-gold-light);
+            font-size: 1.25rem;
+            border-left: 3px solid var(--accent-ruby);
+            padding: 8px 18px;
+            margin: 18px 0;
+            line-height: 1.6;
+        }
+        .pull-quote .attrib {
+            display: block;
+            font-style: normal;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-top: 6px;
+            letter-spacing: 1px;
+        }
+
+        /* Image leaded-frame helper */
+        .location-img {
+            filter: saturate(0.85) contrast(1.1);
+            border: 2px solid var(--border-lead);
+            box-shadow: 0 0 0 1px var(--accent-gold), 0 6px 22px rgba(0,0,0,0.6);
+        }
 
         /* Quote cards */
         .quotes-grid {
@@ -858,39 +931,40 @@
             .route-legend { grid-template-columns: 1fr; }
         }
         .quote-card {
-            background: linear-gradient(135deg, rgba(250,246,240,0.95) 0%, rgba(245,240,232,0.92) 100%);
-            border: 2px solid #8b4513;
-            border-radius: 2px;
+            background: rgba(13,8,32,0.55);
+            border: 1px solid var(--accent-gold);
+            border-top: 3px solid var(--accent-ruby);
+            border-radius: 4px;
             padding: 16px 14px;
             text-align: center;
-            box-shadow: 0 6px 14px rgba(0,0,0,0.2);
+            box-shadow: inset 0 0 22px var(--glow-amber), 0 4px 14px rgba(0,0,0,0.55);
             position: relative;
             transition: all 0.3s;
         }
-        .quote-card:hover { transform: translateY(-4px); box-shadow: 0 10px 22px rgba(0,0,0,0.3); }
+        .quote-card:hover { transform: translateY(-4px); box-shadow: inset 0 0 28px var(--glow-amber-strong), 0 8px 22px rgba(0,0,0,0.65); }
         .quote-card::before {
             content: '';
             position: absolute;
             top: 0; left: 0; right: 0;
-            height: 3px;
-            background: linear-gradient(90deg, #8b4513 0%, #d4a574 50%, #8b4513 100%);
+            height: 2px;
+            background: linear-gradient(90deg, var(--border-lead) 0%, var(--accent-gold) 50%, var(--border-lead) 100%);
         }
         .quote-portrait {
             width: 90px; height: 90px;
             border-radius: 50%;
             margin: 4px auto 12px auto;
-            border: 3px solid #8b4513;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            border: 2px solid var(--border-lead);
+            box-shadow: 0 0 0 1px var(--accent-gold), 0 4px 12px rgba(0,0,0,0.6);
             overflow: hidden;
-            background: #f0e8dc;
+            background: var(--bg-card);
         }
-        .quote-portrait img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .quote-portrait img { width: 100%; height: 100%; object-fit: cover; display: block; filter: saturate(0.9) contrast(1.05); }
         .quote-text {
-            font-family: 'Crimson Text', serif;
-            font-size: 13.5px;
+            font-family: 'IM Fell English', serif;
+            font-size: 14px;
             font-style: italic;
-            color: #1a0f0a;
-            line-height: 1.5;
+            color: var(--text-primary);
+            line-height: 1.55;
             margin-bottom: 12px;
             position: relative;
             padding: 0 6px;
@@ -898,20 +972,20 @@
         .quote-text::before {
             content: '\201C';
             font-size: 38px;
-            color: #d4a574;
+            color: var(--accent-gold);
             position: absolute;
             top: -12px; left: -3px;
             line-height: 1;
             font-family: Georgia, serif;
         }
-        .quote-author { font-family: 'Cinzel', serif; font-weight: bold; color: #8b4513; font-size: 14px; letter-spacing: 1px; text-shadow: 1px 1px 2px rgba(212,165,116,0.4); }
-        .quote-years { font-size: 11px; color: #888; font-style: italic; margin-top: 3px; }
+        .quote-author { font-family: 'Cinzel', serif; font-weight: bold; color: var(--accent-gold-light); font-size: 14px; letter-spacing: 1px; text-shadow: 0 0 8px var(--glow-amber-strong); }
+        .quote-years { font-size: 11px; color: var(--text-secondary); font-style: italic; margin-top: 3px; }
 
         /* Culture tab: music, books, media */
         .culture-subtitle {
             font-family: 'Cinzel', serif;
             font-size: 16px;
-            color: #8b4513;
+            color: var(--accent-gold-light);
             margin: 12px 0 8px 0;
             font-weight: bold;
             letter-spacing: 1px;
@@ -926,12 +1000,12 @@
         }
 
         .album-card, .artist-card, .book-card, .media-card {
-            background: linear-gradient(135deg, rgba(250,246,240,0.92) 0%, rgba(245,240,232,0.88) 100%);
-            border: 2px solid #d4a574;
-            border-left: 5px solid #8b4513;
+            background: rgba(13,8,32,0.55);
+            border: 1px solid var(--accent-gold);
+            border-left: 4px solid var(--accent-ruby);
             padding: 14px 16px;
-            border-radius: 2px;
-            box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+            border-radius: 4px;
+            box-shadow: inset 0 0 22px var(--glow-amber), 0 3px 10px rgba(0,0,0,0.5);
             background-size: cover;
             background-position: center center;
             background-repeat: no-repeat;
@@ -949,25 +1023,26 @@
             align-self: center;
         }
 
-        /* Text inside image-backed cards stays legible via stronger shadow */
+        /* Text on image-backed cards: keep readable against varied photos */
         .album-card.has-image, .artist-card.has-image {
-            color: #1a0f0a;
+            color: var(--text-primary);
         }
         .album-card.has-image .album-title,
         .artist-card.has-image .artist-name {
-            text-shadow: 0 1px 2px rgba(255,255,255,0.8), 0 2px 6px rgba(255,255,255,0.6);
+            text-shadow: 0 0 8px rgba(0,0,0,0.9), 0 0 14px rgba(0,0,0,0.6);
         }
 
         .album-title, .artist-name, .book-title, .media-name {
             font-family: 'Cinzel', serif;
             font-weight: bold;
-            color: #8b4513;
+            color: var(--accent-gold-light);
             font-size: 16px;
             margin-bottom: 4px;
+            text-shadow: 0 0 8px var(--glow-amber-strong);
         }
         .album-artist, .artist-origin, .book-author, .media-desc {
             font-size: 13px;
-            color: #666;
+            color: var(--text-secondary);
             font-style: italic;
             margin-bottom: 6px;
         }
@@ -978,31 +1053,32 @@
             text-transform: uppercase;
             letter-spacing: 1px;
             padding: 2px 8px;
-            background: #8b4513;
-            color: #ffd700;
+            background: var(--accent-ruby);
+            color: var(--accent-gold-light);
             border-radius: 10px;
             margin-right: 6px;
+            border: 1px solid var(--accent-gold);
         }
-        .book-when.before { background: #2563eb; }
+        .book-when.before { background: var(--accent-cobalt); }
         .book-when.during { background: #15803d; }
         .book-when.after { background: #7c3aed; }
 
         .album-note, .artist-note, .book-note {
             font-size: 14px;
-            color: #1a0f0a;
+            color: var(--text-primary);
             line-height: 1.5;
             margin-top: 6px;
         }
         .artist-best {
             font-size: 13px;
-            color: #8b4513;
+            color: var(--accent-gold-light);
             margin-top: 6px;
             font-weight: bold;
         }
-        .artist-best strong { color: #1a0f0a; }
+        .artist-best strong { color: var(--text-primary); }
 
         .media-card a {
-            color: #8b4513;
+            color: var(--accent-gold-light);
             text-decoration: none;
             font-weight: bold;
         }
@@ -1015,13 +1091,53 @@
             margin: 10px 0;
         }
         .instrument-pill {
-            background: linear-gradient(135deg, rgba(139,69,19,0.15) 0%, rgba(212,165,116,0.08) 100%);
-            border: 2px solid #d4a574;
+            background: rgba(13,8,32,0.55);
+            border: 1px solid var(--accent-gold);
             padding: 10px 14px;
-            border-radius: 2px;
+            border-radius: 4px;
+            box-shadow: inset 0 0 14px var(--glow-amber);
         }
-        .instrument-pill strong { color: #8b4513; font-family: 'Cinzel', serif; }
-        .instrument-pill span { font-size: 12px; color: #555; font-style: italic; display: block; margin-top: 3px; }
+        .instrument-pill strong { color: var(--accent-gold-light); font-family: 'Cinzel', serif; }
+        .instrument-pill span { font-size: 12px; color: var(--text-secondary); font-style: italic; display: block; margin-top: 3px; }
+
+        /* Activity list (used by older content) */
+        .activity-list { list-style: none; padding-left: 0; }
+        .activity-list li {
+            color: var(--text-primary);
+            padding: 6px 0 6px 18px;
+            position: relative;
+        }
+        .activity-list li::before {
+            content: '\2726';
+            position: absolute;
+            left: 0;
+            color: var(--accent-gold);
+        }
+
+        /* Meals (older) */
+        .meal-item {
+            background: rgba(13,8,32,0.45);
+            border-left: 3px solid var(--accent-gold);
+            padding: 10px 14px;
+            margin: 8px 0;
+            border-radius: 4px;
+            color: var(--text-primary);
+        }
+        .meal-type { font-family: 'Cinzel', serif; color: var(--accent-gold-light); font-size: 13px; letter-spacing: 1px; }
+        .meal-place { color: var(--text-primary); font-weight: bold; font-size: 15px; }
+        .meal-desc { color: var(--text-secondary); font-size: 13px; font-style: italic; }
+
+        /* Celtic corner / ornament line / header content text */
+        .header-content { color: var(--text-primary); }
+        .celtic-corner {
+            color: var(--accent-gold-light);
+            border-color: var(--accent-gold);
+            background: radial-gradient(circle, rgba(201,168,76,0.20) 0%, transparent 70%);
+            box-shadow: 0 0 18px var(--glow-amber-strong);
+        }
+        .ornament-line {
+            background: linear-gradient(90deg, transparent, var(--accent-gold), transparent);
+        }
     </style>
 </head>
 <body>
@@ -1723,7 +1839,7 @@
                     const places = dayPlaces[dayIndex] || [];
 
                     const map = L.map(mapId, { attributionControl: false }).setView([center.lat, center.lng], 12);
-                    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+                    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
                         attribution: 'CartoDB', maxZoom: 19, subdomains: 'abcd'
                     }).addTo(map);
 
@@ -1821,7 +1937,7 @@
                     const map = L.map('routeMap', { attributionControl: false, zoomControl: true })
                         .setView([53.6, -8.0], 7);
 
-                    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+                    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
                         attribution: 'CartoDB', maxZoom: 19, subdomains: 'abcd'
                     }).addTo(map);
 
@@ -1846,12 +1962,11 @@
                         const a = tripDayMeta[i];
                         const b = tripDayMeta[i + 1];
                         if (a.coords[0] === b.coords[0] && a.coords[1] === b.coords[1]) continue;
-                        const color = phases[b.phase].color;
                         const isReturn = b.phase === 'return';
                         L.polyline([a.coords, b.coords], {
-                            color: color,
-                            weight: 4,
-                            opacity: 0.85,
+                            color: '#c9a84c',  // Harry Clarke amber gold
+                            weight: 3.5,
+                            opacity: 0.9,
                             dashArray: isReturn ? '8, 8' : null
                         }).addTo(map);
                     }
@@ -2053,6 +2168,17 @@
                             {/* HOME TAB */}
                             {activeTab === 'home' && (
                                 <div className="space-y-10">
+                                    {/* Joyce epigraph — Finnegans Wake */}
+                                    <div className="day-card">
+                                        <div className="day-card-corner-decoration">&#10022;</div>
+                                        <div className="day-card-content" style={{ textAlign: 'center', padding: '34px 30px' }}>
+                                            <p className="pull-quote" style={{ fontSize: '1.6rem', textAlign: 'center', borderLeft: 'none', borderTop: '1px solid var(--accent-gold)', borderBottom: '1px solid var(--accent-gold)', padding: '20px 14px', margin: '4px 0', display: 'inline-block', maxWidth: '700px' }}>
+                                                &ldquo;They lived and laughed and loved and left.&rdquo;
+                                                <span className="attrib" style={{ display: 'block', textAlign: 'center', marginTop: '12px' }}>— James Joyce, <i>Finnegans Wake</i></span>
+                                            </p>
+                                        </div>
+                                    </div>
+
                                     <div className="day-card">
                                         <div className="day-card-corner-decoration">&#10022;</div>
                                         <div className="day-card-content">
@@ -2209,6 +2335,29 @@
                                                     <div className="route-card-desc">Final evenings in the capital, then farewell</div>
                                                 </div>
                                             </div>
+                                        </div>
+                                    </div>
+
+                                    {/* A Note on Design — Harry Clarke tribute */}
+                                    <div className="day-card">
+                                        <div className="day-card-corner-decoration">&#10022;</div>
+                                        <div className="day-card-content">
+                                            <p className="text-2xl gold-text mb-3 text-center" style={{ fontFamily: "'Cinzel', serif" }}>A Note on Design</p>
+                                            <p className="pull-quote" style={{ fontSize: '1.05rem', textAlign: 'center', borderLeft: 'none', borderTop: '1px solid var(--accent-gold)', borderBottom: '1px solid var(--accent-gold)', padding: '14px 18px', margin: '4px auto 22px', maxWidth: '780px' }}>
+                                                &ldquo;Beauty is an argument.&rdquo;
+                                            </p>
+                                            <p className="text-base leading-relaxed mb-5" style={{ color: 'var(--text-primary)' }}>
+                                                This dashboard was designed in the tradition of <b>Harry Clarke</b> (1889&ndash;1931), the Dublin-born artist widely regarded as the finest stained glass maker of the twentieth century. Clarke&rsquo;s windows &mdash; found in churches, private homes, and galleries across Ireland &mdash; are distinguished by their <i>deep midnight blues</i>, <i>amber golds</i>, and <i>rich ruby reds</i>: a palette drawn not from the Irish landscape but from medieval light itself, the kind that passes through coloured glass and transforms whatever it touches.
+                                            </p>
+                                            <p className="text-base leading-relaxed mb-5" style={{ color: 'var(--text-primary)' }}>
+                                                The choice was deliberate. Ireland is too easily reduced to its greens. What we wanted instead was something that honours the island&rsquo;s other great tradition: the illuminated, the intricate, the devotional. Clarke himself was a direct inheritor of the Book of Kells &mdash; that same impulse to make the page a sacred object, to slow the eye down, to insist that beauty is an argument.
+                                            </p>
+                                            <p className="text-base leading-relaxed mb-5" style={{ color: 'var(--text-primary)' }}>
+                                                The typography follows that same logic. <b>Cinzel</b> and <b>Crimson Text</b> evoke the inscribed stone and the printed folio. <b>IM Fell English</b> &mdash; used for quotations and cultural notes &mdash; carries the irregular ink-weight of an early press, each letter slightly imperfect, slightly alive.
+                                            </p>
+                                            <p className="text-base leading-relaxed text-center" style={{ color: 'var(--accent-gold-light)', fontStyle: 'italic' }}>
+                                                This is a travel guide, yes. But it is also meant to be a thing worth looking at.
+                                            </p>
                                         </div>
                                     </div>
                                 </div>
