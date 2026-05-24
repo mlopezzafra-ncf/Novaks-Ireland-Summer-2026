@@ -48,6 +48,24 @@
             background: radial-gradient(ellipse at top center, #5a3f2a 0%, #3a2868 50%, var(--bg-primary) 100%);
             background-attachment: fixed;
             position: relative;
+            transition: background 0.6s ease;
+        }
+
+        /* === PAGE TINT PER TAB === each pane of stained glass has its own dominant hue */
+        body.page-home {
+            background: radial-gradient(ellipse at top center, #8a6324 0%, #4a3370 45%, #2a1f5c 100%);
+        }
+        body.page-days {
+            background: radial-gradient(ellipse at top center, #2e5499 0%, #1f3870 45%, #14254a 100%);
+        }
+        body.page-culture {
+            background: radial-gradient(ellipse at top center, #7a2434 0%, #4a1f48 45%, #2a153c 100%);
+        }
+        body.page-checklist {
+            background: radial-gradient(ellipse at top center, #2f7a4a 0%, #1f4a4c 45%, #14283a 100%);
+        }
+        body.page-other {
+            background: radial-gradient(ellipse at top center, #6b3aa0 0%, #3f1f70 45%, #1f0e3a 100%);
         }
 
         /* Ireland Map as faded background — softer, deeper-blended into the indigo */
@@ -2042,6 +2060,13 @@
             useEffect(() => {
                 const shuffled = [...allQuotes].sort(() => Math.random() - 0.5);
                 setDisplayedQuotes(shuffled.slice(0, 3));
+            }, [activeTab]);
+
+            // Page-level Harry-Clarke tint per tab — paints the whole window in the active tab's colour
+            useEffect(() => {
+                const pages = ['page-home', 'page-days', 'page-culture', 'page-checklist', 'page-other'];
+                document.body.classList.remove(...pages);
+                document.body.classList.add(`page-${activeTab}`);
             }, [activeTab]);
 
             useEffect(() => {
