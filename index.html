@@ -654,6 +654,53 @@
             box-shadow: inset 0 0 22px var(--glow-amber-strong);
         }
 
+        /* === Per-tab Harry Clarke window panels === */
+        /* Each tab is a different jewel of glass — amber, cobalt, ruby, emerald, violet */
+        .nav-button { position: relative; }
+
+        /* Resting state: a single jewel of colour on the left edge so you can see which tab is which even unselected */
+        .nav-button.tab-home    { border-left: 4px solid #d4b35a; }   /* amber gold — welcoming light */
+        .nav-button.tab-days    { border-left: 4px solid #2e5499; }   /* cobalt blue — the journey */
+        .nav-button.tab-culture { border-left: 4px solid #a52437; }   /* ruby red — heritage */
+        .nav-button.tab-checklist { border-left: 4px solid #2f7a4a; } /* emerald — practical */
+        .nav-button.tab-other   { border-left: 4px solid #6b3aa0; }   /* deep violet — quieter */
+
+        /* Active state: the whole pane lights up in that tab's colour, gold underline + amber-light text */
+        .nav-button.tab-home.active {
+            background: linear-gradient(135deg, #b8923a 0%, #8a6b22 100%);
+            border-color: #d4b35a;
+            color: #fff8e0;
+            box-shadow: inset 0 0 24px rgba(239,213,140,0.45), 0 0 18px rgba(212,179,90,0.35);
+        }
+        .nav-button.tab-days.active {
+            background: linear-gradient(135deg, #2e5499 0%, #1a3870 100%);
+            border-color: #4070c8;
+            color: #efd58c;
+            box-shadow: inset 0 0 24px rgba(64,112,200,0.45), 0 0 18px rgba(46,84,153,0.45);
+        }
+        .nav-button.tab-culture.active {
+            background: linear-gradient(135deg, #a52437 0%, #6e1626 100%);
+            border-color: #c54157;
+            color: #efd58c;
+            box-shadow: inset 0 0 24px rgba(197,65,87,0.45), 0 0 18px rgba(165,36,55,0.45);
+        }
+        .nav-button.tab-checklist.active {
+            background: linear-gradient(135deg, #2f7a4a 0%, #1c5532 100%);
+            border-color: #4ea672;
+            color: #efd58c;
+            box-shadow: inset 0 0 24px rgba(78,166,114,0.45), 0 0 18px rgba(47,122,74,0.45);
+        }
+        .nav-button.tab-other.active {
+            background: linear-gradient(135deg, #6b3aa0 0%, #482770 100%);
+            border-color: #9966cc;
+            color: #efd58c;
+            box-shadow: inset 0 0 24px rgba(153,102,204,0.45), 0 0 18px rgba(107,58,160,0.45);
+        }
+        /* Gold underline still indicates active state across all tabs */
+        .nav-button.active {
+            border-bottom: 3px solid var(--accent-gold);
+        }
+
         .ornamental-divider {
             text-align: center;
             font-size: 22px;
@@ -2161,7 +2208,7 @@
                                     { id: 'checklist', label: 'Checklist' },
                                     { id: 'other', label: 'Other' }
                                 ].map(tab => (
-                                    <button key={tab.id} onClick={() => setActiveTab(tab.id)} className={`nav-button ${activeTab === tab.id ? 'active' : ''}`}>
+                                    <button key={tab.id} onClick={() => setActiveTab(tab.id)} className={`nav-button tab-${tab.id} ${activeTab === tab.id ? 'active' : ''}`}>
                                         {tab.label}
                                     </button>
                                 ))}
