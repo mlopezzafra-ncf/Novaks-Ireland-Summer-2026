@@ -16,24 +16,24 @@
     <style>
         * { box-sizing: border-box; }
 
-        /* === HARRY CLARKE STAINED GLASS PALETTE === */
+        /* === HARRY CLARKE STAINED GLASS PALETTE (lightened slightly) === */
         :root {
-            --bg-primary: #1a1035;
-            --bg-card: #2d1b4e;
-            --bg-card-hover: #3a2460;
-            --accent-gold: #c9a84c;
-            --accent-gold-light: #e8c97a;
-            --accent-ruby: #8b1a2e;
-            --accent-ruby-light: #b8334a;
-            --accent-cobalt: #1e3a6e;
-            --accent-cobalt-light: #2e5499;
-            --text-primary: #f2e8d5;
-            --text-secondary: #c9b99a;
-            --text-muted: #9a8a6a;
-            --border-lead: #0d0820;
-            --glow-amber: rgba(201,168,76,0.15);
-            --glow-amber-strong: rgba(201,168,76,0.28);
-            --glow-ruby: rgba(139,26,46,0.25);
+            --bg-primary: #2a1f5c;            /* deep indigo, a shade brighter than night */
+            --bg-card: #3e2c70;               /* warmer purple, more luminous */
+            --bg-card-hover: #4d3a86;
+            --accent-gold: #d4b35a;
+            --accent-gold-light: #efd58c;
+            --accent-ruby: #a52437;
+            --accent-ruby-light: #c54157;
+            --accent-cobalt: #2e5499;
+            --accent-cobalt-light: #4070c8;
+            --text-primary: #f5ecd9;
+            --text-secondary: #d8c9a8;
+            --text-muted: #a89878;
+            --border-lead: #150c2e;
+            --glow-amber: rgba(212,179,90,0.22);
+            --glow-amber-strong: rgba(212,179,90,0.40);
+            --glow-ruby: rgba(165,36,55,0.30);
         }
 
         html, body {
@@ -45,7 +45,7 @@
         body {
             font-family: 'Crimson Text', Georgia, serif;
             color: var(--text-primary);
-            background: radial-gradient(ellipse at top center, #3d2b1f 0%, var(--bg-primary) 55%, var(--border-lead) 100%);
+            background: radial-gradient(ellipse at top center, #5a3f2a 0%, #3a2868 50%, var(--bg-primary) 100%);
             background-attachment: fixed;
             position: relative;
         }
@@ -707,9 +707,9 @@
         .route-card-days { font-size: 14px; color: var(--text-secondary); margin-bottom: 8px; font-weight: bold; letter-spacing: 1px; }
         .route-card-desc { font-size: 14px; color: var(--text-primary); line-height: 1.5; }
 
-        .leaflet-container { background: var(--bg-primary) !important; }
-        .leaflet-popup-content-wrapper { background: var(--bg-card); color: var(--text-primary); border: 1px solid var(--accent-gold); border-radius: 4px; }
-        .leaflet-popup-tip { background: var(--bg-card); border: 1px solid var(--accent-gold); }
+        .leaflet-container { background: linear-gradient(135deg, #e8f4f8 0%, #d0e8f0 100%) !important; }
+        .leaflet-popup-content-wrapper { background: linear-gradient(135deg, #f9f3ea 0%, #f0e8dc 100%); color: #1a0f0a; border: 2px solid var(--accent-gold); border-radius: 4px; }
+        .leaflet-popup-tip { background: #f0e8dc; }
 
         .route-marker { background: transparent !important; border: none !important; }
         .route-marker-inner {
@@ -1843,7 +1843,7 @@
                     const places = dayPlaces[dayIndex] || [];
 
                     const map = L.map(mapId, { attributionControl: false }).setView([center.lat, center.lng], 12);
-                    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+                    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
                         attribution: 'CartoDB', maxZoom: 19, subdomains: 'abcd'
                     }).addTo(map);
 
@@ -1941,7 +1941,7 @@
                     const map = L.map('routeMap', { attributionControl: false, zoomControl: true })
                         .setView([53.6, -8.0], 7);
 
-                    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+                    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
                         attribution: 'CartoDB', maxZoom: 19, subdomains: 'abcd'
                     }).addTo(map);
 
