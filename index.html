@@ -1149,6 +1149,46 @@
         }
         .media-card a:hover { text-decoration: underline; }
 
+        /* Streaming links on each album/artist tile */
+        .stream-links {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            margin-top: 10px;
+            padding-top: 8px;
+            border-top: 1px dashed rgba(212,179,90,0.30);
+        }
+        .stream-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            padding: 5px 11px;
+            border-radius: 14px;
+            font-size: 11px;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+            text-decoration: none !important;
+            border: 1px solid var(--accent-gold);
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+        }
+        .stream-link:hover { transform: translateY(-1px); box-shadow: 0 4px 10px rgba(0,0,0,0.4); }
+        .stream-link::before { font-size: 13px; }
+
+        .stream-apple {
+            background: linear-gradient(135deg, #fa233b 0%, #b91135 100%);
+            color: #fff;
+        }
+        .stream-apple::before { content: '\f8ff'; font-family: -apple-system, BlinkMacSystemFont, sans-serif; }
+        .stream-apple::after { content: ' Apple Music'; }
+
+        .stream-spotify {
+            background: linear-gradient(135deg, #1db954 0%, #14843d 100%);
+            color: #fff;
+        }
+        .stream-spotify::before { content: '\266B'; font-size: 12px; }
+        .stream-spotify::after { content: ' Spotify'; }
+
         .instrument-list {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -2676,18 +2716,25 @@
 
                                             <div className="culture-subtitle">Essential Traditional Albums</div>
                                             <div className="album-grid">
-                                                {traditionalAlbums.map((a, i) => (
-                                                    <div
-                                                        key={i}
-                                                        className={`album-card ${a.image ? 'has-image' : ''}`}
-                                                        style={a.image ? { background: `linear-gradient(180deg, rgba(250,246,240,0.15) 0%, rgba(250,246,240,0.55) 45%, rgba(250,246,240,0.95) 100%), url('${a.image}') center/cover no-repeat` } : {}}
-                                                    >
-                                                        <div className="album-title">{a.title}</div>
-                                                        <div className="album-artist">{a.artist}</div>
-                                                        <span className="album-year">{a.year}</span>
-                                                        <div className="album-note">{a.note}</div>
-                                                    </div>
-                                                ))}
+                                                {traditionalAlbums.map((a, i) => {
+                                                    const q = encodeURIComponent(`${a.title} ${a.artist}`);
+                                                    return (
+                                                        <div
+                                                            key={i}
+                                                            className={`album-card ${a.image ? 'has-image' : ''}`}
+                                                            style={a.image ? { background: `linear-gradient(180deg, rgba(250,246,240,0.15) 0%, rgba(250,246,240,0.55) 45%, rgba(250,246,240,0.95) 100%), url('${a.image}') center/cover no-repeat` } : {}}
+                                                        >
+                                                            <div className="album-title">{a.title}</div>
+                                                            <div className="album-artist">{a.artist}</div>
+                                                            <span className="album-year">{a.year}</span>
+                                                            <div className="album-note">{a.note}</div>
+                                                            <div className="stream-links">
+                                                                <a href={`https://music.apple.com/search?term=${q}`} target="_blank" rel="noopener noreferrer" className="stream-link stream-apple"></a>
+                                                                <a href={`https://open.spotify.com/search/${q}`} target="_blank" rel="noopener noreferrer" className="stream-link stream-spotify"></a>
+                                                            </div>
+                                                        </div>
+                                                    );
+                                                })}
                                             </div>
                                         </div>
                                     </div>
@@ -2699,19 +2746,26 @@
                                             <p className="text-3xl gold-text mb-3 text-center" style={{ fontFamily: "'Cinzel', serif" }}>Modern Irish Music</p>
                                             <p className="leading-relaxed mb-4 italic">Irish musicians who have shaped modern popular music — and the album to put on as you drive.</p>
                                             <div className="artist-grid">
-                                                {modernArtists.map((a, i) => (
-                                                    <div
-                                                        key={i}
-                                                        className={`artist-card ${a.image ? 'has-image' : ''}`}
-                                                        style={a.image ? { background: `linear-gradient(180deg, rgba(250,246,240,0.12) 0%, rgba(250,246,240,0.55) 45%, rgba(250,246,240,0.95) 100%), url('${a.image}') center/cover no-repeat` } : {}}
-                                                    >
-                                                        <div className="artist-name">{a.name}</div>
-                                                        <div className="artist-origin">{a.origin}</div>
-                                                        <span className="artist-genre">{a.genre}</span>
-                                                        <div className="artist-note">{a.note}</div>
-                                                        <div className="artist-best"><strong>Listen:</strong> <span dangerouslySetInnerHTML={{ __html: a.best }}></span></div>
-                                                    </div>
-                                                ))}
+                                                {modernArtists.map((a, i) => {
+                                                    const q = encodeURIComponent(a.name);
+                                                    return (
+                                                        <div
+                                                            key={i}
+                                                            className={`artist-card ${a.image ? 'has-image' : ''}`}
+                                                            style={a.image ? { background: `linear-gradient(180deg, rgba(250,246,240,0.12) 0%, rgba(250,246,240,0.55) 45%, rgba(250,246,240,0.95) 100%), url('${a.image}') center/cover no-repeat` } : {}}
+                                                        >
+                                                            <div className="artist-name">{a.name}</div>
+                                                            <div className="artist-origin">{a.origin}</div>
+                                                            <span className="artist-genre">{a.genre}</span>
+                                                            <div className="artist-note">{a.note}</div>
+                                                            <div className="artist-best"><strong>Listen:</strong> <span dangerouslySetInnerHTML={{ __html: a.best }}></span></div>
+                                                            <div className="stream-links">
+                                                                <a href={`https://music.apple.com/search?term=${q}`} target="_blank" rel="noopener noreferrer" className="stream-link stream-apple"></a>
+                                                                <a href={`https://open.spotify.com/search/${q}`} target="_blank" rel="noopener noreferrer" className="stream-link stream-spotify"></a>
+                                                            </div>
+                                                        </div>
+                                                    );
+                                                })}
                                             </div>
                                         </div>
                                     </div>
